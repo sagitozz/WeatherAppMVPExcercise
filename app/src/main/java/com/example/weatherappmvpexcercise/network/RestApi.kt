@@ -1,5 +1,6 @@
 package com.example.weatherappmvpexcercise.network
 
+import com.example.weatherappmvpexcercise.Constants.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,9 +37,10 @@ class RestApi {
         get() = sEndPoint
 
     private fun buildOkHttpClient(): OkHttpClient {
-        return Builder()
+        return Retrofit.Builder()
             .addInterceptor(ApiKeyInterceptor.create())
             .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .build()
     }
+}
