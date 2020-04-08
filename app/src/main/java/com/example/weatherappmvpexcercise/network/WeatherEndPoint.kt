@@ -13,5 +13,5 @@ interface WeatherEndPoint {
 
 
 //    @GET("{section}.json")
-//    fun getNewsByCategory(@Path("section") category: String?): Call<NewsResponse?>?
+//    fun getetetetetet(@Path("section") category: String?): Call<WeatherResponse?>?
 }
