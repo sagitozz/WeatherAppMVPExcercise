@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                     call: Call<WeatherResponse?>,
                     response: Response<WeatherResponse?>
                 ) {
-                    weather.text = response.body().toString()
+                    weather.text = response.body().toString() // КАКАЯТО ХУЕТА, НАДО  СДЕЛАТЬ ЧТОБА ПРИХОДИЛ АЙТЕМ А НЕ ТЕЛО РЕСПОНСА
                 }
 
                 override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
