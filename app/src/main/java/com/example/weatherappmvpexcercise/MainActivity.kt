@@ -21,16 +21,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        weather.text = ""
+
         val newsModel = Model()
-
-
             newsModel.modelGetWeather()?.enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
                     call: Call<WeatherResponse?>,
                     response: Response<WeatherResponse?>
                 ) {
-                    weather.text = response.body().toString() // КАКАЯТО ХУЕТА, НАДО  СДЕЛАТЬ ЧТОБА ПРИХОДИЛ АЙТЕМ А НЕ ТЕЛО РЕСПОНСА
+                    weather.text = response.body().toString() // КАКАЯТО ХУЕТА НАДО  СДЕЛАТЬ ЧТОБА ПРИХОДИЛ АЙТЕМ И ДЕРНУТЬ ЕГО ПОЛЕ А НЕ ТЕЛО РЕСПОНСА
                 }
 
                 override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
