@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-
+ 
         val newsModel = Model()
             newsModel.modelGetWeather()?.enqueue(object : Callback<WeatherResponse?> {
 
