@@ -15,9 +15,10 @@ class RestApi {
 
     init {
 
+
         val okHttpClient = buildOkHttpClient()
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("weatherbit-v1-mashape.p.rapidapi.com/")
+            .baseUrl("https://weatherbit-v1-mashape.p.rapidapi.com/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -38,6 +39,7 @@ class RestApi {
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(ApiKeyInterceptor.create()!!)
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .build()
