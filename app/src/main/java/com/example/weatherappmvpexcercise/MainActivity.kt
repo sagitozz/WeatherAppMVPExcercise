@@ -15,27 +15,27 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
- 
+
         val newsModel = Model()
-            newsModel.modelGetWeather()?.enqueue(object : Callback<WeatherResponse?> {
+        newsModel.modelGetWeather()?.enqueue(object : Callback<WeatherResponse?> {
 
-                override fun onResponse(
-                    call: Call<WeatherResponse?>,
-                    response: Response<WeatherResponse?>
-                ) {
-                    val list : List<DataItem?>? = response.body()?.data
-                    weather.text = list?.get(6)?.temp.toString()
-                }
+            override fun onResponse(
+                call: Call<WeatherResponse?>,
+                response: Response<WeatherResponse?>
+            ) {
+                val list: List<DataItem> = response.body()?.data ?: emptyList()
+                weather.text = list[6].temp.toString()
 
-                override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
-                    weather.text = "fail"
-                }
-            })
-        }
+                response.body()?.data?.firstOrNull()
+            }
+
+            override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
+                weather.text = "fail"
+            }
+        })
     }
+}
 

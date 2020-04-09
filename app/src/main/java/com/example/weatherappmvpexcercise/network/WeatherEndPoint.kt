@@ -3,14 +3,20 @@ package com.example.weatherappmvpexcercise.network
 import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
+import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface WeatherEndPoint {
 
-    @GET("home.json")
-    fun getWeather(): Call<WeatherResponse?>?
-
+    //    @Headers(
+//        "x-rapidapi-key: 1d0a2e860bmsh0b9d1011b14e5a3p1139aejsn3cb8586f5524",
+//        "x-rapidapi-host: weatherbit-v1-mashape.p.rapidapi.com"
+//    )
+    @GET("/forecast/3hourly")
+    fun getWeather(
+        @Query("lat") latitude: Double,
+        @Query("lon") longitude: Double
+    ): Call<WeatherResponse?>?
 
 
 //    @GET("{section}.json")

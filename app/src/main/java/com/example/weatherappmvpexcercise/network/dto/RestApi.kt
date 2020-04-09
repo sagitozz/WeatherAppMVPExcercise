@@ -1,6 +1,6 @@
 package com.example.weatherappmvpexcercise.network.dto
 
-import com.example.weatherappmvpexcercise.Constants.Constants
+import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.network.WeatherEndPoint
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -9,16 +9,13 @@ import java.util.concurrent.TimeUnit
 
 class RestApi {
 
-    private val TIMEOUT_IN_SECONDS = 2
     private var sRestApi: RestApi? = null
     private var sEndPoint: WeatherEndPoint? = null
 
     init {
-
-
         val okHttpClient = buildOkHttpClient()
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://weatherbit-v1-mashape.p.rapidapi.com/")
+            .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -39,11 +36,15 @@ class RestApi {
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(ApiKeyInterceptor.create()!!)
+            .addInterceptor(ApiKeyInterceptor.create())
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .build()
     }
 
+    companion object {
+
+        private const val TIMEOUT_IN_SECONDS = 5
+    }
 
 }

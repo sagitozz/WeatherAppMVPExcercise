@@ -10,6 +10,6 @@ class Model {
     private val restApi: RestApi? = RestApi()
 
     fun modelGetWeather(): Call<WeatherResponse?>? {
-        return restApi?.getEndPoint()?.getWeather()
+        return restApi?.getEndPoint()?.getWeather(33.0, 33.0)
     }
 }
