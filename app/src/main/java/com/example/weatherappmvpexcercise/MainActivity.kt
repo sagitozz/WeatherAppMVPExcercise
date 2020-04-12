@@ -27,13 +27,13 @@ class MainActivity : AppCompatActivity() {
                 response: Response<WeatherResponse?>
             ) {
                 val list: List<DataItem> = response.body()?.data ?: emptyList()
-                weather.text = list[6].temp.toString()
+                temperature.text = list[6].temp.toString() + "C"
 
                 response.body()?.data?.firstOrNull()
             }
 
             override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
-                weather.text = "fail"
+                temperature.text = "fail"
             }
         })
     }
