@@ -1,5 +1,7 @@
 package com.example.weatherappmvpexcercise.mvp
 
+import android.util.Log
+import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
 import com.example.weatherappmvpexcercise.network.dto.DataItem
@@ -10,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainActivityContract.Presenter {
-    val newsModel = Model()
+    private val newsModel = Model()
     lateinit var dataItemList : List<DataItem>
 
     override fun loadData() {
@@ -19,6 +21,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
             call: Call<WeatherResponse?>,
             response: Response<WeatherResponse?>
         ) {
+            Log.d(Constants.LOG_TAG, "OnResponse презентера")
             updateUi(response)
 
         }
@@ -29,7 +32,11 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
     }
 
     fun updateUi (response: Response<WeatherResponse?>) {
+        Log.d(Constants.LOG_TAG, "updateUI презентера")
+
         dataItemList = response.body()?.data ?: emptyList()
+        val city : String = response.body()?.city_name.toString()
+        view?.updateCity(city)
         view?.updateUi(dataItemList)
     }
 }

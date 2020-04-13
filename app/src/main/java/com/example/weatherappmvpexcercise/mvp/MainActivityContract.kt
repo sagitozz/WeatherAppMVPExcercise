@@ -13,6 +13,7 @@ interface MainActivityContract {
     interface View : IView {
         fun updateUi(list: List<DataItem>)
         fun onError()
+        fun updateCity (city_text : String)
     }
 
 }
