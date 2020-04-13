@@ -2,12 +2,13 @@ package com.example.weatherappmvpexcercise.mvp.base
 
 
 import android.util.Log
+import com.example.weatherappmvpexcercise.GPSTracker
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.network.dto.RestApi
 import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
 import retrofit2.Call
 
-class Model {
+class Model  {
 
     private val restApi: RestApi? = RestApi()
 
