@@ -33,7 +33,7 @@ data class DataItem(
 	@SerializedName("country_code") val countryCode: String,
 	@SerializedName("rh") val rh: Int,
 	@SerializedName("slp") val slp: Double,
-	@SerializedName("snow") val snow: Int,
+	@SerializedName("snow") val snow: Double,
 	@SerializedName("sunset") val sunset: String,
 	@SerializedName("last_ob_time") val lastObTime: String,
 	@SerializedName("aqi") val aqi: Int,

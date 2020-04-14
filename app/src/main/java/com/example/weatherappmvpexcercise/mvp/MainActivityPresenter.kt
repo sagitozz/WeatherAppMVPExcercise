@@ -15,6 +15,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
     private val newsModel = Model()
     lateinit var dataItemList : List<DataItem>
 
+
     override fun loadData() {
             newsModel.modelGetWeather()?.enqueue( object : Callback<WeatherResponse?> {
         override fun onResponse(
