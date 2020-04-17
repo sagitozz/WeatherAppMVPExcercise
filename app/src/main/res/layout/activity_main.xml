@@ -45,7 +45,7 @@
         android:layout_marginTop="208dp"
         android:text="@string/temp"
         android:textColor="#FFFFFF"
-        android:textSize="120sp"
+        android:textSize="180sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.275"
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="25dp" />
+        app:layout_constraintGuide_begin="241dp" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -78,7 +78,8 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toStartOf="@+id/pressure" />
+        app:layout_constraintEnd_toStartOf="@+id/pressure"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <TextView
         android:id="@+id/wind"
@@ -120,7 +121,7 @@
         android:id="@+id/getLocationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="get location"
+        android:text="@string/get_location"
         app:layout_constraintBottom_toTopOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.925"
@@ -134,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="84dp"
         android:layout_marginRight="84dp"
-        android:text="lat"
+        android:text="@string/lat"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/lon"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,11 +147,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
-        android:text="lon"
+        android:text="@string/lon"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.662"
         app:layout_constraintStart_toEndOf="@+id/date" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="154dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

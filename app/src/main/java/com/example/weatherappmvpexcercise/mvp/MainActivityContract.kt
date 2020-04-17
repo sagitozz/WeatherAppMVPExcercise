@@ -14,6 +14,7 @@ interface MainActivityContract {
         fun updateUi(list: List<DataItem>)
         fun onError()
         fun updateCity (city_text : String)
+        fun updateCoordinates (latitude : Double, longitude: Double)
     }
 
 }

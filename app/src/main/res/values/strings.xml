@@ -6,4 +6,12 @@
     <string name="humidity">Humidity</string>
     <string name="wind">Wind:</string>
     <string name="pressure">Pressure</string>
+    <string name="gps_not_enabled">GPS is not enabled</string>
+    <string name="open_location_settings">Would you enable GPS?</string>
+    <string name="yes">YES</string>
+    <string name="cancel">NO</string>
+    <string name="on_error">ON ERROR</string>
+    <string name="get_location">get location</string>
+    <string name="lat">lat</string>
+    <string name="lon">lon</string>
 </resources>
