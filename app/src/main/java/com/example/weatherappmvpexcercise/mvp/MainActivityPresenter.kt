@@ -1,10 +1,22 @@
 package com.example.weatherappmvpexcercise.mvp
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.weatherappmvpexcercise.GlobalApplication
+import com.example.weatherappmvpexcercise.MainActivity
+import com.example.weatherappmvpexcercise.R
 
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
@@ -30,6 +42,25 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
     var latitude : Double = 0.0
     var longitude : Double = 0.0
 
+    fun getCurrentLocation() {
+        val locationRequest = LocationRequest ()
+        locationRequest.interval = 10000
+        locationRequest.fastestInterval = 3000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        LocationServices.getFusedLocationProviderClient(context)
+            .requestLocationUpdates(locationRequest,  object : LocationCallback() {
+                override fun onLocationResult(p0: LocationResult?) {
+                    super.onLocationResult(p0)
+                    LocationServices.getFusedLocationProviderClient(context)
+                        .removeLocationUpdates(LocationCallback())
+                    if (p0 != null) {
+                        latitude = p0.lastLocation.latitude
+                        longitude = p0.lastLocation.longitude
+                    }
+                }
+            }, Looper.getMainLooper())
+    }
 
     override fun loadData() {
             newsModel.modelGetWeather(latitude, longitude)?.enqueue( object : Callback<WeatherResponse?> {
@@ -57,25 +88,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
         view?.updateCoordinates(latitude, longitude)
     }
 
-     fun getLastLocation() {
-        val locationRequest = LocationRequest ()
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 3000
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        LocationServices.getFusedLocationProviderClient(context)
-            .requestLocationUpdates(locationRequest,  object : LocationCallback() {
-                override fun onLocationResult(p0: LocationResult?) {
-                    super.onLocationResult(p0)
-                    LocationServices.getFusedLocationProviderClient(context)
-                        .removeLocationUpdates(LocationCallback())
-                    if (p0 != null) {
-                        latitude = p0.lastLocation.latitude
-                        longitude = p0.lastLocation.longitude
 
-                    }
-                }
-            }, Looper.getMainLooper())
-    }
+
 }
 

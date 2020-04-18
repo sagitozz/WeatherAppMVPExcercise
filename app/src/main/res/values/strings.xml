@@ -14,4 +14,7 @@
     <string name="get_location">get location</string>
     <string name="lat">lat</string>
     <string name="lon">lon</string>
+    <string name="gps_button">GPS button</string>
+    <string name="item_date">item_date</string>
+    <string name="item_temp">item_temp</string>
 </resources>
