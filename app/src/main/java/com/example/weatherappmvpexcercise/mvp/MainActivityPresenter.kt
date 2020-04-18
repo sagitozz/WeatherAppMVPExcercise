@@ -1,23 +1,9 @@
 package com.example.weatherappmvpexcercise.mvp
 
-import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.LocationManager
-import android.os.Build
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.weatherappmvpexcercise.GlobalApplication
-import com.example.weatherappmvpexcercise.MainActivity
-import com.example.weatherappmvpexcercise.R
-
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
@@ -27,17 +13,17 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.properties.Delegates
 
 class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainActivityContract.Presenter {
     private val newsModel = Model()
 
-    lateinit var dataItemList : List<DataItem>
+    lateinit var dataItemList : MutableList<DataItem>
     val context : Context = GlobalApplication.getAppContext()
+
+    var recyclerItems : MutableList<DataItem> = arrayListOf()
 
     var latitude : Double = 0.0
     var longitude : Double = 0.0
@@ -57,35 +43,51 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
                     if (p0 != null) {
                         latitude = p0.lastLocation.latitude
                         longitude = p0.lastLocation.longitude
+
+                        loadData()
+
                     }
                 }
+
             }, Looper.getMainLooper())
     }
 
     override fun loadData() {
-            newsModel.modelGetWeather(latitude, longitude)?.enqueue( object : Callback<WeatherResponse?> {
-        override fun onResponse(
-            call: Call<WeatherResponse?>,
-            response: Response<WeatherResponse?>
-        ) {
-            Log.d(Constants.LOG_TAG, "OnResponse презентера")
-            updateUi(response)
-
-        }
-                override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
-                    view?.onError()
-                }
-            })
+        newsModel.modelGetWeather(latitude, longitude)?.enqueue( object : Callback<WeatherResponse?> {
+            override fun onResponse(
+                call: Call<WeatherResponse?>,
+                response: Response<WeatherResponse?>
+            ) {
+                Log.d(Constants.LOG_TAG, "OnResponse презентера")
+                updateUi(response)
+            }
+            override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
+                view?.onError()
+            }
+        })
     }
 
     fun updateUi (response: Response<WeatherResponse?>) {
         Log.d(Constants.LOG_TAG, "updateUI презентера")
-
-        dataItemList = response.body()?.data ?: emptyList()
+        dataItemList = response.body()?.data!!
         val city : String = response.body()?.city_name.toString()
         view?.updateCity(city)
-        view?.updateUi(dataItemList)
+        getItemsForRecycler()
+        view?.updateUi(recyclerItems)
         view?.updateCoordinates(latitude, longitude)
+    }
+
+
+    fun getItemsForRecycler () {
+        for (item in dataItemList) {
+            var elementIndex = dataItemList.indexOf(item)
+            val divider = 8
+            var result = elementIndex % divider
+            if (result == 0) {
+                recyclerItems.add(item)
+            }
+        }
+
     }
 
 

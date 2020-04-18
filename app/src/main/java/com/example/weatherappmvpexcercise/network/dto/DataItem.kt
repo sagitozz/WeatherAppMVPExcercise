@@ -3,6 +3,7 @@ package com.example.weatherappmvpexcercise.network.dto
 import com.google.gson.annotations.SerializedName
 
 data class DataItem(
+	@SerializedName("timestamp_local") val timestamp: String,
 	@SerializedName("sunrise") val sunrise: String,
 	@SerializedName("pod") val pod: String,
 	@SerializedName("pres") val pres: Double,
@@ -40,4 +41,5 @@ data class DataItem(
 	@SerializedName("state_code") val stateCode: String,
 	@SerializedName("wind_cdir_full") val windCdirFull: String,
 	@SerializedName("ts") val ts: Int
+
 )
