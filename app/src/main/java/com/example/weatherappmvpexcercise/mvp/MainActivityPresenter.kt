@@ -21,22 +21,28 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
     private val newsModel = Model()
 
+    //todo private
     lateinit var dataItemList: MutableList<DataItem>
+    //todo он тебе не нужен!!! Обращайся напрямую там где над
     val context: Context = GlobalApplication.getAppContext()
-
+    //todo private
     var recyclerItems: MutableList<DataItem> = arrayListOf()
-
+    //todo private
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
     fun getCurrentLocation() {
         val locationRequest = LocationRequest()
+        //todo что такое 10000? В константу! 3000 аналогично!
         locationRequest.interval = 10000
         locationRequest.fastestInterval = 3000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         LocationServices.getFusedLocationProviderClient(context)
             .requestLocationUpdates(locationRequest, object : LocationCallback() {
+                //todo р0  не твое, но лучше переименовать!
+                // ПРОБЕЛЫ ВНИЗУ!!
+                // и вообще вынеси все это в отдельный метод(Все что от object : LocationCallback() и до , Looper.getMainLooper())
                 override fun onLocationResult(p0: LocationResult?) {
                     super.onLocationResult(p0)
                     LocationServices.getFusedLocationProviderClient(context)
@@ -75,14 +81,19 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         dataItemList = response.body()?.data!!
         val city: String = response.body()?.city_name.toString()
         view?.updateCity(city)
+        //todo метод get подразумевае, что он что-то возвращает.
+        // А у тебя там что-то фильтруется или готовится! подумай как переименовать
         getItemsForRecycler()
         view?.updateUi(recyclerItems)
         view?.updateCoordinates(latitude, longitude)
     }
 
+    //todo private тебе даже студия говорит!!!
     fun getItemsForRecycler() {
         for (item in dataItemList) {
+            //todo val!! Студия же подсказывает
             var elementIndex = dataItemList.indexOf(item)
+            //todo почему не 1283214235 , а именно 8?
             val divider = 8
             var result = elementIndex % divider
             if (result == 0) {
