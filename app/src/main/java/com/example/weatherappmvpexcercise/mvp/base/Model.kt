@@ -9,13 +9,11 @@ import com.example.weatherappmvpexcercise.network.dto.RestApi
 import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
 import retrofit2.Call
 
-class Model  {
-
-
+class Model {
 
     private val restApi: RestApi? = RestApi()
 
-    fun modelGetWeather(latitude : Double, longitude : Double): Call<WeatherResponse?>? {
+    fun modelGetWeather(latitude: Double, longitude: Double): Call<WeatherResponse?>? {
         Log.d(Constants.LOG_TAG, "Запрос из модели")
         return restApi?.getEndPoint()?.getWeather(latitude, longitude)
     }

@@ -7,15 +7,18 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
@@ -30,23 +33,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
-
     val mainActivityPresenter = MainActivityPresenter()
     private val REQUEST_LOCATION_PERMISSION = 1
-    lateinit var loationManager : LocationManager
+    lateinit var loationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    lateinit var latitudetext : TextView
-    lateinit var longitudeText : TextView
+    lateinit var latitudetext: TextView
+    lateinit var longitudeText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
         latitudetext = findViewById(R.id.lat)
         longitudeText = findViewById(R.id.lon)
-
+        showLoader()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(baseContext)
-        Log.d (Constants.LOG_TAG, "создан массив для ресайклера")
+        Log.d(Constants.LOG_TAG, "создан массив для ресайклера")
 
         loationManager =
             baseContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -54,17 +56,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         mainActivityPresenter.attach(this)
         onLoadGetLocation()
         mainActivityPresenter.getCurrentLocation()
-
-
-
+        hideLoader()
     }
 
-    private fun recyclerInit(items : MutableList<DataItem>) {
+    private fun recyclerInit(items: MutableList<DataItem>) {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val weatherRecyclerAdapter = WeatherRecyclerAdapter (items)
-        Log.d (Constants.LOG_TAG, "создан адаптер с массивом")
+        val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
+        Log.d(Constants.LOG_TAG, "создан адаптер с массивом")
         recyclerView.adapter = weatherRecyclerAdapter
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -83,7 +82,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         longitudeText.text = longitude.toString()
     }
 
-    override fun updateCity(city_text : String) {
+    override fun updateCity(city_text: String) {
         city.text = city_text
     }
 
@@ -91,78 +90,76 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     fun onLoadGetLocation() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED ) {
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
-                ActivityCompat.requestPermissions(
-                    this@MainActivity,
-                    Array<String>(1) { Manifest.permission.ACCESS_FINE_LOCATION },
-                    REQUEST_LOCATION_PERMISSION
-                )
-                //  updateCity("ОЧЕЧЛО")
-            }
-            if (loationManager.isLocationEnabled) {mainActivityPresenter.getCurrentLocation()}
-            else {
-                getLatestLocation()
-                val builder =
-                    AlertDialog.Builder(this@MainActivity)
-                builder.setTitle(R.string.gps_not_enabled)
-                    .setMessage(R.string.open_location_settings)
-                    .setPositiveButton(R.string.yes,
-                        DialogInterface.OnClickListener { dialog, id ->
-                            startActivity(
-                                Intent(
-                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                                )
-                            )
-                        })
-                    .setNegativeButton(R.string.cancel,
-                        DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()}
-        getLatestLocation()
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                Array<String>(1) { Manifest.permission.ACCESS_FINE_LOCATION },
+                REQUEST_LOCATION_PERMISSION
+            )
         }
-
+        if (loationManager.isLocationEnabled) {
+            mainActivityPresenter.getCurrentLocation()
+        } else {
+            val builder =
+                AlertDialog.Builder(this@MainActivity)
+            builder.setTitle(R.string.gps_not_enabled)
+                .setMessage(R.string.open_location_settings)
+                .setPositiveButton(R.string.yes,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                            )
+                        )
+                    })
+                .setNegativeButton(R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
+        }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults : IntArray
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (!(requestCode != REQUEST_LOCATION_PERMISSION && grantResults.isEmpty())) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mainActivityPresenter.getCurrentLocation()
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
                 Log.d(Constants.LOG_TAG, "OnRequestPermissionREsult FALSE")
             }
         }
     }
 
-    fun getLatestLocation () {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener(
-                this
-            ) { location ->
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    longitudeText.text = location.longitude.toString()
-                }
-                else {longitudeText.text = "где-то обосрался"}
-            }
-    }
+//    fun getLatestLocation () {
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener(
+//                this
+//            ) { location ->
+//                // Got last known location. In some rare situations this can be null.
+//                if (location != null) {
+//                    longitudeText.text = location.longitude.toString()
+//                }
+//                else {longitudeText.text = "где-то обосрался"}
+//            }
+//    }
 
     override fun onError() {
-        temperature.text= getString(R.string.on_error)
+        temperature.text = getString(R.string.on_error)
     }
 
     override fun showLoader() {
-        TODO("Not yet implemented")
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun hideLoader() {
-        TODO("Not yet implemented")
+        progressBar.visibility = View.GONE
     }
 
     override fun handleError(error: String) {
@@ -173,12 +170,44 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         super.onDestroy()
         mainActivityPresenter.detach()
     }
+
     override fun onResume() {
         super.onResume()
         mainActivityPresenter.getCurrentLocation()
     }
 
-
+//    fun getLastKnownLoaction(
+//        enabledProvidersOnly: Boolean,
+//        context: Context
+//    ): Location? {
+//        val manager =
+//            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//        var utilLocation: Location? = null
+//        val providers =
+//            manager.getProviders(enabledProvidersOnly)
+//        for (provider in providers) {
+//            if (ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//
+//            }
+//            utilLocation = manager.getLastKnownLocation(provider)
+//            if (utilLocation != null) return utilLocation
+//        }
+//        return null
+//    }
 
 }
 

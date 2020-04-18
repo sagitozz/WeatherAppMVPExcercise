@@ -13,8 +13,8 @@ interface MainActivityContract {
     interface View : IView {
         fun updateUi(list: MutableList<DataItem>)
         fun onError()
-        fun updateCity (city_text : String)
-        fun updateCoordinates (latitude : Double, longitude: Double)
+        fun updateCity(city_text: String)
+        fun updateCoordinates(latitude: Double, longitude: Double)
     }
 
 }

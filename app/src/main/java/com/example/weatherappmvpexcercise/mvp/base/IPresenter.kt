@@ -4,7 +4,7 @@ import android.view.View
 
 interface IPresenter<VIEW : IView> {
 
-    fun attach(view : VIEW)
+    fun attach(view: VIEW)
 
     fun detach()
 }

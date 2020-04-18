@@ -17,25 +17,26 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainActivityContract.Presenter {
+class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
+    MainActivityContract.Presenter {
     private val newsModel = Model()
 
-    lateinit var dataItemList : MutableList<DataItem>
-    val context : Context = GlobalApplication.getAppContext()
+    lateinit var dataItemList: MutableList<DataItem>
+    val context: Context = GlobalApplication.getAppContext()
 
-    var recyclerItems : MutableList<DataItem> = arrayListOf()
+    var recyclerItems: MutableList<DataItem> = arrayListOf()
 
-    var latitude : Double = 0.0
-    var longitude : Double = 0.0
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
 
     fun getCurrentLocation() {
-        val locationRequest = LocationRequest ()
+        val locationRequest = LocationRequest()
         locationRequest.interval = 10000
         locationRequest.fastestInterval = 3000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         LocationServices.getFusedLocationProviderClient(context)
-            .requestLocationUpdates(locationRequest,  object : LocationCallback() {
+            .requestLocationUpdates(locationRequest, object : LocationCallback() {
                 override fun onLocationResult(p0: LocationResult?) {
                     super.onLocationResult(p0)
                     LocationServices.getFusedLocationProviderClient(context)
@@ -53,32 +54,33 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
     }
 
     override fun loadData() {
-        newsModel.modelGetWeather(latitude, longitude)?.enqueue( object : Callback<WeatherResponse?> {
-            override fun onResponse(
-                call: Call<WeatherResponse?>,
-                response: Response<WeatherResponse?>
-            ) {
-                Log.d(Constants.LOG_TAG, "OnResponse презентера")
-                updateUi(response)
-            }
-            override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
-                view?.onError()
-            }
-        })
+        newsModel.modelGetWeather(latitude, longitude)
+            ?.enqueue(object : Callback<WeatherResponse?> {
+                override fun onResponse(
+                    call: Call<WeatherResponse?>,
+                    response: Response<WeatherResponse?>
+                ) {
+                    Log.d(Constants.LOG_TAG, "OnResponse презентера")
+                    updateUi(response)
+                }
+
+                override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
+                    view?.onError()
+                }
+            })
     }
 
-    fun updateUi (response: Response<WeatherResponse?>) {
+    fun updateUi(response: Response<WeatherResponse?>) {
         Log.d(Constants.LOG_TAG, "updateUI презентера")
         dataItemList = response.body()?.data!!
-        val city : String = response.body()?.city_name.toString()
+        val city: String = response.body()?.city_name.toString()
         view?.updateCity(city)
         getItemsForRecycler()
         view?.updateUi(recyclerItems)
         view?.updateCoordinates(latitude, longitude)
     }
 
-
-    fun getItemsForRecycler () {
+    fun getItemsForRecycler() {
         for (item in dataItemList) {
             var elementIndex = dataItemList.indexOf(item)
             val divider = 8
@@ -87,10 +89,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(), MainAc
                 recyclerItems.add(item)
             }
         }
-
     }
-
-
 
 
 }
