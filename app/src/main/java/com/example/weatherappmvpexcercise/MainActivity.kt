@@ -3,15 +3,16 @@ package com.example.weatherappmvpexcercise
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,41 +22,22 @@ import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.dto.DataItem
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private val mainActivityPresenter = MainActivityPresenter()
 
-    //todo вынести в companion object
-    private val REQUEST_LOCATION_PERMISSION = 1
-
-    //todo этого тут быть не должно
-    lateinit var loationManager: LocationManager
-
-    //todo этого тоже
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(baseContext)
-
-        loationManager =
-            baseContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         mainActivityPresenter.attach(this)
+
         onLoadGetLocation()
-        //todo Этого быть не должно во вью. Это вообще лабуда какая-то, если у тебя
-        // getCurrentLocation будет грузить 5 секунд, то лоадер пропалет вообще сразу.
-        // Должно быть так: 2 метода во View hildeLoader и showLoader или один с булевой переменной.
-        // В презентере перед стартом ты вызваешь метод showLoader после загрузки в колбеке или в цепочке РХ вызываешь hideLoader
-        hideLoader()
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onResume() {
         super.onResume()
         mainActivityPresenter.getCurrentLocation()
@@ -103,59 +85,34 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 REQUEST_LOCATION_PERMISSION
             )
         }
-        //todo вот этот if тут быть не должен! В презентер
-        if (loationManager.isLocationEnabled) {
-            mainActivityPresenter.getCurrentLocation()
-        } else {
-            val builder =
-                AlertDialog.Builder(this@MainActivity)
-            builder.setTitle(R.string.gps_not_enabled)
-                .setMessage(R.string.open_location_settings)
-                .setPositiveButton(
-                    R.string.yes
-                ) { dialog, id ->
+        else {
+            mainActivityPresenter.checkLocationAndLoad()
+        }
+    }
+
+    override fun buildGpsAlertDialog () {
+        val builder =
+            AlertDialog.Builder(this@MainActivity)
+        builder.setTitle(R.string.gps_not_enabled)
+            .setMessage(R.string.open_location_settings)
+            .setPositiveButton(
+                R.string.yes, fun(dialog: DialogInterface, id: Int) {
                     startActivity(
                         Intent(
                             Settings.ACTION_LOCATION_SOURCE_SETTINGS
                         )
                     )
                 }
-                .setNegativeButton(
-                    R.string.cancel
-                ) { dialog, id -> dialog.cancel() }
-            val alert = builder.create()
-            alert.show()
-        }
+            )
+            .setNegativeButton(
+                R.string.cancel, fun(dialog: DialogInterface, id: Int) {
+                    Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            )
+        val alert = builder.create()
+        alert.show()
     }
-
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (!(requestCode != REQUEST_LOCATION_PERMISSION && grantResults.isEmpty())) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//            } else {
-//                Toast.makeText(this, R.string.permission_required, Toast.LENGTH_SHORT).show()
-//                Log.d(Constants.LOG_TAG, "OnRequestPermissionResult FALSE")
-//            }
-//        }
-//    }
-
-//    fun getLatestLocation () {
-//        fusedLocationClient.lastLocation
-//            .addOnSuccessListener(
-//                this
-//            ) { location ->
-//                // Got last known location. In some rare situations this can be null.
-//                if (location != null) {
-//                    longitudeText.text = location.longitude.toString()
-//                }
-//                else {longitudeText.text = "где-то обосрался"}
-//            }
-//    }
 
     override fun onError() {
         temperature.text = getString(R.string.on_error)
@@ -171,8 +128,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private fun recyclerInit(items: List<DataItem>) {
         val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
-        Log.d(Constants.LOG_TAG, "создан адаптер с массивом")
         recyclerView.adapter = weatherRecyclerAdapter
+    }
+
+    companion object {
+        private val REQUEST_LOCATION_PERMISSION = 1
     }
 
 //    fun getLastKnownLoaction(
@@ -208,5 +168,18 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 //        return null
 //    }
 
+
+//    fun getLatestLocation () {
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener(
+//                this
+//            ) { location ->
+//                // Got last known location. In some rare situations this can be null.
+//                if (location != null) {
+//                    longitudeText.text = location.longitude.toString()
+//                }
+//                else {longitudeText.text = "где-то обосрался"}
+//            }
+//    }
 }
 

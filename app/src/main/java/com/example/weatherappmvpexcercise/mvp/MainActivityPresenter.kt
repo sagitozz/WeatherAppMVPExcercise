@@ -1,17 +1,18 @@
 package com.example.weatherappmvpexcercise.mvp
 
+import android.content.Context
+import android.location.LocationManager
+import android.os.Build
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
 import com.example.weatherappmvpexcercise.network.dto.DataItem
 import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,8 +25,25 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     private var recyclerItems: MutableList<DataItem> = arrayListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    lateinit var loationManager: LocationManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun checkLocationAndLoad() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(App.applicationContext())
+        loationManager =
+            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (loationManager.isLocationEnabled) {
+          getCurrentLocation()
+        } else {
+            view?.buildGpsAlertDialog()
+        }
+    }
 
     fun getCurrentLocation() {
+        loationManager =
+            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         view?.showLoader()
         val locationRequest = LocationRequest()
         locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL

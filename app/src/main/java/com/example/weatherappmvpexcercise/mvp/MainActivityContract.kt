@@ -15,5 +15,6 @@ interface MainActivityContract {
         fun onError()
         fun updateCity(city_text: String)
         fun updateCoordinates(latitude: Double, longitude: Double)
+        fun buildGpsAlertDialog()
     }
 }
