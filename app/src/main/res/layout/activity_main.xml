@@ -7,7 +7,6 @@
     android:background="#171717"
     tools:context=".MainActivity">
 
-    <!--todo пробелы!!! вынеси все свои цвета в colors в ресурсы и обзови их там типа white или еще что-то-->
     <TextView
         android:id="@+id/city"
         android:layout_width="211dp"
@@ -15,7 +14,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginBottom="109dp"
         android:text="@string/city"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/date"
@@ -31,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="93dp"
         android:text="@string/day_date"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,26 +41,22 @@
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="200dp"
         android:text="@string/temp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="180sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--todo app:layout_constraintGuide_percent="0.5 на Guideline лучше использовать вот такую конструкциб
-    todo чем app:layout_constraintGuide_end="170dp" Всегда подумай несколько раз прежде чем хардкодить размеры.
-    todo Но это не значит что этого делать нельзя. просто подумай а нужно ли тут-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="170dp" />
-    <!--todo пробелы!!!-->
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -78,7 +73,7 @@
         android:layout_marginRight="60dp"
         android:layout_marginBottom="28dp"
         android:text="@string/humidity"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toStartOf="@+id/pressure"
@@ -92,7 +87,7 @@
         android:layout_marginLeft="28dp"
         android:layout_marginBottom="28dp"
         android:text="@string/wind"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent" />
@@ -103,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:text="@string/pressure"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,27 +114,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!--todo не оч хорошие название lat, lon. latText намного лучше так хотя бы понятно что это. А то вдруг это картинка или еще чет. -->
     <TextView
-        android:id="@+id/lat"
+        android:id="@+id/latText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="84dp"
         android:layout_marginRight="84dp"
         android:text="@string/lat"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/lon"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/lonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/date" />
 
     <TextView
-        android:id="@+id/lon"
+        android:id="@+id/lonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:text="@string/lon"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.662"
@@ -159,14 +153,12 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
 
-    <!--todo странные у тебя размеры лоадера-->
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-        android:layout_width="186dp"
-        android:layout_height="175dp"
-        android:indeterminate="true"
-        android:visibility="visible"
+        android:layout_width="77dp"
+        android:layout_height="52dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

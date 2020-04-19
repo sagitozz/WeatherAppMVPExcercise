@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -18,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
@@ -33,8 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
-    //todo private
-    val mainActivityPresenter = MainActivityPresenter()
+    private val mainActivityPresenter = MainActivityPresenter()
 
     //todo вынести в companion object
     private val REQUEST_LOCATION_PERMISSION = 1
@@ -52,8 +49,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        latitudetext = findViewById(R.id.lat)
-        longitudeText = findViewById(R.id.lon)
+        latitudetext = findViewById(R.id.latText)
+        longitudeText = findViewById(R.id.lonText)
         showLoader()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(baseContext)
         Log.d(Constants.LOG_TAG, "создан массив для ресайклера")
