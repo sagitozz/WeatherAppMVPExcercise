@@ -8,4 +8,6 @@ object Constants {
     const val PRESSURE_DIVIDER : Double = 1.333224
     const val FIVE_DAYS_FORECAST_RECYCLER_SIZE = 5
     const val DIVIDER_FOR_GETTING_NEXT_DAY = 8
+    const val LOCATION_REQUEST_INTERVAL = 10000L
+    const val LOCATION_REQUEST_FASTEST_INTERVAL = 3000L
 }

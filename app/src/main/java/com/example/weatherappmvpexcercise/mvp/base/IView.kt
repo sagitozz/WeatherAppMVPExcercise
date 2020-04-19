@@ -6,6 +6,4 @@ interface IView {
 
     fun hideLoader()
 
-    fun handleError(error: String)
-
 }

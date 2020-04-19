@@ -1,9 +1,8 @@
 package com.example.weatherappmvpexcercise.mvp
 
-import android.content.Context
 import android.os.Looper
 import android.util.Log
-import com.example.weatherappmvpexcercise.GlobalApplication
+import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
@@ -22,26 +21,24 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
     private val newsModel = Model()
     private lateinit var dataItemList: List<DataItem>
-    //todo он тебе не нужен!!! Обращайся напрямую там где над
-    val context: Context = GlobalApplication.getAppContext()
     private var recyclerItems: MutableList<DataItem> = arrayListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
 
     fun getCurrentLocation() {
+        view?.showLoader()
         val locationRequest = LocationRequest()
-        //todo что такое 10000? В константу! 3000 аналогично!
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 3000
+        locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
+        locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        LocationServices.getFusedLocationProviderClient(context)
+        LocationServices.getFusedLocationProviderClient(App.applicationContext())
             .requestLocationUpdates(locationRequest, object : LocationCallback() {
                 //todo
                 // и вообще вынеси все это в отдельный метод(Все что от object : LocationCallback() и до , Looper.getMainLooper())
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
-                    LocationServices.getFusedLocationProviderClient(context)
+                    LocationServices.getFusedLocationProviderClient(App.applicationContext())
                         .removeLocationUpdates(LocationCallback())
                     if (locationResult != null) {
                         latitude = locationResult.lastLocation.latitude
@@ -61,6 +58,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 ) {
                     Log.d(Constants.LOG_TAG, "OnResponse презентера")
                     updateUi(response)
+                    view?.hideLoader()
                 }
 
                 override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {

@@ -17,5 +17,5 @@
     <string name="gps_button">GPS button</string>
     <string name="item_date">item_date</string>
     <string name="item_temp">item_temp</string>
-
+    <string name="permission_required">Permission required</string>
 </resources>

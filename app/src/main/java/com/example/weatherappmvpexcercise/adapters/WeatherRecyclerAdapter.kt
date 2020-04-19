@@ -9,7 +9,7 @@ import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.constants.Constants.FIVE_DAYS_FORECAST_RECYCLER_SIZE
 import com.example.weatherappmvpexcercise.network.dto.DataItem
 
-class WeatherRecyclerAdapter(var items: MutableList<DataItem>) :
+class WeatherRecyclerAdapter(private val items: List<DataItem>) :
     RecyclerView.Adapter<WeatherRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -33,18 +33,4 @@ class WeatherRecyclerAdapter(var items: MutableList<DataItem>) :
             itemDate.text = item.timestamp
         }
     }
-
-//    //todo тут вообще какая-то ерунда! То что приходит в аругментах должно быть имутабельно! убрать MutableList
-//    // скорее всего у тебя должна быть переменная MutableList<DataItem?>
-//    // в самом адаптере в которую ты будешь добавлять нвоые элементы и тогда в getItemCount не будет 5
-//    // мне не нравится nullable DataItem. Ты должен все null dataItem потерять задолго до попадания их в адаптер
-//    fun update(weatherItems: MutableList<DataItem?>) {
-//        Log.d(LOG_TAG, "adapter.clear")
-//        weatherItems.clear()
-//        Log.d(LOG_TAG, "adapter.addAll")
-//        //todo ты вообще понимаешь что ты тут делаешь??? Что вообще делает весь твой метод???!!!
-//        weatherItems.addAll(weatherItems)
-//        notifyDataSetChanged()
-//        Log.d(LOG_TAG, "adapter.NotifyDataSetChanged")
-//    }
 }
