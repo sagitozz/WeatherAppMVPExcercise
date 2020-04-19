@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">WeatherAppMVPExcercise</string>
+    <string name="city">City</string>
+    <string name="day_date">Day - Date</string>
+    <string name="temp">TEMP</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind:</string>
+    <string name="pressure">Pressure</string>
+    <string name="gps_not_enabled">GPS is not enabled</string>
+    <string name="open_location_settings">Would you enable GPS?</string>
+    <string name="yes">YES</string>
+    <string name="cancel">NO</string>
+    <string name="on_error">ON ERROR</string>
+    <string name="get_location">get location</string>
+    <string name="lat">lat</string>
+    <string name="lon">lon</string>
+    <string name="gps_button">GPS button</string>
+    <string name="item_date">item_date</string>
+    <string name="item_temp">item_temp</string>
+    <string name="permission_required">Permission required</string>
+    <string name="wind_view">%1$s км/ч</string>
+    <string name="pressure_view">%1$s мм рт.ст</string>
+    <string name="temperature_view">%1$s°</string>
+    <string name="humidity_view">%1$s %%</string>
+    <string name="date_view">%1$s</string>
+    <string name="weatherLogo">weatherLogo</string>
+    <string name="weatherDescription">weatherDescription</string>
 </resources>
