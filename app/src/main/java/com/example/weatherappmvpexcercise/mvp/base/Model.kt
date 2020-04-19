@@ -10,8 +10,8 @@ class Model {
 
     private val restApi: RestApi? = RestApi()
 
-    fun modelGetWeather(latitude: Double, longitude: Double): Call<WeatherResponse?>? {
+    fun modelGetWeather(latitude: Double, longitude: Double, language: String): Call<WeatherResponse?>? {
         Log.d(Constants.LOG_TAG, "Запрос из модели")
-        return restApi?.getEndPoint()?.getWeather(latitude, longitude)
+        return restApi?.getEndPoint()?.getWeather(latitude, longitude, language)
     }
 }

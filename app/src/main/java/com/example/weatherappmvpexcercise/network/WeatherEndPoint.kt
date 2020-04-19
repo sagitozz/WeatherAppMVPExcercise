@@ -4,7 +4,6 @@ import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 interface WeatherEndPoint {
 
@@ -15,10 +14,9 @@ interface WeatherEndPoint {
     @GET("/forecast/3hourly")
     fun getWeather(
         @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double
+        @Query("lon") longitude: Double,
+        @Query("lang") language : String
     ): Call<WeatherResponse?>?
 
 
-//    @GET("{section}.json")
-//    fun getetetetetet(@Path("section") category: String?): Call<WeatherResponse?>?
 }

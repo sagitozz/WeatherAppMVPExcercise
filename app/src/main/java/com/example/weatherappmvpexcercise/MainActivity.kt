@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         wind.text = resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
         date.text = resources.getString(R.string.date_view, list.first().timestamp)
         humidity.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
+        weatherDescription.text = list.first().weather.description
         recyclerInit(list)
     }
 

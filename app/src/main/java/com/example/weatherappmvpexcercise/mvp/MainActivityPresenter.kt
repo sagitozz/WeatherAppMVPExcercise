@@ -26,6 +26,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     private var recyclerItems: MutableList<DataItem> = arrayListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private val language: String = "ru"
     lateinit var loationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -64,7 +65,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     override fun loadData() {
-        newsModel.modelGetWeather(latitude, longitude)
+        newsModel.modelGetWeather(latitude, longitude, language)
             ?.enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
                     call: Call<WeatherResponse?>,

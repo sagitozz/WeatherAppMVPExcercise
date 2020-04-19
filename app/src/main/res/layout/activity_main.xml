@@ -26,15 +26,15 @@
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="93dp"
+        android:layout_width="174dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="96dp"
         android:text="@string/day_date"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -103,6 +103,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/weatherLogo"
+        android:layout_width="62dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="174dp"
+        android:layout_marginBottom="41dp"
+        android:background="@color/white"
+        android:contentDescription="@string/weatherLogo"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/temperature"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/temperature" />
 
     <View
         android:id="@+id/secondDivider"
@@ -178,11 +193,25 @@
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
         android:layout_width="78dp"
         android:layout_height="26dp"
-        android:visibility="gone"
         android:indeterminate="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/weatherDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:text="@string/weatherDescription"
+        app:layout_constraintBottom_toBottomOf="@+id/temperature"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/temperature"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

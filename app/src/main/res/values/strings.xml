@@ -23,4 +23,6 @@
     <string name="temperature_view">%1$s°</string>
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
+    <string name="weatherLogo">weatherLogo</string>
+    <string name="weatherDescription">weatherDescription</string>
 </resources>
