@@ -1,5 +1,6 @@
 package com.example.weatherappmvpexcercise.mvp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
 import android.os.Build
@@ -28,6 +29,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     lateinit var loationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
     fun checkLocationAndLoad() {
         fusedLocationClient =
@@ -38,6 +41,11 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         if (loationManager.isLocationEnabled) {
             getCurrentLocation()
         } else {
+//            var lastLocation =  loationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
+//            latitude = lastLocation.latitude
+//            longitude = lastLocation.longitude
+//            loadData()
+//            Log.d(Constants.LOG_TAG, "Сработал поиск по последнему местоположению через СЕТЬ")
             view?.buildGpsAlertDialog()
         }
     }
