@@ -29,7 +29,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
         private val itemTemp = itemView.findViewById<TextView>(R.id.itemTemp)
 
         fun bind(item: DataItem) {
-            itemTemp.text = item.appTemp.toInt().toString() + "°"
+            itemTemp.text = "${item.appTemp.toInt()}°"
             itemDate.text = item.timestamp
         }
     }

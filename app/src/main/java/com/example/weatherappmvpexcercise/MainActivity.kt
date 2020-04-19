@@ -48,19 +48,17 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         mainActivityPresenter.detach()
     }
 
-    // todo убрать и сделать по человечески=) Внизу описал как
-    @SuppressLint("SetTextI18n")
     override fun updateUi(list: List<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
-        //todo вынести это в стринговые ресурсы. Не должно быть строк во view.
-        // А что если ты захочешь сделать локализацию на другой язык?
-        // http://androiddevcorner.blogspot.com/2014/08/localized-getstring-with-parameters.html
-        temperature.text = list.first().appTemp.toInt().toString() + "°"
-        pressure.text =
-            ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString() + " мм рт.ст"
-        wind.text = list.first().windSpd.toInt().toString() + " км/ч"
-        date.text = list.first().timestamp
-        humidity.text = list.first().rh.toString()
+        temperature.text =
+            resources.getString(R.string.temperature_view, list.first().appTemp.toInt().toString())
+        pressure.text = resources.getString(
+            R.string.pressure_view,
+            ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
+        )
+        wind.text = resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
+        date.text = resources.getString(R.string.date_view, list.first().timestamp)
+        humidity.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
         recyclerInit(list)
     }
 
@@ -84,13 +82,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 Array<String>(1) { Manifest.permission.ACCESS_FINE_LOCATION },
                 REQUEST_LOCATION_PERMISSION
             )
-        }
-        else {
+        } else {
             mainActivityPresenter.checkLocationAndLoad()
         }
     }
 
-    override fun buildGpsAlertDialog () {
+    override fun buildGpsAlertDialog() {
         val builder =
             AlertDialog.Builder(this@MainActivity)
         builder.setTitle(R.string.gps_not_enabled)

@@ -30,12 +30,13 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun checkLocationAndLoad() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(App.applicationContext())
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(App.applicationContext())
         loationManager =
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         if (loationManager.isLocationEnabled) {
-          getCurrentLocation()
+            getCurrentLocation()
         } else {
             view?.buildGpsAlertDialog()
         }
@@ -51,20 +52,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         LocationServices.getFusedLocationProviderClient(App.applicationContext())
-            .requestLocationUpdates(locationRequest, object : LocationCallback() {
-                //todo
-                // и вообще вынеси все это в отдельный метод(Все что от object : LocationCallback() и до , Looper.getMainLooper())
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    super.onLocationResult(locationResult)
-                    LocationServices.getFusedLocationProviderClient(App.applicationContext())
-                        .removeLocationUpdates(LocationCallback())
-                    if (locationResult != null) {
-                        latitude = locationResult.lastLocation.latitude
-                        longitude = locationResult.lastLocation.longitude
-                        loadData()
-                    }
-                }
-            }, Looper.getMainLooper())
+            .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
     }
 
     override fun loadData() {
@@ -83,6 +71,22 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     view?.onError()
                 }
             })
+    }
+
+    private fun locationCallBack(): LocationCallback {
+        val result = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+                LocationServices.getFusedLocationProviderClient(App.applicationContext())
+                    .removeLocationUpdates(LocationCallback())
+                if (locationResult != null) {
+                    latitude = locationResult.lastLocation.latitude
+                    longitude = locationResult.lastLocation.longitude
+                    loadData()
+                }
+            }
+        }
+        return result
     }
 
     fun updateUi(response: Response<WeatherResponse?>) {
