@@ -8,11 +8,7 @@ abstract class BasePresenter<VIEW : IView> : IPresenter<VIEW> {
         this.view = view
     }
 
-    //todo тут должно быть view = null.
-    // Еще тут отписываешься от всяки подписко (compositeDisposable, корутины и т.д.)
     override fun detach() {
-
+        view = null
     }
-
-//todo пробелы убирай все лишние!!!
 }

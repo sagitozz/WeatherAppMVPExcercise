@@ -1,9 +1,6 @@
 package com.example.weatherappmvpexcercise.mvp.base
 
-//todo импорты
-import android.location.Location
 import android.util.Log
-
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.network.dto.RestApi
 import com.example.weatherappmvpexcercise.network.dto.WeatherResponse

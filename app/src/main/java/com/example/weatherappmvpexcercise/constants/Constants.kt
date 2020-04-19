@@ -6,4 +6,6 @@ object Constants {
     const val BASE_URL = "https://weatherbit-v1-mashape.p.rapidapi.com"
     const val LOG_TAG = "MyLog"
     const val PRESSURE_DIVIDER : Double = 1.333224
+    const val FIVE_DAYS_FORECAST_RECYCLER_SIZE = 5
+    const val DIVIDER_FOR_GETTING_NEXT_DAY = 8
 }

@@ -19,17 +19,14 @@ import retrofit2.Response
 
 class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
-    private val newsModel = Model()
 
-    //todo private
-    lateinit var dataItemList: MutableList<DataItem>
+    private val newsModel = Model()
+    private lateinit var dataItemList: List<DataItem>
     //todo он тебе не нужен!!! Обращайся напрямую там где над
     val context: Context = GlobalApplication.getAppContext()
-    //todo private
-    var recyclerItems: MutableList<DataItem> = arrayListOf()
-    //todo private
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    private var recyclerItems: MutableList<DataItem> = arrayListOf()
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     fun getCurrentLocation() {
         val locationRequest = LocationRequest()
@@ -40,22 +37,18 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
         LocationServices.getFusedLocationProviderClient(context)
             .requestLocationUpdates(locationRequest, object : LocationCallback() {
-                //todo р0  не твое, но лучше переименовать!
-                // ПРОБЕЛЫ ВНИЗУ!!
+                //todo
                 // и вообще вынеси все это в отдельный метод(Все что от object : LocationCallback() и до , Looper.getMainLooper())
-                override fun onLocationResult(p0: LocationResult?) {
-                    super.onLocationResult(p0)
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    super.onLocationResult(locationResult)
                     LocationServices.getFusedLocationProviderClient(context)
                         .removeLocationUpdates(LocationCallback())
-                    if (p0 != null) {
-                        latitude = p0.lastLocation.latitude
-                        longitude = p0.lastLocation.longitude
-
+                    if (locationResult != null) {
+                        latitude = locationResult.lastLocation.latitude
+                        longitude = locationResult.lastLocation.longitude
                         loadData()
-
                     }
                 }
-
             }, Looper.getMainLooper())
     }
 
@@ -81,27 +74,19 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         dataItemList = response.body()?.data!!
         val city: String = response.body()?.city_name.toString()
         view?.updateCity(city)
-        //todo метод get подразумевае, что он что-то возвращает.
-        // А у тебя там что-то фильтруется или готовится! подумай как переименовать
-        getItemsForRecycler()
+        prepareItemsForRecycler()
         view?.updateUi(recyclerItems)
         view?.updateCoordinates(latitude, longitude)
     }
 
-    //todo private тебе даже студия говорит!!!
-    fun getItemsForRecycler() {
+    private fun prepareItemsForRecycler() {
         for (item in dataItemList) {
-            //todo val!! Студия же подсказывает
-            var elementIndex = dataItemList.indexOf(item)
-            //todo почему не 1283214235 , а именно 8?
-            val divider = 8
-            var result = elementIndex % divider
+            val elementIndex = dataItemList.indexOf(item)
+            val result = elementIndex % Constants.DIVIDER_FOR_GETTING_NEXT_DAY
             if (result == 0) {
                 recyclerItems.add(item)
             }
         }
     }
-
-
 }
 

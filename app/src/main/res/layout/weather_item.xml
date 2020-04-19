@@ -4,8 +4,7 @@
     android:layout_width="356dp"
     android:layout_height="40dp">
 
-<!--todo добавь еще штуки 3 вложенных констрейнт лейаута=) -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="356dp"
         android:layout_height="35dp"
@@ -14,32 +13,31 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6">
+        app:layout_constraintVertical_bias="0.6"/>
 
-        <!--todo camelCase в котлине т.к есть синтетики, хотя это субъективно. Но если и через нижнее подчеркивание то везде, а то у тебя cardView и item_date-->
         <TextView
-            android:id="@+id/item_date"
+            android:id="@+id/itemDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:text="@string/item_date"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--        todo может это конечно тонкая настройка, но меня смущает app:layout_constraintHorizontal_bias="0.134"-->
         <TextView
-            android:id="@+id/item_temp"
+            android:id="@+id/itemTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/item_temp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.134"
-            app:layout_constraintStart_toEndOf="@+id/item_date"
+            app:layout_constraintStart_toEndOf="@+id/itemDate"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -49,5 +47,4 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="47dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,5 +41,4 @@ data class DataItem(
     @SerializedName("state_code") val stateCode: String,
     @SerializedName("wind_cdir_full") val windCdirFull: String,
     @SerializedName("ts") val ts: Int
-//todo тут был пробел=)
 )
