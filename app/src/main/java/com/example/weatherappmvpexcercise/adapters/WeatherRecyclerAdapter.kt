@@ -34,7 +34,7 @@ class WeatherRecyclerAdapter (var items : MutableList<DataItem>) :
 
         fun bind(item: DataItem) {
             itemTemp.text = item.appTemp.toInt().toString() + "°"
-            itemDate.text = item.datetime
+            itemDate.text = item.timestamp
         }
     }
 

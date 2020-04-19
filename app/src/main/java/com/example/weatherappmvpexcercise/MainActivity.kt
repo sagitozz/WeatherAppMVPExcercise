@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun updateUi(list: MutableList<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperature.text = list[0].appTemp.toInt().toString() + "°"
-        pressure.text = list[0].pres.toInt().toString()
+        pressure.text = ((list[0].pres) / Constants.PRESSURE_DIVIDER).toInt().toString() + " мм рт.ст"
         wind.text = list[0].windSpd.toInt().toString() + " км/ч"
         date.text = list[0].timestamp
         humidity.text = list[0].rh.toString()
