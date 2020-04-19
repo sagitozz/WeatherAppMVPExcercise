@@ -33,11 +33,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
+    //todo private
     val mainActivityPresenter = MainActivityPresenter()
+
+    //todo вынести в companion object
     private val REQUEST_LOCATION_PERMISSION = 1
+
+    //todo этого тут быть не должно
     lateinit var loationManager: LocationManager
+
+    //todo этого тоже
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    //todo убрать и использовать синтетики. https://antonioleiva.com/kotlin-android-extensions/
     lateinit var latitudetext: TextView
     lateinit var longitudeText: TextView
 
@@ -56,19 +64,29 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         mainActivityPresenter.attach(this)
         onLoadGetLocation()
         mainActivityPresenter.getCurrentLocation()
+        //todo Этого быть не должно во вью. Это вообще лабуда какая-то, если у тебя
+        // getCurrentLocation будет грузить 5 секунд, то лоадер пропалет вообще сразу.
+        // Должно быть так: 2 метода во View hildeLoader и showLoader или один с булевой переменной.
+        // В презентере перед стартом ты вызваешь метод showLoader после загрузки в колбеке или в цепочке РХ вызываешь hideLoader
         hideLoader()
     }
 
     private fun recyclerInit(items: MutableList<DataItem>) {
+        //todo это можно вынести в xml если тебе не надо его никак настроить
         recyclerView.layoutManager = LinearLayoutManager(this)
         val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
         Log.d(Constants.LOG_TAG, "создан адаптер с массивом")
         recyclerView.adapter = weatherRecyclerAdapter
     }
 
+    // todo убрать и сделать по человечески=) Внизу описал как
     @SuppressLint("SetTextI18n")
     override fun updateUi(list: MutableList<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
+        //todo вынести это в стринговые ресурсы. Не должно быть строк во view.
+        // А что если ты захочешь сделать локализацию на другой язык?
+        // http://androiddevcorner.blogspot.com/2014/08/localized-getstring-with-parameters.html
+        // list[0] можно заменить на list.first(), но это уже мелочи.
         temperature.text = list[0].appTemp.toInt().toString() + "°"
         pressure.text = ((list[0].pres) / Constants.PRESSURE_DIVIDER).toInt().toString() + " мм рт.ст"
         wind.text = list[0].windSpd.toInt().toString() + " км/ч"
@@ -86,6 +104,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         city.text = city_text
     }
 
+    //todo сперва методы жизненного цикла, потом методы ovveride потом приватные! Этот кстати должен быть приватным!!!
     @SuppressLint("NewApi")
     fun onLoadGetLocation() {
         if (ContextCompat.checkSelfPermission(
@@ -99,6 +118,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 REQUEST_LOCATION_PERMISSION
             )
         }
+        //todo вот этот if тут быть не должен! В презентер
         if (loationManager.isLocationEnabled) {
             mainActivityPresenter.getCurrentLocation()
         } else {
@@ -107,6 +127,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             builder.setTitle(R.string.gps_not_enabled)
                 .setMessage(R.string.open_location_settings)
                 .setPositiveButton(R.string.yes,
+                    //todo обрати внимание на подсказки студии
                     DialogInterface.OnClickListener { dialog, id ->
                         startActivity(
                             Intent(
@@ -114,6 +135,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                             )
                         )
                     })
+                    //todo обрати внимание на подсказки студии
                 .setNegativeButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
             val alert = builder.create()
@@ -131,6 +153,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mainActivityPresenter.getCurrentLocation()
             } else {
+                //todo в стринговые ресурсы все выноси!!!
                 Toast.makeText(this, "Permission required", Toast.LENGTH_SHORT).show()
                 Log.d(Constants.LOG_TAG, "OnRequestPermissionREsult FALSE")
             }
@@ -162,10 +185,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         progressBar.visibility = View.GONE
     }
 
+    //todo тут упадет! И вообще у тебя немного странно. 2 метода onError, ты уверен что тебе оба нужны?
     override fun handleError(error: String) {
         TODO("Not yet implemented")
     }
 
+    //todo методы жизненного цикла view лучше выносить перед всеми другими методами и в порядке их вызова
     override fun onDestroy() {
         super.onDestroy()
         mainActivityPresenter.detach()

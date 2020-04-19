@@ -7,7 +7,7 @@
     android:background="#171717"
     tools:context=".MainActivity">
 
-
+    <!--todo пробелы!!! вынеси все свои цвета в colors в ресурсы и обзови их там типа white или еще что-то-->
     <TextView
         android:id="@+id/city"
         android:layout_width="211dp"
@@ -52,13 +52,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--todo app:layout_constraintGuide_percent="0.5 на Guideline лучше использовать вот такую конструкциб
+    todo чем app:layout_constraintGuide_end="170dp" Всегда подумай несколько раз прежде чем хардкодить размеры.
+    todo Но это не значит что этого делать нельзя. просто подумай а нужно ли тут-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="241dp" />
-
+        app:layout_constraintGuide_end="170dp" />
+    <!--todo пробелы!!!-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -116,6 +119,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!--todo не оч хорошие название lat, lon. latText намного лучше так хотя бы понятно что это. А то вдруг это картинка или еще чет. -->
     <TextView
         android:id="@+id/lat"
         android:layout_width="wrap_content"
@@ -155,6 +159,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
 
+    <!--todo странные у тебя размеры лоадера-->
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"

@@ -9,7 +9,7 @@ interface MainActivityContract {
     interface Presenter {
         fun loadData() {}
     }
-
+    //todo субъективно, но лучше между методами ставить пробелы! В вот тот который перед последней скобкой внизу убери
     interface View : IView {
         fun updateUi(list: MutableList<DataItem>)
         fun onError()
