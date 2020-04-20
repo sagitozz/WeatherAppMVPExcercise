@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             R.string.pressure_view,
             ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
-        windText.text = resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
+        windText.text =
+            resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
         dateText.text = resources.getString(R.string.date_view, list.first().timestamp)
         humidityText.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
         weatherDescriptionText.text = list.first().weather.description
@@ -94,18 +95,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         builder.setTitle(R.string.gps_not_enabled)
             .setMessage(R.string.open_location_settings)
             .setPositiveButton(
-                R.string.yes, fun (dialog: DialogInterface, id: Int) {
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                        )
-                    )
+                R.string.yes, fun(_: DialogInterface, _: Int) {
+                    openNewActivity()
                 }
             )
             .setNegativeButton(
-                R.string.cancel, fun(dialog: DialogInterface, id: Int) {
-                    Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
+                R.string.cancel, fun(dialog: DialogInterface, _: Int) {
+                    showToastAndClose(dialog)
                 }
             )
         val alert = builder.create()
@@ -127,6 +123,19 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private fun recyclerInit(items: List<DataItem>) {
         val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
         recyclerView.adapter = weatherRecyclerAdapter
+    }
+
+    private fun openNewActivity() {
+        startActivity(
+            Intent(
+                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+            )
+        )
+    }
+
+    private fun showToastAndClose(dialog: DialogInterface) {
+        Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
+        dialog.dismiss()
     }
 
     companion object {
