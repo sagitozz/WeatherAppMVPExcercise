@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
         mainActivityPresenter.attach(this)
 
-        onLoadGetLocation()
+        getLocation()
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -50,16 +50,16 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun updateUi(list: List<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
-        temperature.text =
+        temperatureText.text =
             resources.getString(R.string.temperature_view, list.first().appTemp.toInt().toString())
-        pressure.text = resources.getString(
+        pressureText.text = resources.getString(
             R.string.pressure_view,
             ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
-        wind.text = resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
-        date.text = resources.getString(R.string.date_view, list.first().timestamp)
-        humidity.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
-        weatherDescription.text = list.first().weather.description
+        windText.text = resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
+        dateText.text = resources.getString(R.string.date_view, list.first().timestamp)
+        humidityText.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
+        weatherDescriptionText.text = list.first().weather.description
         recyclerInit(list)
     }
 
@@ -69,11 +69,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun updateCity(city_text: String) {
-        city.text = city_text
+        cityText.text = city_text
     }
 
     @SuppressLint("NewApi")
-    private fun onLoadGetLocation() {
+    private fun getLocation() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         builder.setTitle(R.string.gps_not_enabled)
             .setMessage(R.string.open_location_settings)
             .setPositiveButton(
-                R.string.yes, fun(dialog: DialogInterface, id: Int) {
+                R.string.yes, fun (dialog: DialogInterface, id: Int) {
                     startActivity(
                         Intent(
                             Settings.ACTION_LOCATION_SOURCE_SETTINGS
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun onError() {
-        temperature.text = getString(R.string.on_error)
+        temperatureText.text = getString(R.string.on_error)
     }
 
     override fun showLoader() {

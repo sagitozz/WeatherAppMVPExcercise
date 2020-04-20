@@ -23,7 +23,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
         holder.bind(items[position])
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val itemDate = itemView.findViewById<TextView>(R.id.itemDate)
         private val itemTemp = itemView.findViewById<TextView>(R.id.itemTemp)
