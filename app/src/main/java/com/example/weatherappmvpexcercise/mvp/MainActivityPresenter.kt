@@ -27,7 +27,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private val language: String = "ru"
-    lateinit var loationManager: LocationManager
+    lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
@@ -36,10 +36,10 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     fun checkLocationAndLoad() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
-        loationManager =
+        locationManager =
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (loationManager.isLocationEnabled) {
+        if (locationManager.isLocationEnabled) {
             getCurrentLocation()
         } else {
 //            var lastLocation =  loationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
@@ -52,7 +52,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     fun getCurrentLocation() {
-        loationManager =
+        locationManager =
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         view?.showLoader()
         val locationRequest = LocationRequest()
