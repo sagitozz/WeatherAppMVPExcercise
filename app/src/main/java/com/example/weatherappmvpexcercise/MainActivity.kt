@@ -1,7 +1,6 @@
 package com.example.weatherappmvpexcercise
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,7 +11,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -37,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         getLocation()
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
+
     override fun onResume() {
         super.onResume()
         mainActivityPresenter.getCurrentLocation()
@@ -72,7 +70,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         cityText.text = city_text
     }
 
-    @SuppressLint("NewApi")
+
     private fun getLocation() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
@@ -84,7 +82,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 REQUEST_LOCATION_PERMISSION
             )
         } else {
-            mainActivityPresenter.checkLocationAndLoad()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                mainActivityPresenter.checkLocationAndLoad()
+            }
         }
     }
 
