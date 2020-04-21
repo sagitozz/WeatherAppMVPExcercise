@@ -23,6 +23,11 @@
     <string name="temperature_view">%1$s°</string>
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
-    <string name="weather_logo">weatherLogo</string>
-    <string name="weather_description">weatherDescription</string>
+    <string name="weather_logotype">weatherLogo</string>
+    <string name="broken_clouds">803</string>
+    <string name="local_clouds">802</string>
+    <string name="overcast_clouds">804</string>
+    <string name="few_clouds">520</string>
+    <string name="clear_sky">800</string>
+    <string name="weather_description">weather_descriprion</string>
 </resources>

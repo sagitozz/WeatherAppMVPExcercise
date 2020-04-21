@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.weatherappmvpexcercise.R.layout
+import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
@@ -49,16 +51,16 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun updateUi(list: List<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
-            resources.getString(R.string.temperature_view, list.first().appTemp.toInt().toString())
+            resources.getString(string.temperature_view, list.first().appTemp.toInt().toString())
         pressureText.text = resources.getString(
-            R.string.pressure_view,
+            string.pressure_view,
             ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
         windText.text =
-            resources.getString(R.string.wind_view, list.first().windSpd.toInt().toString())
-        dateText.text = resources.getString(R.string.date_view, list.first().timestamp)
-        humidityText.text = resources.getString(R.string.humidity_view, list.first().rh.toString())
-        weatherDescriptionText.text = list.first().weather.description
+            resources.getString(string.wind_view, list.first().windSpd.toInt().toString())
+        dateText.text = resources.getString(string.date_view, list.first().timestamp)
+        humidityText.text = resources.getString(string.humidity_view, list.first().rh.toString())
+        setWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
     }
 
@@ -92,15 +94,15 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun buildGpsAlertDialog() {
         val builder =
             AlertDialog.Builder(this@MainActivity)
-        builder.setTitle(R.string.gps_not_enabled)
-            .setMessage(R.string.open_location_settings)
+        builder.setTitle(string.gps_not_enabled)
+            .setMessage(string.open_location_settings)
             .setPositiveButton(
-                R.string.yes, fun(_: DialogInterface, _: Int) {
+                string.yes, fun(_: DialogInterface, _: Int) {
                     openNewActivity()
                 }
             )
             .setNegativeButton(
-                R.string.cancel, fun(dialog: DialogInterface, _: Int) {
+                string.cancel, fun(dialog: DialogInterface, _: Int) {
                     showToastAndClose(dialog)
                 }
             )
@@ -108,8 +110,28 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         alert.show()
     }
 
+    override fun setWeatherIcon(string : String) {
+        when (string) {
+            resources.getString(R.string.broken_clouds) -> {
+                glidingInto(R.drawable.clouds)
+            }
+            resources.getString(R.string.overcast_clouds) -> {
+                glidingInto(R.drawable.clouds)
+            }
+            resources.getString(R.string.few_clouds) -> {
+                glidingInto(R.drawable.clouds)
+            }
+            resources.getString(R.string.clear_sky) -> {
+                glidingInto(R.drawable.sunny)
+            }
+            resources.getString(R.string.local_clouds) -> {
+                glidingInto(R.drawable.clouds)
+            }
+        }
+    }
+
     override fun onError() {
-        temperatureText.text = getString(R.string.on_error)
+        temperatureText.text = getString(string.on_error)
     }
 
     override fun showLoader() {
@@ -131,6 +153,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
             )
         )
+    }
+
+    private fun glidingInto (drawable : Int) {
+        Glide
+            .with(this)
+            .load(drawable)
+            .into(weatherLogo)
     }
 
     private fun showToastAndClose(dialog: DialogInterface) {

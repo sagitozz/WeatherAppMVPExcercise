@@ -110,14 +110,14 @@
         android:layout_height="62dp"
         android:layout_marginTop="174dp"
         android:layout_marginBottom="42dp"
-        android:background="@color/white"
-        android:contentDescription="@string/weather_logo"
-        android:visibility="gone"
+        android:contentDescription="@string/weather_logotype"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/temperatureText" />
+        app:layout_constraintTop_toTopOf="@+id/temperatureText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/secondDivider"
@@ -205,6 +205,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weather_description"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
