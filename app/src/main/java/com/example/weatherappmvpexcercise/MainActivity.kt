@@ -51,14 +51,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun updateUi(list: List<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
-            resources.getString(string.temperature_view, list.first().appTemp.toInt().toString())
+            resources.getString(string.temperature_view, list.first().temp.toInt().toString())
         pressureText.text = resources.getString(
             string.pressure_view,
             ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
         windText.text =
             resources.getString(string.wind_view, list.first().windSpd.toInt().toString())
-        dateText.text = resources.getString(string.date_view, list.first().timestamp)
+        dateText.text = resources.getString(string.date_view, list.first().datetime)
         humidityText.text = resources.getString(string.humidity_view, list.first().rh.toString())
         setWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
