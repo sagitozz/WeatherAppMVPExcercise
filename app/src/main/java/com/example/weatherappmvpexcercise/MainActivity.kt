@@ -23,6 +23,8 @@ import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.dto.DataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         )
         windText.text =
             resources.getString(string.wind_view, list.first().windSpd.toInt().toString())
-        dateText.text = resources.getString(string.date_view, list.first().datetime)
+        reformatAndSetDate(list.first().datetime)
         humidityText.text = resources.getString(string.humidity_view, list.first().rh.toString())
         setWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
@@ -110,7 +112,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         alert.show()
     }
 
-    override fun setWeatherIcon(string : String) {
+    override fun setWeatherIcon(string: String) {
         when (string) {
             resources.getString(R.string.broken_clouds) -> {
                 glidingInto(R.drawable.clouds)
@@ -155,7 +157,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         )
     }
 
-    private fun glidingInto (drawable : Int) {
+    private fun glidingInto(drawable: Int) {
         Glide
             .with(this)
             .load(drawable)
@@ -165,6 +167,18 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private fun showToastAndClose(dialog: DialogInterface) {
         Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
         dialog.dismiss()
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun reformatAndSetDate(date: String) {
+        val inputDateFormat =
+            SimpleDateFormat(Constants.INPUT_DATE_FORMAT, Locale.ENGLISH)
+        val publishedDate: String = date
+        val dateNew: Date = inputDateFormat.parse(publishedDate)
+        val outputDateFormat =
+            SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+        val output = outputDateFormat.format(dateNew)
+        dateText.text = resources.getString(string.date_view, output)
     }
 
     companion object {

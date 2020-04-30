@@ -30,4 +30,8 @@
     <string name="few_clouds">520</string>
     <string name="clear_sky">800</string>
     <string name="weather_description">weather_descriprion</string>
+    <string name="itemicon">itemIcon</string>
+    <string name="item_pres">item_pres</string>
+    <string name="item_wind">item_wind</string>
+    <string name="item_humid">item_humid</string>
 </resources>
