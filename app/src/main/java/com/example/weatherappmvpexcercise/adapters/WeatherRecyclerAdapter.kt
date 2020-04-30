@@ -51,6 +51,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
                 .load(R.drawable.clouds)
                 .into(itemIcon)
         }
+
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         private fun reformatAndSetDate(date: String) {
             val inputDateFormat =
