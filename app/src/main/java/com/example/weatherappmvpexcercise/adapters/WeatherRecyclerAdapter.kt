@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.constants.Constants
-import com.example.weatherappmvpexcercise.constants.Constants.FIVE_DAYS_FORECAST_RECYCLER_SIZE
 import com.example.weatherappmvpexcercise.network.dto.DataItem
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,7 +22,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
             .inflate(R.layout.weather_item, parent, false)
     )
 
-    override fun getItemCount() = FIVE_DAYS_FORECAST_RECYCLER_SIZE
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])

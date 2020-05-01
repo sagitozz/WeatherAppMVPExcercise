@@ -39,9 +39,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         locationManager =
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (locationManager.isLocationEnabled) {
-            getCurrentLocation()
-        } else {
+        if (!locationManager.isLocationEnabled) {
 //            var lastLocation =  loationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
 //            latitude = lastLocation.latitude
 //            longitude = lastLocation.longitude
@@ -109,6 +107,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     private fun prepareItemsForRecycler() {
+        recyclerItems.clear()
         for (item in dataItemList) {
             val elementIndex = dataItemList.indexOf(item)
             val result = elementIndex % Constants.DIVIDER_FOR_GETTING_NEXT_DAY
