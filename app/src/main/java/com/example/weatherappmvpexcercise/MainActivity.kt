@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         getLocation()
     }
 
-
     override fun onResume() {
         super.onResume()
         mainActivityPresenter.getCurrentLocation()
@@ -74,7 +73,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun updateCity(city_text: String) {
         cityText.text = city_text
     }
-
 
     private fun getLocation() {
         if (ContextCompat.checkSelfPermission(

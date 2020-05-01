@@ -30,7 +30,6 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
     fun checkLocationAndLoad() {
