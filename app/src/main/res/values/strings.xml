@@ -34,4 +34,7 @@
     <string name="item_pres">item_pres</string>
     <string name="item_wind">item_wind</string>
     <string name="item_humid">item_humid</string>
+    <string name="current_time">Current Time</string>
+    <string name="first_time_of_day">First time of day</string>
+    <string name="second_time_of_day">Second time of day</string>
 </resources>

@@ -11,44 +11,60 @@
         android:id="@+id/cityText"
         android:layout_width="211dp"
         android:layout_height="38dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="108dp"
         android:text="@string/city"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/dateText"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintBottom_toBottomOf="@+id/firstDivider"
+        app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.122" />
+
+    <TextView
+        android:id="@+id/currentTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="7dp"
+        android:text="@string/current_time"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/firstDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/dateText"
         android:layout_width="174dp"
         android:layout_height="22dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="76dp"
         android:text="@string/day_date"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/temperatureText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.105"
+        app:layout_constraintHorizontal_bias="0.126"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/temperatureText"
         android:layout_width="362dp"
         android:layout_height="278dp"
-        android:layout_marginTop="200dp"
         android:text="@string/temp"
         android:textColor="@color/white"
         android:textSize="220sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.317" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -145,8 +161,8 @@
         android:layout_marginEnd="84dp"
         android:layout_marginRight="84dp"
         android:text="@string/lat"
-        android:visibility="gone"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/lonText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -161,7 +177,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.894" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/lonText"
@@ -169,8 +185,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:text="@string/lon"
-        android:visibility="gone"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/temperatureText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.662"
@@ -207,14 +223,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weather_description"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="@+id/temperatureText"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/firstTimeOfDay"
+        android:layout_width="153dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="37dp"
+        android:text="@string/first_time_of_day"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/windText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/temperatureText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/secondTimeOfDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:text="@string/second_time_of_day"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/windText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.008"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/firstTimeOfDay"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/firstFutureIcon"
+        android:layout_width="15dp"
+        android:layout_height="13dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="37dp"
+        app:layout_constraintBottom_toTopOf="@+id/humidityText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/temperatureText"
+        app:layout_constraintVertical_bias="0.363" />
+
+    <ImageView
+        android:id="@+id/secondFutureIcon"
+        android:layout_width="15dp"
+        android:layout_height="13dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/humidityText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/secondTimeOfDay"
+        app:layout_constraintTop_toBottomOf="@+id/temperatureText"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
 import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.constants.TimeOfDay.*
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.dto.DataItem
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         mainActivityPresenter.detach()
     }
 
-    override fun updateUi(list: List<DataItem>) {
+    override fun updateUi(list: List<DataItem>, dataItems: List<DataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
             resources.getString(string.temperature_view, list.first().temp.toInt().toString())
@@ -61,8 +62,10 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             resources.getString(string.wind_view, list.first().windSpd.toInt().toString())
         reformatAndSetDate(list.first().datetime)
         humidityText.text = resources.getString(string.humidity_view, list.first().rh.toString())
-        setWeatherIcon(list.first().weather.code.toString())
+        setCurrentWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
+        currentTimeText.text = getCurrentDate()
+        settingFuturePrognose(dataItems)
     }
 
     override fun updateCoordinates(latitude: Double, longitude: Double) {
@@ -110,22 +113,42 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         alert.show()
     }
 
-    override fun setWeatherIcon(string: String) {
+    override fun setCurrentWeatherIcon(string: String) {
         when (string) {
             resources.getString(R.string.broken_clouds) -> {
-                glidingInto(R.drawable.clouds)
+                glidingIntoCurrent(R.drawable.clouds)
             }
             resources.getString(R.string.overcast_clouds) -> {
-                glidingInto(R.drawable.clouds)
+                glidingIntoCurrent(R.drawable.clouds)
             }
             resources.getString(R.string.few_clouds) -> {
-                glidingInto(R.drawable.clouds)
+                glidingIntoCurrent(R.drawable.clouds)
             }
             resources.getString(R.string.clear_sky) -> {
-                glidingInto(R.drawable.sunny)
+                glidingIntoCurrent(R.drawable.sunny)
             }
             resources.getString(R.string.local_clouds) -> {
-                glidingInto(R.drawable.clouds)
+                glidingIntoCurrent(R.drawable.clouds)
+            }
+        }
+    }
+
+    override fun setFutureWeatherIcon(string: String) {
+        when (string) {
+            resources.getString(R.string.broken_clouds) -> {
+                glidingIntoFutureFirst(R.drawable.clouds)
+            }
+            resources.getString(R.string.overcast_clouds) -> {
+                glidingIntoFutureFirst(R.drawable.clouds)
+            }
+            resources.getString(R.string.few_clouds) -> {
+                glidingIntoFutureFirst(R.drawable.clouds)
+            }
+            resources.getString(R.string.clear_sky) -> {
+                glidingIntoFutureFirst(R.drawable.sunny)
+            }
+            resources.getString(R.string.local_clouds) -> {
+                glidingIntoFutureFirst(R.drawable.clouds)
             }
         }
     }
@@ -155,16 +178,38 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         )
     }
 
-    private fun glidingInto(drawable: Int) {
+    private fun glidingIntoCurrent(drawable: Int) {
         Glide
             .with(this)
             .load(drawable)
             .into(weatherLogo)
     }
 
+    private fun glidingIntoFutureFirst(drawable: Int) {
+        Glide
+            .with(this)
+            .load(drawable)
+            .into(firstFutureIcon)
+
+    }
+    private fun glidingIntoFutureSecond(drawable: Int) {
+        Glide
+            .with(this)
+            .load(drawable)
+            .into(firstFutureIcon)
+
+    }
+
     private fun showToastAndClose(dialog: DialogInterface) {
         Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
         dialog.dismiss()
+    }
+
+    private fun getCurrentDate () : String {
+        val date = Date()
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val timeText = timeFormat.format(date)
+        return timeText
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -177,6 +222,26 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
         val output = outputDateFormat.format(dateNew)
         dateText.text = resources.getString(string.date_view, output)
+    }
+
+    private fun settingFuturePrognose(list: List<DataItem>) {
+       if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = "Днем " + resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            secondTimeOfDay.text = "Вечером " + resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+        }
+       if (DAYTIME.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = "Вечером "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            secondTimeOfDay.text = "Ночью "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+        }
+       if (EVENING.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = "Ночью "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            secondTimeOfDay.text = "Утром "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+        }
+        if (NIGHT.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = "Утром "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            secondTimeOfDay.text = "Днем "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+        }
+
     }
 
     companion object {

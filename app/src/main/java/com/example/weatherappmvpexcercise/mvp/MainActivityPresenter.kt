@@ -101,7 +101,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         val city: String = response.body()?.city_name.toString()
         view?.updateCity(city)
         prepareItemsForRecycler()
-        view?.updateUi(recyclerItems)
+        view?.updateUi(recyclerItems, dataItemList)
         view?.updateCoordinates(latitude, longitude)
     }
 

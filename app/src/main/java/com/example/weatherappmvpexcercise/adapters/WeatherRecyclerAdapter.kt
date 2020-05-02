@@ -38,7 +38,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
         private val itemIcon : ImageView = itemView.findViewById(R.id.weatherLogo)
 
         fun bind(item: DataItem) {
-            itemTemp.text = "${item.temp.toInt()}°"
+            itemTemp.text = "${item.appTemp.toInt()}°"
             reformatAndSetDate(item.datetime)
             itemPres.text = App.instance.getString(
                R.string.pressure_view,

@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/itemTemp"
-            android:layout_width="16dp"
+            android:layout_width="24dp"
             android:layout_height="20dp"
             android:text="@string/item_temp"
             android:textColor="@color/white"
