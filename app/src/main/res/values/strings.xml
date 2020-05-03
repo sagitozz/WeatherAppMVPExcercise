@@ -21,6 +21,10 @@
     <string name="wind_view">%1$s км/ч</string>
     <string name="pressure_view">%1$s мм рт.ст</string>
     <string name="temperature_view">%1$s°</string>
+    <string name="morning_future_temperature_view">Утром: %1$s°</string>
+    <string name="daytime_future_temperature_view">Днем: %1$s°</string>
+    <string name="evening_future_temperature_view">Вечером: %1$s°</string>
+    <string name="night_future_temperature_view">Ночью: %1$s°</string>
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
     <string name="weather_logotype">weatherLogo</string>
