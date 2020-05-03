@@ -16,7 +16,7 @@
     <string name="lon">lon</string>
     <string name="gps_button">GPS button</string>
     <string name="item_date">item_date</string>
-    <string name="item_temp">item_temp</string>
+    <string name="item_temp">%1$s°</string>
     <string name="permission_required">Permission required</string>
     <string name="wind_view">%1$s км/ч</string>
     <string name="pressure_view">%1$s мм рт.ст</string>

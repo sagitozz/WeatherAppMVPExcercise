@@ -38,16 +38,43 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
         private val itemIcon : ImageView = itemView.findViewById(R.id.weatherLogo)
 
         fun bind(item: DataItem) {
-            itemTemp.text = "${item.appTemp.toInt()}°"
+            itemTemp.text = App.instance.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
             itemPres.text = App.instance.getString(
                R.string.pressure_view,
                 ((item.pres) / Constants.PRESSURE_DIVIDER).toInt().toString())
             itemWind.text = App.instance.getString(R.string.wind_view, item.windSpd.toInt().toString())
             itemHumid.text = App.instance.getString(R.string.humidity_view, item.rh.toString())
+            setRecyclerWeatherIcon(item.weather.code.toString())
+        }
+
+        fun setRecyclerWeatherIcon(string: String) {
+            when (string) {
+                App.instance.resources.getString(R.string.broken_clouds) -> {
+                    glidingIntoRecycler(R.drawable.clouds)
+                }
+                App.instance.resources.getString(R.string.overcast_clouds) -> {
+                    glidingIntoRecycler(R.drawable.clouds)
+                }
+                App.instance.resources.getString(R.string.few_clouds) -> {
+                    glidingIntoRecycler(R.drawable.clouds)
+                }
+                App.instance.resources.getString(R.string.clear_sky) -> {
+                    glidingIntoRecycler(R.drawable.sunny)
+                }
+                App.instance.resources.getString(R.string.almost_clear_sky) -> {
+                    glidingIntoRecycler(R.drawable.sunny)
+                }
+                App.instance.resources.getString(R.string.local_clouds) -> {
+                    glidingIntoRecycler(R.drawable.clouds)
+                }
+            }
+        }
+
+        private fun glidingIntoRecycler(drawable: Int) {
             Glide
                 .with(App.applicationContext())
-                .load(R.drawable.clouds)
+                .load(drawable)
                 .into(itemIcon)
         }
 
