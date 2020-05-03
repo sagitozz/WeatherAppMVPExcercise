@@ -44,4 +44,6 @@
     <string name="second_time_of_day">Second time of day</string>
     <string name="first_fut_icon">first_fut_icon</string>
     <string name="second_fut_icon">second fut icon</string>
+    <string name="weatherappmvpexercise">WeatherAppMVPExercise</string>
+    <string name="introscreenimage">introScreenImage</string>
 </resources>

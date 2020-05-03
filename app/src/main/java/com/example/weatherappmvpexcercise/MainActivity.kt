@@ -34,9 +34,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-
         mainActivityPresenter.attach(this)
-
         getLocation()
     }
 
@@ -186,11 +184,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun showLoader() {
-        progressBar.visibility = View.VISIBLE
+     //   progressBar.visibility = View.VISIBLE
+
     }
 
     override fun hideLoader() {
-        progressBar.visibility = View.GONE
+        //progressBar.visibility = View.GONE
+//        loading_screen.visibility = View.GONE
+        main_screen.visibility = View.VISIBLE
     }
 
     private fun recyclerInit(items: List<DataItem>) {
@@ -218,14 +219,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             .with(this)
             .load(drawable)
             .into(firstFutureIcon)
-
     }
+
     private fun glidingIntoFutureSecond(drawable: Int) {
         Glide
             .with(this)
             .load(drawable)
             .into(secondFutureIcon)
-
     }
 
     private fun showToastAndClose(dialog: DialogInterface) {
@@ -283,52 +283,5 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     companion object {
         private val REQUEST_LOCATION_PERMISSION = 1
     }
-
-//    fun getLastKnownLoaction(
-//        enabledProvidersOnly: Boolean,
-//        context: Context
-//    ): Location? {
-//        val manager =
-//            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//        var utilLocation: Location? = null
-//        val providers =
-//            manager.getProviders(enabledProvidersOnly)
-//        for (provider in providers) {
-//            if (ActivityCompat.checkSelfPermission(
-//                    this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                    this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                ) != PackageManager.PERMISSION_GRANTED
-//            ) {
-//
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//
-//            }
-//            utilLocation = manager.getLastKnownLocation(provider)
-//            if (utilLocation != null) return utilLocation
-//        }
-//        return null
-//    }
-
-
-//    fun getLatestLocation () {
-//        fusedLocationClient.lastLocation
-//            .addOnSuccessListener(
-//                this
-//            ) { location ->
-//                // Got last known location. In some rare situations this can be null.
-//                if (location != null) {
-//                    longitudeText.text = location.longitude.toString()
-//                }
-//                else {longitudeText.text = "где-то обосрался"}
-//            }
-//    }
 }
 

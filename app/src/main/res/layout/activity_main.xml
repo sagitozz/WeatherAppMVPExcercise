@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blackBackground"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/main_screen"
+    android:visibility="invisible">
 
     <TextView
         android:id="@+id/cityText"
