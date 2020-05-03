@@ -13,7 +13,7 @@ interface MainActivityContract {
         fun updateUi(list: List<DataItem>, dataItems : List<DataItem>)
         fun onError()
         fun updateCity(city_text: String)
-        fun updateCoordinates(latitude: Double, longitude: Double)
+//        fun updateCoordinates(latitude: Double, longitude: Double)
         fun buildGpsAlertDialog()
         fun setCurrentWeatherIcon(string : String)
         fun setFirstFutureWeatherIcon(string : String)

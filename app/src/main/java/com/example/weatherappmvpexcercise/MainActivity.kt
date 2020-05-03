@@ -68,10 +68,10 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         settingFuturePrognose(dataItems)
     }
 
-    override fun updateCoordinates(latitude: Double, longitude: Double) {
-        latText.text = latitude.toString()
-        lonText.text = longitude.toString()
-    }
+//    override fun updateCoordinates(latitude: Double, longitude: Double) {
+//        latText.text = latitude.toString()
+//        lonText.text = longitude.toString()
+//    }
 
     override fun updateCity(city_text: String) {
         cityText.text = city_text
@@ -127,6 +127,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             resources.getString(R.string.clear_sky) -> {
                 glidingIntoCurrent(R.drawable.sunny)
             }
+            resources.getString(R.string.almost_clear_sky) -> {
+                glidingIntoCurrent(R.drawable.sunny)
+            }
             resources.getString(R.string.local_clouds) -> {
                 glidingIntoCurrent(R.drawable.clouds)
             }
@@ -150,6 +153,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             resources.getString(R.string.local_clouds) -> {
                 glidingIntoFutureFirst(R.drawable.clouds)
             }
+            resources.getString(R.string.almost_clear_sky) -> {
+                glidingIntoFutureFirst(R.drawable.sunny)
+            }
         }
     }
 
@@ -169,6 +175,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             }
             resources.getString(R.string.local_clouds) -> {
                 glidingIntoFutureSecond(R.drawable.clouds)
+            }
+            resources.getString(R.string.almost_clear_sky) -> {
+                glidingIntoFutureSecond(R.drawable.sunny)
             }
         }
     }

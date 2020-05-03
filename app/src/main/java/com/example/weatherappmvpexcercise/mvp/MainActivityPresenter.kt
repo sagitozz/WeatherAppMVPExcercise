@@ -102,7 +102,6 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         view?.updateCity(city)
         prepareItemsForRecycler()
         view?.updateUi(recyclerItems, dataItemList)
-        view?.updateCoordinates(latitude, longitude)
     }
 
     private fun prepareItemsForRecycler() {

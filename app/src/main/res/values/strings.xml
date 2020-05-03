@@ -4,7 +4,7 @@
     <string name="day_date">Day - Date</string>
     <string name="temp">TEMP</string>
     <string name="humidity">Humidity</string>
-    <string name="wind">Wind:</string>
+    <string name="wind">Wind</string>
     <string name="pressure">Pressure</string>
     <string name="gps_not_enabled">GPS is not enabled</string>
     <string name="open_location_settings">Would you enable GPS?</string>
@@ -33,6 +33,7 @@
     <string name="overcast_clouds">804</string>
     <string name="few_clouds">520</string>
     <string name="clear_sky">800</string>
+    <string name="almost_clear_sky">801</string>
     <string name="weather_description">weather_descriprion</string>
     <string name="itemicon">itemIcon</string>
     <string name="item_pres">item_pres</string>
@@ -41,4 +42,6 @@
     <string name="current_time">Current Time</string>
     <string name="first_time_of_day">First time of day</string>
     <string name="second_time_of_day">Second time of day</string>
+    <string name="first_fut_icon">first_fut_icon</string>
+    <string name="second_fut_icon">second fut icon</string>
 </resources>
