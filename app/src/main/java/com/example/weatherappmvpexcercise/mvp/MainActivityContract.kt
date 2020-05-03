@@ -16,6 +16,7 @@ interface MainActivityContract {
         fun updateCoordinates(latitude: Double, longitude: Double)
         fun buildGpsAlertDialog()
         fun setCurrentWeatherIcon(string : String)
-        fun setFutureWeatherIcon(string : String)
+        fun setFirstFutureWeatherIcon(string : String)
+        fun setSecondFutureWeatherIcon(string : String)
     }
 }

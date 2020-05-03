@@ -58,7 +58,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
             val publishedDate: String = date
             val dateNew : Date = inputDateFormat.parse(publishedDate)
             val outputDateFormat =
-                SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+                SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
             val output = outputDateFormat.format(dateNew)
             itemDate.text = output
         }

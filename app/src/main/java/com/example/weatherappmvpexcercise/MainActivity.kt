@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         }
     }
 
-    override fun setFutureWeatherIcon(string: String) {
+    override fun setFirstFutureWeatherIcon(string: String) {
         when (string) {
             resources.getString(R.string.broken_clouds) -> {
                 glidingIntoFutureFirst(R.drawable.clouds)
@@ -153,6 +153,25 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         }
     }
 
+    override fun setSecondFutureWeatherIcon(string: String) {
+        when (string) {
+            resources.getString(R.string.broken_clouds) -> {
+                glidingIntoFutureSecond(R.drawable.clouds)
+            }
+            resources.getString(R.string.overcast_clouds) -> {
+                glidingIntoFutureSecond(R.drawable.clouds)
+            }
+            resources.getString(R.string.few_clouds) -> {
+                glidingIntoFutureSecond(R.drawable.clouds)
+            }
+            resources.getString(R.string.clear_sky) -> {
+                glidingIntoFutureSecond(R.drawable.sunny)
+            }
+            resources.getString(R.string.local_clouds) -> {
+                glidingIntoFutureSecond(R.drawable.clouds)
+            }
+        }
+    }
     override fun onError() {
         temperatureText.text = getString(string.on_error)
     }
@@ -196,7 +215,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         Glide
             .with(this)
             .load(drawable)
-            .into(firstFutureIcon)
+            .into(secondFutureIcon)
 
     }
 
@@ -219,7 +238,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         val publishedDate: String = date
         val dateNew: Date = inputDateFormat.parse(publishedDate)
         val outputDateFormat =
-            SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.ENGLISH)
+            SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
         val output = outputDateFormat.format(dateNew)
         dateText.text = resources.getString(string.date_view, output)
     }
@@ -227,19 +246,27 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private fun settingFuturePrognose(list: List<DataItem>) {
        if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
             firstTimeOfDay.text = "Днем " + resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            setFirstFutureWeatherIcon((list[2].weather.code.toString()))
             secondTimeOfDay.text = "Вечером " + resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+            setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
        if (DAYTIME.array.contains(getCurrentDate().substringBefore(':'))) {
             firstTimeOfDay.text = "Вечером "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            setFirstFutureWeatherIcon((list[2].weather.code.toString()))
             secondTimeOfDay.text = "Ночью "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+            setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
        if (EVENING.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = "Ночью "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
-            secondTimeOfDay.text = "Утром "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+           firstTimeOfDay.text = "Ночью "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+           setFirstFutureWeatherIcon((list[2].weather.code.toString()))
+           secondTimeOfDay.text = "Утром "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+           setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
         if (NIGHT.array.contains(getCurrentDate().substringBefore(':'))) {
             firstTimeOfDay.text = "Утром "+ resources.getString(string.temperature_view, list.get(2).temp.toInt().toString())
+            setFirstFutureWeatherIcon((list[2].weather.code.toString()))
             secondTimeOfDay.text = "Днем "+ resources.getString(string.temperature_view, list.get(4).temp.toInt().toString())
+            setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
 
     }
