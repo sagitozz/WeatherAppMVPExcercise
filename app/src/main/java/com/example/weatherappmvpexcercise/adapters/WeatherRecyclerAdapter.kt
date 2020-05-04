@@ -10,11 +10,11 @@ import com.bumptech.glide.Glide
 import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.constants.Constants
-import com.example.weatherappmvpexcercise.network.dto.DataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeatherRecyclerAdapter(private val items: List<DataItem>) :
+class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
     RecyclerView.Adapter<WeatherRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -37,7 +37,7 @@ class WeatherRecyclerAdapter(private val items: List<DataItem>) :
         private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
         private val itemIcon : ImageView = itemView.findViewById(R.id.weatherLogo)
 
-        fun bind(item: DataItem) {
+        fun bind(item: WeatherDataItem) {
             itemTemp.text = App.instance.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
             itemPres.text = App.instance.getString(

@@ -2,13 +2,13 @@ package com.example.weatherappmvpexcercise.mvp.base
 
 import android.util.Log
 import com.example.weatherappmvpexcercise.constants.Constants
-import com.example.weatherappmvpexcercise.network.dto.RestApi
-import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherRestApi
 import retrofit2.Call
 
 class Model {
 
-    private val restApi: RestApi? = RestApi()
+    private val restApi: WeatherRestApi? = WeatherRestApi()
 
     fun modelGetWeather(latitude: Double, longitude: Double, language: String): Call<WeatherResponse?>? {
         Log.d(Constants.LOG_TAG, "Запрос из модели")

@@ -1,6 +1,5 @@
-package com.example.weatherappmvpexcercise.network
+package com.example.weatherappmvpexcercise.network.weatherdto
 
-import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

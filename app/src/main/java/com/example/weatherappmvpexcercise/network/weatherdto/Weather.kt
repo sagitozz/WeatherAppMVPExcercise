@@ -1,4 +1,4 @@
-package com.example.weatherappmvpexcercise.network.dto
+package com.example.weatherappmvpexcercise.network.weatherdto
 
 import com.google.gson.annotations.SerializedName
 

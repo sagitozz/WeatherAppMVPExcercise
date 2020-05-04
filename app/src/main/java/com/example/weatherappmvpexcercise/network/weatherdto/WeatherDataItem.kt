@@ -1,8 +1,8 @@
-package com.example.weatherappmvpexcercise.network.dto
+package com.example.weatherappmvpexcercise.network.weatherdto
 
 import com.google.gson.annotations.SerializedName
 
-data class DataItem(
+data class WeatherDataItem(
     @SerializedName("timestamp_local") val timestamp: String,
     @SerializedName("sunrise") val sunrise: String,
     @SerializedName("pod") val pod: String,

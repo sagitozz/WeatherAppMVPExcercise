@@ -22,7 +22,7 @@ import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.constants.TimeOfDay.*
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
-import com.example.weatherappmvpexcercise.network.dto.DataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         mainActivityPresenter.detach()
     }
 
-    override fun updateUi(list: List<DataItem>, dataItems: List<DataItem>) {
+    override fun updateUi(list: List<WeatherDataItem>, dataItems: List<WeatherDataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
             resources.getString(string.temperature_view, list.first().temp.toInt().toString())
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
      main_screen.visibility = View.VISIBLE
     }
 
-    private fun recyclerInit(items: List<DataItem>) {
+    private fun recyclerInit(items: List<WeatherDataItem>) {
         val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
         recyclerView.adapter = weatherRecyclerAdapter
     }
@@ -252,7 +252,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         dateText.text = resources.getString(string.date_view, output)
     }
 
-    private fun settingFuturePrognose(list: List<DataItem>) {
+    private fun settingFuturePrognose(list: List<WeatherDataItem>) {
        if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
             firstTimeOfDay.text = resources.getString(string.morning_future_temperature_view, list[2].temp.toInt().toString())
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))

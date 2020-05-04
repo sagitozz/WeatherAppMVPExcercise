@@ -11,8 +11,8 @@ import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
-import com.example.weatherappmvpexcercise.network.dto.DataItem
-import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
 import com.google.android.gms.location.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,8 +22,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
     private val newsModel = Model()
-    private lateinit var dataItemList: List<DataItem>
-    private var recyclerItems: MutableList<DataItem> = arrayListOf()
+    private lateinit var dataItemList: List<WeatherDataItem>
+    private var recyclerItems: MutableList<WeatherDataItem> = arrayListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private val language: String = "ru"

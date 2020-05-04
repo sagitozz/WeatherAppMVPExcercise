@@ -1,7 +1,7 @@
 package com.example.weatherappmvpexcercise.mvp
 
 import com.example.weatherappmvpexcercise.mvp.base.IView
-import com.example.weatherappmvpexcercise.network.dto.DataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 
 interface MainActivityContract {
 
@@ -10,7 +10,7 @@ interface MainActivityContract {
     }
 
     interface View : IView {
-        fun updateUi(list: List<DataItem>, dataItems : List<DataItem>)
+        fun updateUi(list: List<WeatherDataItem>, dataItems : List<WeatherDataItem>)
         fun onError()
         fun updateCity(city_text: String)
 //        fun updateCoordinates(latitude: Double, longitude: Double)

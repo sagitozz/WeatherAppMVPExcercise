@@ -1,42 +1,41 @@
-package com.example.weatherappmvpexcercise.network.dto
+package com.example.weatherappmvpexcercise.network.coordinatesdto
 
 import com.example.weatherappmvpexcercise.constants.Constants
-import com.example.weatherappmvpexcercise.network.WeatherEndPoint
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RestApi {
+class CoordinatesRestApi {
 
-    private var sRestApi: RestApi? = null
-    private var sEndPoint: WeatherEndPoint? = null
+    private var sRestApi: CoordinatesRestApi? = null
+    private var sEndPoint: CoordinatesEndPoint? = null
 
     init {
         val okHttpClient = buildOkHttpClient()
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(Constants.COORDINATES_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        sEndPoint = retrofit.create(WeatherEndPoint::class.java)
+        sEndPoint = retrofit.create(CoordinatesEndPoint::class.java)
     }
 
     @Synchronized
-    fun getInstance(): RestApi? {
+    fun getInstance(): CoordinatesRestApi? {
         if (sRestApi == null) {
-            sRestApi = RestApi()
+            sRestApi = CoordinatesRestApi()
         }
         return sRestApi
     }
 
-    fun getEndPoint(): WeatherEndPoint? {
+    fun getEndPoint(): CoordinatesEndPoint? {
         return sEndPoint
     }
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(ApiKeyInterceptor.create())
+            .addInterceptor(CoordinatesApiKeyInterceptor.create())
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .build()
