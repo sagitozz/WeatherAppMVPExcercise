@@ -24,12 +24,14 @@ import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.bla_bla_bla.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private val mainActivityPresenter = MainActivityPresenter()
+    private val imageLoader: ImageLoader = ImageLoaderImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,19 +181,20 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             }
         }
     }
+
     override fun onError() {
         temperatureText.text = getString(string.on_error)
     }
 
     override fun showLoader() {
-     progressBar.visibility = View.VISIBLE
-//        loading_screen.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+        loading_screen.visibility = View.VISIBLE
     }
 
     override fun hideLoader() {
         //progressBar.visibility = View.GONE
 
-     main_screen.visibility = View.VISIBLE
+        main_screen.visibility = View.VISIBLE
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
@@ -208,10 +211,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun glidingIntoCurrent(drawable: Int) {
-        Glide
-            .with(this)
-            .load(drawable)
-            .into(weatherLogo)
+        imageLoader.loadImage(drawable, weatherLogo)
     }
 
     private fun glidingIntoFutureFirst(drawable: Int) {
@@ -233,7 +233,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         dialog.dismiss()
     }
 
-    private fun getCurrentDate () : String {
+    private fun getCurrentDate(): String {
         val date = Date()
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val timeText = timeFormat.format(date)
@@ -253,28 +253,52 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun settingFuturePrognose(list: List<WeatherDataItem>) {
-       if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(string.morning_future_temperature_view, list[2].temp.toInt().toString())
+        if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = resources.getString(
+                string.morning_future_temperature_view,
+                list[2].temp.toInt().toString()
+            )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(string.evening_future_temperature_view, list[4].temp.toInt().toString())
+            secondTimeOfDay.text = resources.getString(
+                string.evening_future_temperature_view,
+                list[4].temp.toInt().toString()
+            )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
-       if (DAYTIME.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(string.evening_future_temperature_view, list[2].temp.toInt().toString())
+        if (DAYTIME.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = resources.getString(
+                string.evening_future_temperature_view,
+                list[2].temp.toInt().toString()
+            )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(string.night_future_temperature_view, list[4].temp.toInt().toString())
+            secondTimeOfDay.text = resources.getString(
+                string.night_future_temperature_view,
+                list[4].temp.toInt().toString()
+            )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
-       if (EVENING.array.contains(getCurrentDate().substringBefore(':'))) {
-           firstTimeOfDay.text = resources.getString(string.night_future_temperature_view, list[2].temp.toInt().toString())
-           setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-           secondTimeOfDay.text = resources.getString(string.morning_future_temperature_view, list[4].temp.toInt().toString())
-           setSecondFutureWeatherIcon((list[4].weather.code.toString()))
+        if (EVENING.array.contains(getCurrentDate().substringBefore(':'))) {
+            firstTimeOfDay.text = resources.getString(
+                string.night_future_temperature_view,
+                list[2].temp.toInt().toString()
+            )
+            setFirstFutureWeatherIcon((list[2].weather.code.toString()))
+            secondTimeOfDay.text = resources.getString(
+                string.morning_future_temperature_view,
+                list[4].temp.toInt().toString()
+            )
+            setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
         if (NIGHT.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(string.morning_future_temperature_view, list[2].temp.toInt().toString())
+            firstTimeOfDay.text = resources.getString(
+                string.morning_future_temperature_view,
+                list[2].temp.toInt().toString()
+            )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(string.daytime_future_temperature_view, list[4].temp.toInt().toString())
+            secondTimeOfDay.text = resources.getString(
+                string.daytime_future_temperature_view,
+                list[4].temp.toInt().toString()
+            )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
 
