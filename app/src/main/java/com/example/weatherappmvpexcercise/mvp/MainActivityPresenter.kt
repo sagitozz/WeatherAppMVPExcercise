@@ -93,7 +93,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     Log.d(Constants.LOG_TAG, "OnResponse презентера")
                     weatherResponse = response
                     updateUi(weatherResponse, coordinatesResponse)
-                    view?.hideLoader()
+                        view?.hideLoader()
                 }
 
                 override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {

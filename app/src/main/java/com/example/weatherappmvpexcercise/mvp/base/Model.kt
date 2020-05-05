@@ -20,6 +20,6 @@ class Model {
     }
 
     fun modelGetCoordinatesByIp() : Call<CoordinatesResponse?>? {
-        return coordinatesRestApi.getEndPoint()?.getCoordinates(Constants.COORDINATES_API_KEY, language)
+        return coordinatesRestApi.getEndPoint()?.getCoordinates()
     }
 }

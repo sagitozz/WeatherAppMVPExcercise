@@ -35,6 +35,7 @@ class CoordinatesRestApi {
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(CoordinatesApiKeyInterceptor.create())
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .build()
