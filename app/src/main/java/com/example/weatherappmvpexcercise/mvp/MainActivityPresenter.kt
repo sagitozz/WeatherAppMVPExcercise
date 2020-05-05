@@ -77,7 +77,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     }
 
                     override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
-                        Log.d(Constants.LOG_TAG, "COORDINATES RESPONSE ON FAILURE")
+                        Log.d(Constants.LOG_TAG, "COORDINATES RESPONSE ON FAILUREы")
                     }
                 })
         }
