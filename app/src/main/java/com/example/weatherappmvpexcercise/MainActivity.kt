@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,7 +23,6 @@ import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.bla_bla_bla.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         setCurrentWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
         currentTimeText.text = getCurrentDate()
-        settingFuturePrognose(dataItems)
+        settingFutureForecast(dataItems)
     }
 
 //    override fun updateCoordinates(latitude: Double, longitude: Double) {
@@ -187,14 +185,15 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun showLoader() {
-        progressBar.visibility = View.VISIBLE
-        loading_screen.visibility = View.VISIBLE
+//        progressBar.visibility = View.VISIBLE
+//        loading_screen.visibility = View.VISIBLE
+//        main_screen.visibility =View.GONE
     }
 
     override fun hideLoader() {
-        //progressBar.visibility = View.GONE
-
-        main_screen.visibility = View.VISIBLE
+//        //progressBar.visibility = View.GONE
+//        loading_screen.visibility = View.GONE
+//        main_screen.visibility = View.VISIBLE
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
@@ -229,7 +228,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun showToastAndClose(dialog: DialogInterface) {
-        Toast.makeText(this, "PLEASE ENABLE GPS, MTHFCKR", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
         dialog.dismiss()
     }
 
@@ -252,7 +251,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         dateText.text = resources.getString(string.date_view, output)
     }
 
-    private fun settingFuturePrognose(list: List<WeatherDataItem>) {
+    private fun settingFutureForecast(list: List<WeatherDataItem>) {
         if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
             firstTimeOfDay.text = resources.getString(
                 string.morning_future_temperature_view,

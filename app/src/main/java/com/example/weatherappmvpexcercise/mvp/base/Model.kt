@@ -1,17 +1,25 @@
 package com.example.weatherappmvpexcercise.mvp.base
 
+import CoordinatesResponse
 import android.util.Log
 import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesRestApi
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherRestApi
 import retrofit2.Call
 
 class Model {
 
-    private val restApi: WeatherRestApi? = WeatherRestApi()
+    private val weatherRestApi: WeatherRestApi? = WeatherRestApi()
+    private val coordinatesRestApi : CoordinatesRestApi = CoordinatesRestApi()
+    private val language : String = "ru"
 
     fun modelGetWeather(latitude: Double, longitude: Double, language: String): Call<WeatherResponse?>? {
         Log.d(Constants.LOG_TAG, "Запрос из модели")
-        return restApi?.getEndPoint()?.getWeather(latitude, longitude, language)
+        return weatherRestApi?.getEndPoint()?.getWeather(latitude, longitude, language)
+    }
+
+    fun modelGetCoordinatesByIp() : Call<CoordinatesResponse?>? {
+        return coordinatesRestApi.getEndPoint()?.getCoordinates(Constants.COORDINATES_API_KEY, language)
     }
 }

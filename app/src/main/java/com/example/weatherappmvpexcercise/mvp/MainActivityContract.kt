@@ -6,7 +6,7 @@ import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 interface MainActivityContract {
 
     interface Presenter {
-        fun loadData() {}
+        fun loadWeatherData() {}
     }
 
     interface View : IView {

@@ -1,5 +1,6 @@
 package com.example.weatherappmvpexcercise.mvp
 
+import CoordinatesResponse
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
@@ -21,7 +22,7 @@ import retrofit2.Response
 class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
-    private val newsModel = Model()
+    private val dataModel = Model()
     private lateinit var dataItemList: List<WeatherDataItem>
     private var recyclerItems: MutableList<WeatherDataItem> = arrayListOf()
     private var latitude: Double = 0.0
@@ -29,6 +30,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     private val language: String = "ru"
     lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var weatherResponse: Response<WeatherResponse?>
+    private lateinit var coordinatesResponse: Response<CoordinatesResponse?>
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
@@ -39,37 +42,57 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         if (!locationManager.isLocationEnabled) {
-//            var lastLocation =  loationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
-//            latitude = lastLocation.latitude
-//            longitude = lastLocation.longitude
-//            loadData()
-//            Log.d(Constants.LOG_TAG, "Сработал поиск по последнему местоположению через СЕТЬ")
             view?.buildGpsAlertDialog()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     fun getCurrentLocation() {
-        locationManager =
-            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        view?.showLoader()
-        val locationRequest = LocationRequest()
-        locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
-        locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        LocationServices.getFusedLocationProviderClient(App.applicationContext())
-            .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
+        if (locationManager.isLocationEnabled) {
+            locationManager =
+                App.applicationContext()
+                    .getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            view?.showLoader()
+            val locationRequest = LocationRequest()
+            locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
+            locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+            LocationServices.getFusedLocationProviderClient(App.applicationContext())
+                .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
+        }
+
+        else {
+            dataModel.modelGetCoordinatesByIp()
+                ?.enqueue(object : Callback<CoordinatesResponse?>{
+                    override fun onResponse(
+                        call: Call<CoordinatesResponse?>,
+                        response: Response<CoordinatesResponse?>
+                    ) {
+                        coordinatesResponse = response
+                        latitude = coordinatesResponse.body()!!.latitude
+                        longitude = coordinatesResponse.body()!!.longitude
+                        loadWeatherData()
+                    }
+
+                    override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
+                        Log.d(Constants.LOG_TAG, "COORDINATES RESPONSE ON FAILURE")
+                    }
+                })
+        }
     }
 
-    override fun loadData() {
-        newsModel.modelGetWeather(latitude, longitude, language)
+    override fun loadWeatherData() {
+        dataModel.modelGetWeather(latitude, longitude, language)
             ?.enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
                     call: Call<WeatherResponse?>,
                     response: Response<WeatherResponse?>
                 ) {
                     Log.d(Constants.LOG_TAG, "OnResponse презентера")
-                    updateUi(response)
+                    weatherResponse = response
+                    updateUi(weatherResponse, coordinatesResponse)
                     view?.hideLoader()
                 }
 
@@ -88,17 +111,17 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 if (locationResult != null) {
                     latitude = locationResult.lastLocation.latitude
                     longitude = locationResult.lastLocation.longitude
-                    loadData()
+                    loadWeatherData()
                 }
             }
         }
         return result
     }
 
-    fun updateUi(response: Response<WeatherResponse?>) {
+    fun updateUi(weatherResponse: Response<WeatherResponse?>, coordinatesResponse: Response<CoordinatesResponse?> ) {
         Log.d(Constants.LOG_TAG, "updateUI презентера")
-        dataItemList = response.body()?.data!!
-        val city: String = response.body()?.city_name.toString()
+        dataItemList = weatherResponse.body()?.data!!
+        val city: String = coordinatesResponse.body()?.city.toString()
         view?.updateCity(city)
         prepareItemsForRecycler()
         view?.updateUi(recyclerItems, dataItemList)

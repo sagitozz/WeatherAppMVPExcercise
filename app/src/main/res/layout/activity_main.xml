@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blackBackground"
-    android:visibility="gone"
+    android:visibility="visible"
     tools:context=".MainActivity"
-    tools:visibility="visible">
+    tools:visibility="gone">
 
     <TextView
         android:id="@+id/cityText"
@@ -293,6 +293,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.22" />
 
-    <include layout="@layout/bla_bla_bla" />
+    <include layout="@layout/loading_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
