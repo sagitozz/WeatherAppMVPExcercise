@@ -9,11 +9,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
@@ -23,6 +23,7 @@ import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.loading_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +41,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun onResume() {
         super.onResume()
-        mainActivityPresenter.getCurrentLocation()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            mainActivityPresenter.getCurrentLocation()
+        }
     }
 
     override fun onDestroy() {
@@ -65,11 +68,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         currentTimeText.text = getCurrentDate()
         settingFutureForecast(dataItems)
     }
-
-//    override fun updateCoordinates(latitude: Double, longitude: Double) {
-//        latText.text = latitude.toString()
-//        lonText.text = longitude.toString()
-//    }
 
     override fun updateCity(city_text: String) {
         cityText.text = city_text
@@ -112,73 +110,17 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun setCurrentWeatherIcon(string: String) {
-        when (string) {
-            resources.getString(R.string.broken_clouds) -> {
-                glidingIntoCurrent(R.drawable.clouds)
-            }
-            resources.getString(R.string.overcast_clouds) -> {
-                glidingIntoCurrent(R.drawable.clouds)
-            }
-            resources.getString(R.string.few_clouds) -> {
-                glidingIntoCurrent(R.drawable.clouds)
-            }
-            resources.getString(R.string.clear_sky) -> {
-                glidingIntoCurrent(R.drawable.sunny)
-            }
-            resources.getString(R.string.almost_clear_sky) -> {
-                glidingIntoCurrent(R.drawable.sunny)
-            }
-            resources.getString(R.string.local_clouds) -> {
-                glidingIntoCurrent(R.drawable.clouds)
-            }
-        }
+        imageLoader.glideInto(string, weatherLogo)
     }
 
     override fun setFirstFutureWeatherIcon(string: String) {
-        when (string) {
-            resources.getString(R.string.broken_clouds) -> {
-                glidingIntoFutureFirst(R.drawable.clouds)
-            }
-            resources.getString(R.string.overcast_clouds) -> {
-                glidingIntoFutureFirst(R.drawable.clouds)
-            }
-            resources.getString(R.string.few_clouds) -> {
-                glidingIntoFutureFirst(R.drawable.clouds)
-            }
-            resources.getString(R.string.clear_sky) -> {
-                glidingIntoFutureFirst(R.drawable.sunny)
-            }
-            resources.getString(R.string.local_clouds) -> {
-                glidingIntoFutureFirst(R.drawable.clouds)
-            }
-            resources.getString(R.string.almost_clear_sky) -> {
-                glidingIntoFutureFirst(R.drawable.sunny)
-            }
-        }
+        imageLoader.glideInto(string, firstFutureIcon)
     }
 
     override fun setSecondFutureWeatherIcon(string: String) {
-        when (string) {
-            resources.getString(R.string.broken_clouds) -> {
-                glidingIntoFutureSecond(R.drawable.clouds)
-            }
-            resources.getString(R.string.overcast_clouds) -> {
-                glidingIntoFutureSecond(R.drawable.clouds)
-            }
-            resources.getString(R.string.few_clouds) -> {
-                glidingIntoFutureSecond(R.drawable.clouds)
-            }
-            resources.getString(R.string.clear_sky) -> {
-                glidingIntoFutureSecond(R.drawable.sunny)
-            }
-            resources.getString(R.string.local_clouds) -> {
-                glidingIntoFutureSecond(R.drawable.clouds)
-            }
-            resources.getString(R.string.almost_clear_sky) -> {
-                glidingIntoFutureSecond(R.drawable.sunny)
-            }
+        imageLoader.glideInto(string, secondFutureIcon)
         }
-    }
+
 
     override fun onError() {
         temperatureText.text = getString(string.on_error)
@@ -186,14 +128,16 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun showLoader() {
 //        progressBar.visibility = View.VISIBLE
-//        loading_screen.visibility = View.VISIBLE
-//        main_screen.visibility =View.GONE
+       loading_screen.visibility = View.GONE
+        main_screen.visibility =View.VISIBLE
+        Log.d(Constants.LOG_TAG, "Show loader")
     }
 
     override fun hideLoader() {
 //        //progressBar.visibility = View.GONE
-//        loading_screen.visibility = View.GONE
-//        main_screen.visibility = View.VISIBLE
+loading_screen.visibility = View.GONE
+     main_screen.visibility = View.VISIBLE
+        Log.d(Constants.LOG_TAG, "Hide loader")
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
@@ -214,17 +158,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun glidingIntoFutureFirst(drawable: Int) {
-        Glide
-            .with(this)
-            .load(drawable)
-            .into(firstFutureIcon)
+        imageLoader.loadImage(drawable, firstFutureIcon)
     }
 
     private fun glidingIntoFutureSecond(drawable: Int) {
-        Glide
-            .with(this)
-            .load(drawable)
-            .into(secondFutureIcon)
+        imageLoader.loadImage(drawable, secondFutureIcon)
     }
 
     private fun showToastAndClose(dialog: DialogInterface) {

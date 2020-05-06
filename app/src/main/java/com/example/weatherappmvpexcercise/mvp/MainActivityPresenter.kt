@@ -31,7 +31,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var weatherResponse: Response<WeatherResponse?>
-    private lateinit var coordinatesResponse: Response<CoordinatesResponse?>
+    private lateinit var cityFromIP: String
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
@@ -48,7 +48,6 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun getCurrentLocation() {
-
         if (locationManager.isLocationEnabled) {
             locationManager =
                 App.applicationContext()
@@ -58,28 +57,13 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
             locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
+            Log.d(Constants.LOG_TAG, "работаем по GPS")
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
                 .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
         }
 
         else {
-            dataModel.modelGetCoordinatesByIp()
-                ?.enqueue(object : Callback<CoordinatesResponse?>{
-                    override fun onResponse(
-                        call: Call<CoordinatesResponse?>,
-                        response: Response<CoordinatesResponse?>
-                    ) {
-                        coordinatesResponse = response
-                        latitude = coordinatesResponse.body()!!.latitude
-                        longitude = coordinatesResponse.body()!!.longitude
-                        loadWeatherData()
-                    }
-
-                    override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
-                        Log.d(Constants.LOG_TAG, "COORDINATES RESPONSE ON FAILUREы")
-                    }
-                })
+            getCoordinatesByIP()
         }
     }
 
@@ -90,9 +74,9 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     call: Call<WeatherResponse?>,
                     response: Response<WeatherResponse?>
                 ) {
-                    Log.d(Constants.LOG_TAG, "OnResponse презентера")
+                    Log.d(Constants.LOG_TAG, "loadWeatherData")
                     weatherResponse = response
-                    updateUi(weatherResponse, coordinatesResponse)
+                    updateUi(weatherResponse)
                         view?.hideLoader()
                 }
 
@@ -111,6 +95,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 if (locationResult != null) {
                     latitude = locationResult.lastLocation.latitude
                     longitude = locationResult.lastLocation.longitude
+                    getCityByIP()
                     loadWeatherData()
                 }
             }
@@ -118,13 +103,52 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         return result
     }
 
-    fun updateUi(weatherResponse: Response<WeatherResponse?>, coordinatesResponse: Response<CoordinatesResponse?> ) {
+    fun updateUi(weatherResponse: Response<WeatherResponse?>) {
         Log.d(Constants.LOG_TAG, "updateUI презентера")
         dataItemList = weatherResponse.body()?.data!!
-        val city: String = coordinatesResponse.body()?.city.toString()
+        val city: String = cityFromIP
         view?.updateCity(city)
         prepareItemsForRecycler()
         view?.updateUi(recyclerItems, dataItemList)
+    }
+
+    private fun getCoordinatesByIP() {
+        dataModel.modelGetCoordinatesByIp()
+            ?.enqueue(object : Callback<CoordinatesResponse?> {
+                override fun onResponse(
+                    call: Call<CoordinatesResponse?>,
+                    response: Response<CoordinatesResponse?>
+                ) {
+                    cityFromIP = response.body()!!.city
+                    latitude = response.body()!!.latitude
+                    longitude = response.body()!!.longitude
+                    loadWeatherData()
+                    Log.d(Constants.LOG_TAG, "сработало определение координат по сети GetCoordinatesByIP")
+                }
+
+                override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
+                    Log.d(Constants.LOG_TAG, t.toString())
+
+                }
+            })
+    }
+
+    private fun getCityByIP() {
+        dataModel.modelGetCoordinatesByIp()
+            ?.enqueue(object : Callback<CoordinatesResponse?> {
+                override fun onResponse(
+                    call: Call<CoordinatesResponse?>,
+                    response: Response<CoordinatesResponse?>
+                ) {
+                    cityFromIP = response.body()!!.city
+                    Log.d(Constants.LOG_TAG, "сработал getCityByIP")
+                }
+
+                override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
+                    Log.d(Constants.LOG_TAG, t.toString())
+
+                }
+            })
     }
 
     private fun prepareItemsForRecycler() {
