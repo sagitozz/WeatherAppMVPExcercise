@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface CoordinatesEndPoint {
 
-    @GET("check?")
+    @GET("https://api.sypexgeo.net/")
     fun getCoordinates(
     ): Call<CoordinatesResponse?>?
 

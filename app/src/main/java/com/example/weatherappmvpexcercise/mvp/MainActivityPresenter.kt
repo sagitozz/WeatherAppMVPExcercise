@@ -119,9 +119,9 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     call: Call<CoordinatesResponse?>,
                     response: Response<CoordinatesResponse?>
                 ) {
-                    cityFromIP = response.body()!!.city
-                    latitude = response.body()!!.latitude
-                    longitude = response.body()!!.longitude
+                    cityFromIP = response.body()!!.city.name_ru
+                    latitude = response.body()!!.city.lat
+                    longitude = response.body()!!.city.lon
                     loadWeatherData()
                     Log.d(Constants.LOG_TAG, "сработало определение координат по сети GetCoordinatesByIP")
                 }
@@ -140,7 +140,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     call: Call<CoordinatesResponse?>,
                     response: Response<CoordinatesResponse?>
                 ) {
-                    cityFromIP = response.body()!!.city
+                    cityFromIP = response.body()!!.city.name_ru
                     Log.d(Constants.LOG_TAG, "сработал getCityByIP")
                 }
 

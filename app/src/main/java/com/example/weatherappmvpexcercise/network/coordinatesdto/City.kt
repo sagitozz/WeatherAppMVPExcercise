@@ -12,14 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
 
-data class Location (
+data class City (
 
-	@SerializedName("geoname_id") val geoname_id : Int,
-	@SerializedName("capital") val capital : String,
-	@SerializedName("languages") val languages : List<Languages>,
-	@SerializedName("country_flag") val country_flag : String,
-	@SerializedName("country_flag_emoji") val country_flag_emoji : String,
-	@SerializedName("country_flag_emoji_unicode") val country_flag_emoji_unicode : String,
-	@SerializedName("calling_code") val calling_code : Int,
-	@SerializedName("is_eu") val is_eu : Boolean
+	@SerializedName("id") val id : Int,
+	@SerializedName("lat") val lat : Double,
+	@SerializedName("lon") val lon : Double,
+	@SerializedName("name_ru") val name_ru : String,
+	@SerializedName("name_en") val name_en : String
 )

@@ -2,7 +2,7 @@
     <string name="app_name">WeatherAppMVPExcercise</string>
     <string name="city">City</string>
     <string name="day_date">Day - Date</string>
-    <string name="temp">TEMP</string>
+    <string name="temp">t°</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
     <string name="pressure">Pressure</string>
