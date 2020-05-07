@@ -46,4 +46,6 @@
     <string name="second_fut_icon">second fut icon</string>
     <string name="weatherappmvpexercise">WeatherAppMVPExercise</string>
     <string name="introscreenimage">introScreenImage</string>
+    <string name="gps">GPS</string>
+    <string name="gps_button_image">GPS button image</string>
 </resources>

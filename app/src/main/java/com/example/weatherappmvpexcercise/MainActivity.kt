@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,7 +24,6 @@ import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.loading_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,10 +32,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private val mainActivityPresenter = MainActivityPresenter()
     private val imageLoader: ImageLoader = ImageLoaderImpl()
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
         mainActivityPresenter.attach(this)
+
+        GPSbutton.setOnClickListener { mainActivityPresenter.checkLocationAndLoadWithDialog()
+        mainActivityPresenter.getCurrentLocation()}
         getLocation()
     }
 
@@ -119,7 +123,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun setSecondFutureWeatherIcon(string: String) {
         imageLoader.glideInto(string, secondFutureIcon)
-        }
+    }
 
 
     override fun onError() {
@@ -127,16 +131,16 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun showLoader() {
-//        progressBar.visibility = View.VISIBLE
-       loading_screen.visibility = View.GONE
-        main_screen.visibility =View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+//       loading_screen.visibility = View.GONE
+//        main_screen.visibility = View.GONE
         Log.d(Constants.LOG_TAG, "Show loader")
     }
 
     override fun hideLoader() {
-//        //progressBar.visibility = View.GONE
-loading_screen.visibility = View.GONE
-     main_screen.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        //loading_screen.visibility = View.GONE
+//        main_screen.visibility = View.VISIBLE
         Log.d(Constants.LOG_TAG, "Hide loader")
     }
 
@@ -151,18 +155,6 @@ loading_screen.visibility = View.GONE
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
             )
         )
-    }
-
-    private fun glidingIntoCurrent(drawable: Int) {
-        imageLoader.loadImage(drawable, weatherLogo)
-    }
-
-    private fun glidingIntoFutureFirst(drawable: Int) {
-        imageLoader.loadImage(drawable, firstFutureIcon)
-    }
-
-    private fun glidingIntoFutureSecond(drawable: Int) {
-        imageLoader.loadImage(drawable, secondFutureIcon)
     }
 
     private fun showToastAndClose(dialog: DialogInterface) {
@@ -238,11 +230,14 @@ loading_screen.visibility = View.GONE
             )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
-
     }
 
     companion object {
         private val REQUEST_LOCATION_PERMISSION = 1
     }
+}
+
+private fun setOnClickListener() {
+
 }
 

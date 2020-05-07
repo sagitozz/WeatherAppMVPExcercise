@@ -10,13 +10,12 @@ interface MainActivityContract {
     }
 
     interface View : IView {
-        fun updateUi(list: List<WeatherDataItem>, dataItems : List<WeatherDataItem>)
+        fun updateUi(list: List<WeatherDataItem>, dataItems: List<WeatherDataItem>)
         fun onError()
         fun updateCity(city_text: String)
-//        fun updateCoordinates(latitude: Double, longitude: Double)
         fun buildGpsAlertDialog()
-        fun setCurrentWeatherIcon(string : String)
-        fun setFirstFutureWeatherIcon(string : String)
-        fun setSecondFutureWeatherIcon(string : String)
+        fun setCurrentWeatherIcon(string: String)
+        fun setFirstFutureWeatherIcon(string: String)
+        fun setSecondFutureWeatherIcon(string: String)
     }
 }

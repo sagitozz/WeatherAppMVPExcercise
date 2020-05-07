@@ -35,15 +35,18 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
         private val itemPres = itemView.findViewById<TextView>(R.id.itemPres)
         private val itemWind = itemView.findViewById<TextView>(R.id.itemWind)
         private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
-        private val itemIcon : ImageView = itemView.findViewById(R.id.weatherLogo)
+        private val itemIcon: ImageView = itemView.findViewById(R.id.weatherLogo)
 
         fun bind(item: WeatherDataItem) {
-            itemTemp.text = App.instance.getString(R.string.item_temp, item.appTemp.toInt().toString())
+            itemTemp.text =
+                App.instance.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
             itemPres.text = App.instance.getString(
-               R.string.pressure_view,
-                ((item.pres) / Constants.PRESSURE_DIVIDER).toInt().toString())
-            itemWind.text = App.instance.getString(R.string.wind_view, item.windSpd.toInt().toString())
+                R.string.pressure_view,
+                ((item.pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
+            )
+            itemWind.text =
+                App.instance.getString(R.string.wind_view, item.windSpd.toInt().toString())
             itemHumid.text = App.instance.getString(R.string.humidity_view, item.rh.toString())
             setRecyclerWeatherIcon(item.weather.code.toString())
         }
@@ -83,7 +86,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
             val inputDateFormat =
                 SimpleDateFormat(Constants.INPUT_DATE_FORMAT, Locale.ENGLISH)
             val publishedDate: String = date
-            val dateNew : Date = inputDateFormat.parse(publishedDate)
+            val dateNew: Date = inputDateFormat.parse(publishedDate)
             val outputDateFormat =
                 SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
             val output = outputDateFormat.format(dateNew)

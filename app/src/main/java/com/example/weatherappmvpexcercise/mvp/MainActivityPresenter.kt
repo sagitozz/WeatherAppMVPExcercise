@@ -40,6 +40,14 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
         locationManager =
             App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun checkLocationAndLoadWithDialog() {
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(App.applicationContext())
+        locationManager =
+            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         if (!locationManager.isLocationEnabled) {
             view?.buildGpsAlertDialog()
@@ -60,9 +68,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             Log.d(Constants.LOG_TAG, "работаем по GPS")
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
                 .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
-        }
-
-        else {
+        } else {
             getCoordinatesByIP()
         }
     }
@@ -77,7 +83,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     Log.d(Constants.LOG_TAG, "loadWeatherData")
                     weatherResponse = response
                     updateUi(weatherResponse)
-                        view?.hideLoader()
+                    view?.hideLoader()
                 }
 
                 override fun onFailure(call: Call<WeatherResponse?>, t: Throwable) {
@@ -123,12 +129,14 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     latitude = response.body()!!.city.lat
                     longitude = response.body()!!.city.lon
                     loadWeatherData()
-                    Log.d(Constants.LOG_TAG, "сработало определение координат по сети GetCoordinatesByIP")
+                    Log.d(
+                        Constants.LOG_TAG,
+                        "сработало определение координат по сети GetCoordinatesByIP"
+                    )
                 }
 
                 override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
                     Log.d(Constants.LOG_TAG, t.toString())
-
                 }
             })
     }
@@ -146,7 +154,6 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
                 override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
                     Log.d(Constants.LOG_TAG, t.toString())
-
                 }
             })
     }
