@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun showLoader() {
         progressBar.visibility = View.VISIBLE
-//       loading_screen.visibility = View.GONE
+       inline_screen.visibility = View.GONE
 //        main_screen.visibility = View.GONE
         Log.d(Constants.LOG_TAG, "Show loader")
     }
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun hideLoader() {
         progressBar.visibility = View.GONE
         //loading_screen.visibility = View.GONE
-//        main_screen.visibility = View.VISIBLE
+        inline_screen.visibility = View.VISIBLE
         Log.d(Constants.LOG_TAG, "Hide loader")
     }
 
