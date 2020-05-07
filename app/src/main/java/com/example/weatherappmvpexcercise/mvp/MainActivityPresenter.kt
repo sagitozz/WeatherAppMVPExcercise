@@ -7,6 +7,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.constants.Constants
@@ -70,8 +71,24 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
         } else {
             getCoordinatesByIP()
+            Toast.makeText(App.applicationContext(), "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getCurrentLocationFromButton() {
+        if (locationManager.isLocationEnabled) {
+            locationManager =
+                App.applicationContext()
+                    .getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            view?.showLoader()
+            val locationRequest = LocationRequest()
+            locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
+            locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            Log.d(Constants.LOG_TAG, "работаем по GPS")
+            LocationServices.getFusedLocationProviderClient(App.applicationContext())
+                .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())}}
 
     override fun loadWeatherData() {
         dataModel.modelGetWeather(latitude, longitude, language)
