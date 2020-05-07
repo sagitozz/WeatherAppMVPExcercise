@@ -38,8 +38,10 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         setContentView(layout.activity_main)
         mainActivityPresenter.attach(this)
 
-        GPSbutton.setOnClickListener { mainActivityPresenter.checkLocationAndLoadWithDialog()
-        mainActivityPresenter.getCurrentLocation()}
+        GPSbutton.setOnClickListener {
+            mainActivityPresenter.checkLocationAndLoadWithDialog()
+            mainActivityPresenter.getCurrentLocation()
+        }
         getLocation()
     }
 
@@ -132,7 +134,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun showLoader() {
         progressBar.visibility = View.VISIBLE
-       inline_screen.visibility = View.GONE
+        inline_screen.visibility = View.GONE
 //        main_screen.visibility = View.GONE
         Log.d(Constants.LOG_TAG, "Show loader")
     }
