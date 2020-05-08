@@ -76,7 +76,7 @@
     <string name="sand_dust">731</string>
     <string name="fog">741</string>
     <string name="freezing_fog">751</string>
-    <string name="clerar_sky">800</string>
+    <string name="clear_sky">800</string>
     <string name="few_clouds">801</string>
     <string name="scattered_clouds">802</string>
     <string name="broken_cloud">803</string>

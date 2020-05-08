@@ -116,10 +116,13 @@ class ImageLoaderImpl : ImageLoader {
             getResourceName(R.string.freezing_fog) -> {
                 loadImage(R.drawable.ic_fog, intoView)
             }
-            getResourceName(R.string.clerar_sky) -> {
+            getResourceName(R.string.clear_sky) -> {
                 loadImage(R.drawable.ic_sunny, intoView)
             }
             getResourceName(R.string.few_clouds) -> {
+                loadImage(R.drawable.ic_sun_with_clouds, intoView)
+            }
+            getResourceName(R.string.broken_cloud) -> {
                 loadImage(R.drawable.ic_sun_with_clouds, intoView)
             }
             getResourceName(R.string.scattered_clouds) -> {
