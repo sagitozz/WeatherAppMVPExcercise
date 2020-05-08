@@ -8,11 +8,10 @@ interface ImageLoader {
 
     fun loadImage(drawableRes: Int, intoView: ImageView)
     fun glideInto(string: String, intoView: ImageView)
-    fun getResourceName(stringResource: Int) : String
+    fun getResourceName(stringResource: Int): String
 }
 
 class ImageLoaderImpl : ImageLoader {
-
 
     override fun glideInto(string: String, intoView: ImageView) {
         when (string) {
@@ -137,7 +136,7 @@ class ImageLoaderImpl : ImageLoader {
         }
     }
 
-    override fun getResourceName(stringResource: Int) : String {
+    override fun getResourceName(stringResource: Int): String {
         return App.applicationContext().resources.getString(stringResource)
     }
 

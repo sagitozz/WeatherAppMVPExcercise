@@ -5,5 +5,4 @@ interface IView {
     fun showLoader()
 
     fun hideLoader()
-
 }

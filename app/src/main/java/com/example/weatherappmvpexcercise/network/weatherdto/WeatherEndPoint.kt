@@ -14,7 +14,7 @@ interface WeatherEndPoint {
     fun getWeather(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
-        @Query("lang") language : String
+        @Query("lang") language: String
     ): Call<WeatherResponse?>?
 
 

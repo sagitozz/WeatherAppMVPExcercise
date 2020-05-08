@@ -11,15 +11,19 @@ import retrofit2.Call
 class Model {
 
     private val weatherRestApi: WeatherRestApi? = WeatherRestApi()
-    private val coordinatesRestApi : CoordinatesRestApi = CoordinatesRestApi()
-    private val language : String = "ru"
+    private val coordinatesRestApi: CoordinatesRestApi = CoordinatesRestApi()
+    private val language: String = "ru"
 
-    fun modelGetWeather(latitude: Double, longitude: Double, language: String): Call<WeatherResponse?>? {
+    fun modelGetWeather(
+        latitude: Double,
+        longitude: Double,
+        language: String
+    ): Call<WeatherResponse?>? {
         Log.d(Constants.LOG_TAG, "Запрос из модели")
         return weatherRestApi?.getEndPoint()?.getWeather(latitude, longitude, language)
     }
 
-    fun modelGetCoordinatesByIp() : Call<CoordinatesResponse?>? {
+    fun modelGetCoordinatesByIp(): Call<CoordinatesResponse?>? {
         return coordinatesRestApi.getEndPoint()?.getCoordinates()
     }
 }

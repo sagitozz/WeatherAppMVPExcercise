@@ -71,7 +71,11 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
         } else {
             getCoordinatesByIP()
-            Toast.makeText(App.applicationContext(), "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                App.applicationContext(),
+                "Weather will shown from IP geoposition",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -88,7 +92,9 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             Log.d(Constants.LOG_TAG, "работаем по GPS")
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
-                .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())}}
+                .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
+        }
+    }
 
     override fun loadWeatherData() {
         dataModel.modelGetWeather(latitude, longitude, language)
