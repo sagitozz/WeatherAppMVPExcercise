@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.weatherappmvpexcercise.App
+import com.example.weatherappmvpexcercise.ImageLoader
+import com.example.weatherappmvpexcercise.ImageLoaderImpl
 import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
@@ -36,6 +37,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
         private val itemWind = itemView.findViewById<TextView>(R.id.itemWind)
         private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
         private val itemIcon: ImageView = itemView.findViewById(R.id.weatherLogo)
+        private val imageLoader: ImageLoader = ImageLoaderImpl()
 
         fun bind(item: WeatherDataItem) {
             itemTemp.text =
@@ -51,34 +53,10 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
             setRecyclerWeatherIcon(item.weather.code.toString())
         }
 
-        fun setRecyclerWeatherIcon(string: String) {
-            when (string) {
-                App.instance.resources.getString(R.string.broken_clouds) -> {
-                    glidingIntoRecycler(R.drawable.clouds)
-                }
-                App.instance.resources.getString(R.string.overcast_clouds) -> {
-                    glidingIntoRecycler(R.drawable.clouds)
-                }
-                App.instance.resources.getString(R.string.few_clouds) -> {
-                    glidingIntoRecycler(R.drawable.clouds)
-                }
-                App.instance.resources.getString(R.string.clear_sky) -> {
-                    glidingIntoRecycler(R.drawable.sunny)
-                }
-                App.instance.resources.getString(R.string.almost_clear_sky) -> {
-                    glidingIntoRecycler(R.drawable.sunny)
-                }
-                App.instance.resources.getString(R.string.local_clouds) -> {
-                    glidingIntoRecycler(R.drawable.clouds)
-                }
-            }
-        }
+        private fun setRecyclerWeatherIcon(string: String) {
 
-        private fun glidingIntoRecycler(drawable: Int) {
-            Glide
-                .with(App.applicationContext())
-                .load(drawable)
-                .into(itemIcon)
+            imageLoader.glideInto(string, itemIcon)
+
         }
 
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

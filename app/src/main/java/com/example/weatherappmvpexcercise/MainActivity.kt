@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         setCurrentWeatherIcon(list.first().weather.code.toString())
         recyclerInit(list)
         currentTimeText.text = getCurrentDate()
+        weatherDescriprionText.text = (list.first().weather.description.toString())
         settingFutureForecast(dataItems)
     }
 
