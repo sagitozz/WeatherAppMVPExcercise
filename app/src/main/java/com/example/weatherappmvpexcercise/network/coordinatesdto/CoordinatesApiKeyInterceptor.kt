@@ -20,11 +20,8 @@ internal class CoordinatesApiKeyInterceptor private constructor() : Interceptor 
     }
 
     companion object {
-
         private val sInstance: CoordinatesApiKeyInterceptor by lazy { CoordinatesApiKeyInterceptor() }
 
-        fun create(): Interceptor {
-            return sInstance
-        }
+        fun create(): Interceptor = sInstance
     }
 }

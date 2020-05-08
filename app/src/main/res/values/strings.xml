@@ -1,23 +1,35 @@
 <resources>
     <string name="app_name">WeatherAppMVPExcercise</string>
+
+    //dialog string resources
+    <string name="yes">YES</string>
+    <string name="cancel">NO</string>
+    <string name="permission_required">Permission required</string>
+    <string name="gps_not_enabled">GPS is not enabled</string>
+    <string name="open_location_settings">Would you enable GPS?</string>
+    <string name="get_location">get location</string>
+
+    //recycler string resources
+    <string name="gps_button">GPS button</string>
+    <string name="item_date">item_date</string>
+    <string name="item_temp">%1$s°</string>
+    <string name="item_icon">itemIcon</string>
+    <string name="item_pres">item_pres</string>
+    <string name="item_wind">item_wind</string>
+    <string name="item_humid">item_humid</string>
+
+    //view string resources
+    <string name="weatherappmvpexercise">WeatherAppMVPExercise</string>
+    <string name="introscreenimage">introScreenImage</string>
     <string name="city">City</string>
     <string name="day_date">Day - Date</string>
     <string name="temp">t°</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
     <string name="pressure">Pressure</string>
-    <string name="gps_not_enabled">GPS is not enabled</string>
-    <string name="open_location_settings">Would you enable GPS?</string>
-    <string name="yes">YES</string>
-    <string name="cancel">NO</string>
-    <string name="on_error">ON ERROR</string>
-    <string name="get_location">get location</string>
     <string name="lat">lat</string>
     <string name="lon">lon</string>
-    <string name="gps_button">GPS button</string>
-    <string name="item_date">item_date</string>
-    <string name="item_temp">%1$s°</string>
-    <string name="permission_required">Permission required</string>
+    <string name="on_error">ON ERROR</string>
     <string name="wind_view">%1$s км/ч</string>
     <string name="pressure_view">%1$s мм рт.ст</string>
     <string name="temperature_view">%1$s°</string>
@@ -28,22 +40,16 @@
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
     <string name="weather_logotype">weatherLogo</string>
-
     <string name="weather_description">weather_descriprion</string>
-    <string name="itemicon">itemIcon</string>
-    <string name="item_pres">item_pres</string>
-    <string name="item_wind">item_wind</string>
-    <string name="item_humid">item_humid</string>
-    <string name="current_time">Current Time</string>
     <string name="first_time_of_day">First time of day</string>
     <string name="second_time_of_day">Second time of day</string>
+    <string name="current_time">Current Time</string>
     <string name="first_fut_icon">first_fut_icon</string>
     <string name="second_fut_icon">second fut icon</string>
-    <string name="weatherappmvpexercise">WeatherAppMVPExercise</string>
-    <string name="introscreenimage">introScreenImage</string>
     <string name="gps">GPS</string>
     <string name="gps_button_image">GPS button image</string>
 
+    //weather icons string resources
     <string name="thunderstorm_with_light_rain">200</string>
     <string name="thunderstorm_with_rain">201</string>
     <string name="thunderstorm_with_heavy_rain">202</string>

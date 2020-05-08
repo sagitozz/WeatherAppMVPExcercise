@@ -15,7 +15,7 @@ interface WeatherEndPoint {
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
         @Query("lang") language: String
-    ): Call<WeatherResponse?>?
+    ): Call<WeatherResponse>
 
 
 }

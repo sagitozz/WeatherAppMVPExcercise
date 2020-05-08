@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherappmvpexcercise.App
-import com.example.weatherappmvpexcercise.ImageLoader
-import com.example.weatherappmvpexcercise.ImageLoaderImpl
+import com.example.weatherappmvpexcercise.IconReturner
+import com.example.weatherappmvpexcercise.IconReturnerImpl
 import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.constants.Constants
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
@@ -37,26 +36,24 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
         private val itemWind = itemView.findViewById<TextView>(R.id.itemWind)
         private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
         private val itemIcon: ImageView = itemView.findViewById(R.id.weatherLogo)
-        private val imageLoader: ImageLoader = ImageLoaderImpl()
+        private val iconReturner: IconReturner = IconReturnerImpl()
 
         fun bind(item: WeatherDataItem) {
             itemTemp.text =
-                App.instance.getString(R.string.item_temp, item.appTemp.toInt().toString())
+                itemView.context.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
-            itemPres.text = App.instance.getString(
+            itemPres.text = itemView.context.getString(
                 R.string.pressure_view,
                 ((item.pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
             )
             itemWind.text =
-                App.instance.getString(R.string.wind_view, item.windSpd.toInt().toString())
-            itemHumid.text = App.instance.getString(R.string.humidity_view, item.rh.toString())
+                itemView.context.getString(R.string.wind_view, item.windSpd.toInt().toString())
+            itemHumid.text = itemView.context.getString(R.string.humidity_view, item.rh.toString())
             setRecyclerWeatherIcon(item.weather.code.toString())
         }
 
         private fun setRecyclerWeatherIcon(string: String) {
-
-            imageLoader.glideInto(string, itemIcon)
-
+            iconReturner.setIconIntoImageView(string, itemIcon)
         }
 
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

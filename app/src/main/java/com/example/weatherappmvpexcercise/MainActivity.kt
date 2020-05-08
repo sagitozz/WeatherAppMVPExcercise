@@ -29,18 +29,18 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
-    private val mainActivityPresenter = MainActivityPresenter()
-    private val imageLoader: ImageLoader = ImageLoaderImpl()
+    private val presenter = MainActivityPresenter()
+    private val iconReturner: IconReturner = IconReturnerImpl()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        mainActivityPresenter.attach(this)
+        presenter.attach(this)
 
         GPSbutton.setOnClickListener {
-            mainActivityPresenter.checkLocationAndLoadWithDialog()
-            mainActivityPresenter.getCurrentLocationFromButton()
+            presenter.checkLocationAndLoadWithDialog()
+            presenter.getCurrentLocationFromButton()
         }
         getLocation()
     }
@@ -48,32 +48,35 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            mainActivityPresenter.getCurrentLocation()
+            presenter.getCurrentLocation()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mainActivityPresenter.detach()
+        presenter.detach()
     }
 
-    override fun updateUi(list: List<WeatherDataItem>, dataItems: List<WeatherDataItem>) {
+    override fun updateUi(
+        listForRecycler: List<WeatherDataItem>,
+        listForMainView: List<WeatherDataItem>
+    ) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
-            resources.getString(string.temperature_view, list.first().temp.toInt().toString())
-        pressureText.text = resources.getString(
+            getString(string.temperature_view, listForRecycler.first().temp.toInt().toString())
+        pressureText.text = getString(
             string.pressure_view,
-            ((list.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
+            ((listForRecycler.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
         windText.text =
-            resources.getString(string.wind_view, list.first().windSpd.toInt().toString())
-        reformatAndSetDate(list.first().datetime)
-        humidityText.text = resources.getString(string.humidity_view, list.first().rh.toString())
-        setCurrentWeatherIcon(list.first().weather.code.toString())
-        recyclerInit(list)
+            getString(string.wind_view, listForRecycler.first().windSpd.toInt().toString())
+        reformatAndSetDate(listForRecycler.first().datetime)
+        humidityText.text = getString(string.humidity_view, listForRecycler.first().rh.toString())
+        setCurrentWeatherIcon(listForRecycler.first().weather.code.toString())
+        recyclerInit(listForRecycler)
         currentTimeText.text = getCurrentDate()
-        weatherDescriprionText.text = (list.first().weather.description.toString())
-        settingFutureForecast(dataItems)
+        weatherDescriprionText.text = (listForRecycler.first().weather.description.toString())
+        settingFutureForecast(listForMainView)
     }
 
     override fun updateCity(city_text: String) {
@@ -92,7 +95,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             )
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                mainActivityPresenter.checkLocationAndLoad()
+                presenter.checkLocationAndLoad()
             }
         }
     }
@@ -103,12 +106,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         builder.setTitle(string.gps_not_enabled)
             .setMessage(string.open_location_settings)
             .setPositiveButton(
-                string.yes, fun(_: DialogInterface, _: Int) {
+                string.yes, fun(_, _) {
                     openNewActivity()
                 }
             )
             .setNegativeButton(
-                string.cancel, fun(dialog: DialogInterface, _: Int) {
+                string.cancel, fun(dialog, _) {
                     showToastAndClose(dialog)
                 }
             )
@@ -117,17 +120,16 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun setCurrentWeatherIcon(string: String) {
-        imageLoader.glideInto(string, weatherLogo)
+        iconReturner.setIconIntoImageView(string, weatherLogo)
     }
 
     override fun setFirstFutureWeatherIcon(string: String) {
-        imageLoader.glideInto(string, firstFutureIcon)
+        iconReturner.setIconIntoImageView(string, firstFutureIcon)
     }
 
     override fun setSecondFutureWeatherIcon(string: String) {
-        imageLoader.glideInto(string, secondFutureIcon)
+        iconReturner.setIconIntoImageView(string, secondFutureIcon)
     }
-
 
     override fun onError() {
         temperatureText.text = getString(string.on_error)
@@ -146,8 +148,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
-        val weatherRecyclerAdapter = WeatherRecyclerAdapter(items)
-        recyclerView.adapter = weatherRecyclerAdapter
+        recyclerView.adapter = WeatherRecyclerAdapter(items)
     }
 
     private fun openNewActivity() {
@@ -164,9 +165,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun getCurrentDate(): String {
-        val date = Date()
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val timeText = timeFormat.format(date)
+        val timeText = timeFormat.format(Date())
         return timeText
     }
 
@@ -179,53 +179,53 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         val outputDateFormat =
             SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
         val output = outputDateFormat.format(dateNew)
-        dateText.text = resources.getString(string.date_view, output)
+        dateText.text = getString(string.date_view, output)
     }
 
     private fun settingFutureForecast(list: List<WeatherDataItem>) {
         if (MORNING.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(
+            firstTimeOfDay.text = getString(
                 string.morning_future_temperature_view,
                 list[2].temp.toInt().toString()
             )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(
+            secondTimeOfDay.text = getString(
                 string.evening_future_temperature_view,
                 list[4].temp.toInt().toString()
             )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
         if (DAYTIME.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(
+            firstTimeOfDay.text = getString(
                 string.evening_future_temperature_view,
                 list[2].temp.toInt().toString()
             )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(
+            secondTimeOfDay.text = getString(
                 string.night_future_temperature_view,
                 list[4].temp.toInt().toString()
             )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
         if (EVENING.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(
+            firstTimeOfDay.text = getString(
                 string.night_future_temperature_view,
                 list[2].temp.toInt().toString()
             )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(
+            secondTimeOfDay.text = getString(
                 string.morning_future_temperature_view,
                 list[4].temp.toInt().toString()
             )
             setSecondFutureWeatherIcon((list[4].weather.code.toString()))
         }
         if (NIGHT.array.contains(getCurrentDate().substringBefore(':'))) {
-            firstTimeOfDay.text = resources.getString(
+            firstTimeOfDay.text = getString(
                 string.morning_future_temperature_view,
                 list[2].temp.toInt().toString()
             )
             setFirstFutureWeatherIcon((list[2].weather.code.toString()))
-            secondTimeOfDay.text = resources.getString(
+            secondTimeOfDay.text = getString(
                 string.daytime_future_temperature_view,
                 list[4].temp.toInt().toString()
             )
@@ -236,9 +236,5 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     companion object {
         private val REQUEST_LOCATION_PERMISSION = 1
     }
-}
-
-private fun setOnClickListener() {
-
 }
 

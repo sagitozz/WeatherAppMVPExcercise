@@ -10,7 +10,6 @@ class App : Application() {
     }
 
     companion object {
-
         lateinit var instance: App
 
         fun applicationContext(): Context = instance.applicationContext

@@ -10,7 +10,7 @@ interface MainActivityContract {
     }
 
     interface View : IView {
-        fun updateUi(list: List<WeatherDataItem>, dataItems: List<WeatherDataItem>)
+        fun updateUi(listForRecycler: List<WeatherDataItem>, listForMainView: List<WeatherDataItem>)
         fun onError()
         fun updateCity(city_text: String)
         fun buildGpsAlertDialog()

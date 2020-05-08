@@ -23,12 +23,9 @@ internal class WeatherApiKeyInterceptor private constructor() : Interceptor {
     }
 
     companion object {
-
         private const val API_KEY_KEY = "x-rapidapi-key"
         private val sInstance: WeatherApiKeyInterceptor by lazy { WeatherApiKeyInterceptor() }
 
-        fun create(): Interceptor {
-            return sInstance
-        }
+        fun create(): Interceptor = sInstance
     }
 }

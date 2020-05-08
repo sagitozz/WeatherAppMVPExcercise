@@ -4,8 +4,7 @@
     android:id="@+id/loading_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    tools:visibility="gone">
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/intro_text_view"
