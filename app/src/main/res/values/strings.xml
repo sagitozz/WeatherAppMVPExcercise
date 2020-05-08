@@ -28,12 +28,7 @@
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
     <string name="weather_logotype">weatherLogo</string>
-    <string name="broken_clouds">803</string>
-    <string name="local_clouds">802</string>
-    <string name="overcast_clouds">804</string>
-    <string name="few_clouds">520</string>
-    <string name="clear_sky">800</string>
-    <string name="almost_clear_sky">801</string>
+
     <string name="weather_description">weather_descriprion</string>
     <string name="itemicon">itemIcon</string>
     <string name="item_pres">item_pres</string>
@@ -48,4 +43,43 @@
     <string name="introscreenimage">introScreenImage</string>
     <string name="gps">GPS</string>
     <string name="gps_button_image">GPS button image</string>
+
+    <string name="thunderstorm_with_light_rain">200</string>
+    <string name="thunderstorm_with_rain">201</string>
+    <string name="thunderstorm_with_heavy_rain">202</string>
+    <string name="thunderstorm_with_light_drizzle">230</string>
+    <string name="thunderstorm_with_drizzle">231</string>
+    <string name="thunderstorm_with_heavy_drizzle">232</string>
+    <string name="thunderstorm_with_hail">233</string>
+    <string name="drizzle">300</string>
+    <string name="light_drizzle">301</string>
+    <string name="heavy_drizzle">302</string>
+    <string name="light_rain">500</string>
+    <string name="moderate_rain">501</string>
+    <string name="heavy_rain">502</string>
+    <string name="freezing_rain">511</string>
+    <string name="light_shower_rain">520</string>
+    <string name="shower_rain">521</string>
+    <string name="heavy_shower_rain">522</string>
+    <string name="light_snow">600</string>
+    <string name="snow">601</string>
+    <string name="heavy_snow">602</string>
+    <string name="mix_snow_rain">610</string>
+    <string name="sleet">611</string>
+    <string name="heavy_sleet">612</string>
+    <string name="snow_shower">621</string>
+    <string name="heavy_snow_shower">622</string>
+    <string name="flurries">623</string>
+    <string name="mist">700</string>
+    <string name="smoke">701</string>
+    <string name="haze">721</string>
+    <string name="sand_dust">731</string>
+    <string name="fog">741</string>
+    <string name="freezing_fog">751</string>
+    <string name="clerar_sky">800</string>
+    <string name="few_clouds">801</string>
+    <string name="scattered_clouds">802</string>
+    <string name="broken_cloud">803</string>
+    <string name="overcast_clouds">804</string>
+    <string name="unknown_precipitation">900</string>
 </resources>
