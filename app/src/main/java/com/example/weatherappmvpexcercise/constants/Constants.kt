@@ -11,5 +11,5 @@ object Constants {
     const val LOCATION_REQUEST_INTERVAL = 10_000_000_000_000L
     const val LOCATION_REQUEST_FASTEST_INTERVAL = 30_000_000_000_000L
     const val INPUT_DATE_FORMAT = "yyyy-MM-dd:HH"
-    const val OUTPUT_DATE_FORMAT = "dd MMMM"
+    const val OUTPUT_DATE_FORMAT = "d MMMM"
 }
