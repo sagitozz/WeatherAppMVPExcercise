@@ -35,7 +35,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
-    fun checkLocationAndLoad() {
+    fun initializeLocationClientAndManager() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
         locationManager =
@@ -43,7 +43,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    fun checkLocationAndLoadWithDialog() {
+    fun initializeLocationClientAndManagerWithDialog() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
         locationManager =

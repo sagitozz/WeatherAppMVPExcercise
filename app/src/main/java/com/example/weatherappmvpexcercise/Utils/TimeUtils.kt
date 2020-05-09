@@ -1,6 +1,7 @@
 package com.example.weatherappmvpexcercise.Utils
 
 import com.example.weatherappmvpexcercise.Utils.TimeOfDay.*
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,5 +26,17 @@ object TimeUtils {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val timeText = timeFormat.format(Date())
         return timeText
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    fun reformatAndSetDate(list: List<WeatherDataItem>) : String {
+        val inputDateFormat =
+            SimpleDateFormat(Constants.INPUT_DATE_FORMAT, Locale.ENGLISH)
+        val publishedDate: String = list.first().datetime
+        val dateNew: Date = inputDateFormat.parse(publishedDate)
+        val outputDateFormat =
+            SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
+        val output = outputDateFormat.format(dateNew)
+        return output
     }
 }

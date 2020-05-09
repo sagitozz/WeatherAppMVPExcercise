@@ -24,13 +24,12 @@ import com.example.weatherappmvpexcercise.Utils.Constants
 import com.example.weatherappmvpexcercise.Utils.TimeOfDay
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentDate
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentTimeOfDay
+import com.example.weatherappmvpexcercise.Utils.TimeUtils.reformatAndSetDate
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
@@ -43,10 +42,10 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         presenter.attach(this)
 
         GPSbutton.setOnClickListener {
-            presenter.checkLocationAndLoadWithDialog()
+            presenter.initializeLocationClientAndManagerWithDialog()
             presenter.getCurrentLocationFromButton()
         }
-        getLocation()
+        getLocationPermissionOrLoadLocation()
     }
 
     override fun onResume() {
@@ -67,19 +66,19 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     ) {
         Log.d(Constants.LOG_TAG, "updateUI View")
         temperatureText.text =
-            getString(string.temperature_view, listForRecycler.first().temp.toInt().toString())
+            getString(string.temperature_view, listForMainView.first().temp.toInt().toString())
         pressureText.text = getString(
             string.pressure_view,
             ((listForRecycler.first().pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
         )
         windText.text =
-            getString(string.wind_view, listForRecycler.first().windSpd.toInt().toString())
-        reformatAndSetDate(listForRecycler.first().datetime)
-        humidityText.text = getString(string.humidity_view, listForRecycler.first().rh.toString())
-        setCurrentWeatherIcon(listForRecycler.first().weather.code.toString())
+            getString(string.wind_view, listForMainView.first().windSpd.toInt().toString())
+        dateText.text = getString(string.date_view, reformatAndSetDate(listForMainView))
+        humidityText.text = getString(string.humidity_view, listForMainView.first().rh.toString())
+        setCurrentWeatherIcon(listForMainView.first().weather.code.toString())
         recyclerInit(listForRecycler)
         currentTimeText.text = getCurrentDate()
-        weatherDescriprionText.text = (listForRecycler.first().weather.description.toString())
+        weatherDescriprionText.text = (listForMainView.first().weather.description.toString())
         settingFutureForecast(listForMainView, getCurrentTimeOfDay())
     }
 
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         cityText.text = city_text
     }
 
-    private fun getLocation() {
+    private fun getLocationPermissionOrLoadLocation() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             )
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                presenter.checkLocationAndLoad()
+                presenter.initializeLocationClientAndManager()
             }
         }
     }
@@ -158,18 +157,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private fun showToastAndClose(dialog: DialogInterface) {
         Toast.makeText(this, "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
         dialog.dismiss()
-    }
-
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    private fun reformatAndSetDate(date: String) {
-        val inputDateFormat =
-            SimpleDateFormat(Constants.INPUT_DATE_FORMAT, Locale.ENGLISH)
-        val publishedDate: String = date
-        val dateNew: Date = inputDateFormat.parse(publishedDate)
-        val outputDateFormat =
-            SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
-        val output = outputDateFormat.format(dateNew)
-        dateText.text = getString(string.date_view, output)
     }
 
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {
