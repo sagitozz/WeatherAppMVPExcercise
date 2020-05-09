@@ -10,13 +10,13 @@ object TimeUtils {
     val evening = arrayOf("18", "19", "20", "21", "22", "23")
     val night = arrayOf("00", "01", "02", "03", "04", "05")
 
-    fun getCurrentTimeOfDay() : TimeOfDay{
-        lateinit var timeOfDay : TimeOfDay
+    fun getCurrentTimeOfDay(): TimeOfDay {
+        lateinit var timeOfDay: TimeOfDay
         when (getCurrentDate().substringBefore(':')) {
             in morning -> timeOfDay = MORNING
-            in day -> timeOfDay =  DAYTIME
-            in evening -> timeOfDay =  EVENING
-            in night -> timeOfDay =  NIGHT
+            in day -> timeOfDay = DAYTIME
+            in evening -> timeOfDay = EVENING
+            in night -> timeOfDay = NIGHT
         }
         return timeOfDay
     }
