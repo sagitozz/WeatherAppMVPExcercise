@@ -24,13 +24,12 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
     private val dataModel = Model()
-    private lateinit var responseWeatherList: List<WeatherDataItem>
     private var recyclerItems: MutableList<WeatherDataItem> = mutableListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var weatherResponse: Response<WeatherResponse?>
+    private lateinit var weatherResponseList: List<WeatherDataItem>
     private lateinit var cityFromIP: String
 
     @SuppressLint("MissingPermission")
@@ -59,13 +58,17 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         if (locationManager.isLocationEnabled) {
             initializeLocationRequest()
         } else {
-            getCoordinatesByIP()
-            Toast.makeText(
-                App.applicationContext(),
-                "Weather will shown from IP geoposition",
-                Toast.LENGTH_SHORT
-            ).show()
+            showToastAboutIpGeopos()
         }
+    }
+
+    private fun showToastAboutIpGeopos() {
+        getCoordinatesByIP()
+        Toast.makeText(
+            App.applicationContext(),
+            "Weather will shown from IP geoposition",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -75,13 +78,12 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
         }
     }
 
-    fun updateUi(weatherResponse: Response<WeatherResponse?>) {
+    fun updateUi(weatherResponse: List<WeatherDataItem>) {
         Log.d(Constants.LOG_TAG, "updateUI презентера")
-        responseWeatherList = weatherResponse.body()?.data!!
         val city: String = cityFromIP
         view?.updateCity(city)
         prepareItemsForRecycler()
-        view?.updateUi(recyclerItems, responseWeatherList)
+        view?.updateUi(recyclerItems, weatherResponse)
     }
 
     override fun loadWeatherData() {
@@ -92,8 +94,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     response: Response<WeatherResponse?>
                 ) {
                     Log.d(Constants.LOG_TAG, "loadWeatherData")
-                    weatherResponse = response
-                    updateUi(weatherResponse)
+                    weatherResponseList = response.body()!!.data
+                    updateUi(weatherResponseList)
                     view?.hideLoader()
                 }
 
@@ -141,20 +143,24 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                     call: Call<CoordinatesResponse?>,
                     response: Response<CoordinatesResponse?>
                 ) {
-                    cityFromIP = response.body()!!.city.nameRu
-                    latitude = response.body()!!.city.lat
-                    longitude = response.body()!!.city.lon
-                    loadWeatherData()
-                    Log.d(
-                        Constants.LOG_TAG,
-                        "сработало определение координат по сети GetCoordinatesByIP"
-                    )
+                    weatherResponseCallback(response)
                 }
 
                 override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
                     Log.d(Constants.LOG_TAG, t.toString())
                 }
             })
+    }
+
+    private fun weatherResponseCallback(response: Response<CoordinatesResponse?>) {
+        cityFromIP = response.body()!!.city.nameRu
+        latitude = response.body()!!.city.lat
+        longitude = response.body()!!.city.lon
+        loadWeatherData()
+        Log.d(
+            Constants.LOG_TAG,
+            "сработало определение координат по сети GetCoordinatesByIP"
+        )
     }
 
     private fun getCityByIP() {
@@ -176,8 +182,8 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
 
     private fun prepareItemsForRecycler() {
         recyclerItems.clear()
-        for (item in responseWeatherList) {
-            val elementIndex = responseWeatherList.indexOf(item)
+        for (item in weatherResponseList) {
+            val elementIndex = weatherResponseList.indexOf(item)
             val result = elementIndex % Constants.DIVIDER_FOR_GETTING_NEXT_DAY
             if (result == 0) {
                 recyclerItems.add(item)
