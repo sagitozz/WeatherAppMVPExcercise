@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.weatherappmvpexcercise.App
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
 import com.example.weatherappmvpexcercise.mvp.base.Model
 import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesResponse

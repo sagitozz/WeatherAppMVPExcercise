@@ -1,6 +1,6 @@
 package com.example.weatherappmvpexcercise.network.coordinatesdto
 
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

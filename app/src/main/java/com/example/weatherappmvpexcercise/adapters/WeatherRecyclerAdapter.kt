@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherappmvpexcercise.IconReturner
 import com.example.weatherappmvpexcercise.IconReturnerImpl
 import com.example.weatherappmvpexcercise.R
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,8 +34,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
         private val itemPres = itemView.findViewById<TextView>(R.id.itemPres)
         private val itemWind = itemView.findViewById<TextView>(R.id.itemWind)
         private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
-        private val itemIcon: ImageView = itemView.findViewById(R.id.weatherLogo)
-        private val iconReturner: IconReturner = IconReturnerImpl()
+        private val itemIcon: ImageView = itemView.findViewById(R.id.mainWeatherIcon)
 
         fun bind(item: WeatherDataItem) {
             itemTemp.text =
@@ -53,7 +51,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>) :
         }
 
         private fun setRecyclerWeatherIcon(string: String) {
-            iconReturner.setIconIntoImageView(string, itemIcon)
+            IconReturnerImpl.setIconIntoImageView(string, itemIcon)
         }
 
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

@@ -15,7 +15,5 @@ interface MainActivityContract {
         fun updateCity(city_text: String)
         fun buildGpsAlertDialog()
         fun setCurrentWeatherIcon(string: String)
-        fun setFirstFutureWeatherIcon(string: String)
-        fun setSecondFutureWeatherIcon(string: String)
     }
 }

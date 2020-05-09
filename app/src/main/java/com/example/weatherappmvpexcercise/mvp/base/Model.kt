@@ -1,7 +1,7 @@
 package com.example.weatherappmvpexcercise.mvp.base
 
 import android.util.Log
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
 import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesResponse
 import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesRestApi
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse

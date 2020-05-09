@@ -36,7 +36,7 @@
             android:text="@string/item_temp"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/weatherLogo"
+            app:layout_constraintEnd_toStartOf="@+id/mainWeatherIcon"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/itemDate"
             app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -75,12 +75,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/itemPres"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/weatherLogo"
+            app:layout_constraintStart_toEndOf="@+id/mainWeatherIcon"
             app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 
         <ImageView
-            android:id="@+id/weatherLogo"
+            android:id="@+id/mainWeatherIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@string/item_icon"

@@ -1,4 +1,4 @@
-package com.example.weatherappmvpexcercise.constants
+package com.example.weatherappmvpexcercise.Utils
 
 object Constants {
 

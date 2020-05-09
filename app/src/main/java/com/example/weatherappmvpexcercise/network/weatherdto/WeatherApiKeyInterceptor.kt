@@ -1,6 +1,6 @@
 package com.example.weatherappmvpexcercise.network.weatherdto
 
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException

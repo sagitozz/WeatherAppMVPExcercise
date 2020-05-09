@@ -147,7 +147,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
         <ImageView
-            android:id="@+id/weatherLogo"
+            android:id="@+id/mainWeatherIcon"
             android:layout_width="74dp"
             android:layout_height="74dp"
             android:layout_marginStart="24dp"

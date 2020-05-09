@@ -9,7 +9,7 @@ interface IconReturner {
     fun getResourceName(stringResource: Int): String
 }
 
-class IconReturnerImpl : IconReturner {
+object IconReturnerImpl : IconReturner {
     private val imageLoader: ImageLoader = ImageLoaderImpl()
 
     override fun setIconIntoImageView(string: String, intoView: ImageView) {
