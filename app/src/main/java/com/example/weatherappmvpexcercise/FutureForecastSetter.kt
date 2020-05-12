@@ -11,7 +11,7 @@ object FutureForecastSetter {
         when (timeOfDay) {
             TimeOfDay.MORNING -> {
                 firstFutureText = App.applicationContext().getString(
-                    R.string.morning_future_temperature_view,
+                    R.string.daytime_future_temperature_view,
                     list[2].temp.toInt().toString()
                 )
                 secondFutureText = App.applicationContext().getString(

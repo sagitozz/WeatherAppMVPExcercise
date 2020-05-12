@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {
-        firstTimeOfDay.text = setFutureForecastText(list, timeOfDay).first()
+        firstTimeOfDay.text = setFutureForecastText(list, timeOfDay)[0]
         secondTimeOfDay.text = setFutureForecastText(list, timeOfDay)[1]
         setIconIntoImageView(setFutureIconCode(list).first(), firstFutureIcon)
         setIconIntoImageView(setFutureIconCode(list)[1], secondFutureIcon)

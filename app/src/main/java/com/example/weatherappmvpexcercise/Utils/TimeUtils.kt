@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object TimeUtils {
-    val morning = arrayListOf<String>("06", "07", "08", "09", "10", "11")
+    val morning = arrayOf("06", "07", "08", "09", "10", "11")
     val day = arrayOf("12", "13", "14", "15", "16", "17")
     val evening = arrayOf("18", "19", "20", "21", "22", "23")
     val night = arrayOf("00", "01", "02", "03", "04", "05")
