@@ -1,4 +1,4 @@
-package com.example.weatherappmvpexcercise.mvp.base
+package com.example.weatherappmvpexcercise.di
 
 import android.util.Log
 import com.example.weatherappmvpexcercise.Utils.Constants
@@ -8,21 +8,25 @@ import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherRestApi
 import retrofit2.Call
 
-class Model {
+interface DataService {
+    fun getWeather( latitude: Double,
+                    longitude: Double,
+                    language: String): Call<WeatherResponse>
 
+    fun modelGetCoordinatesByIp() : Call<CoordinatesResponse>
+
+}
+
+class DataServiceImpl : DataService {
     private val weatherRestApi: WeatherRestApi = WeatherRestApi()
     private val coordinatesRestApi: CoordinatesRestApi = CoordinatesRestApi()
-
-    fun modelGetWeather(
-        latitude: Double,
-        longitude: Double,
-        language: String
-    ): Call<WeatherResponse> {
+    override fun getWeather(latitude: Double, longitude: Double, language: String): Call<WeatherResponse> {
         Log.d(Constants.LOG_TAG, "Запрос из модели")
         return weatherRestApi.getEndPoint()!!.getWeather(latitude, longitude, language)
     }
 
-    fun modelGetCoordinatesByIp(): Call<CoordinatesResponse> {
+    override fun modelGetCoordinatesByIp(): Call<CoordinatesResponse> {
         return coordinatesRestApi.getEndPoint()!!.getCoordinates()
     }
+
 }

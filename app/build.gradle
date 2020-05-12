@@ -53,4 +53,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.3.1"
     //Services
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    // Koin for Android
+    implementation "org.koin:koin-android:2.1.5"
+    // Koin Android Scope feature
+    implementation "org.koin:koin-android-scope:2.1.5"
 }

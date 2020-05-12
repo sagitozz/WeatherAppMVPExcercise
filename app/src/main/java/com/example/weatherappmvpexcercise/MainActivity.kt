@@ -26,19 +26,28 @@ import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentDate
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentTimeOfDay
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.reformatAndSetDate
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
+import com.example.weatherappmvpexcercise.di.dataModule
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
+
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
-    private val presenter = MainActivityPresenter()
+    private val presenter : MainActivityPresenter by inject()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
+        startKoin {
+            printLogger(Level.INFO)
+            modules(dataModule)
+        }
         presenter.attach(this)
 
         GPSbutton.setOnClickListener {

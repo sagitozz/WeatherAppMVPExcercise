@@ -10,8 +10,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.weatherappmvpexcercise.App
 import com.example.weatherappmvpexcercise.Utils.Constants
+import com.example.weatherappmvpexcercise.di.DataService
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
-import com.example.weatherappmvpexcercise.mvp.base.Model
 import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesResponse
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
@@ -20,10 +20,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
+class MainActivityPresenter (private val dataService: DataService) : BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
-    private val dataModel = Model()
     private var recyclerItems: MutableList<WeatherDataItem> = mutableListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -87,7 +86,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     override fun loadWeatherData() {
-        dataModel.modelGetWeather(latitude, longitude, language)
+        dataService.getWeather(latitude, longitude, language)
             .enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
                     call: Call<WeatherResponse?>,
@@ -137,7 +136,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     private fun getCoordinatesByIP() {
-        dataModel.modelGetCoordinatesByIp()
+        dataService.modelGetCoordinatesByIp()
             .enqueue(object : Callback<CoordinatesResponse?> {
                 override fun onResponse(
                     call: Call<CoordinatesResponse?>,
@@ -164,7 +163,7 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
     }
 
     private fun getCityByIP() {
-        dataModel.modelGetCoordinatesByIp()
+        dataService.modelGetCoordinatesByIp()
             .enqueue(object : Callback<CoordinatesResponse?> {
                 override fun onResponse(
                     call: Call<CoordinatesResponse?>,
