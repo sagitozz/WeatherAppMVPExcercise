@@ -44,10 +44,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        startKoin {
-            printLogger(Level.INFO)
-            modules(dataModule)
-        }
+
         presenter.attach(this)
 
         GPSbutton.setOnClickListener {

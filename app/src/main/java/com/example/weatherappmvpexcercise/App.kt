@@ -2,11 +2,23 @@ package com.example.weatherappmvpexcercise
 
 import android.app.Application
 import android.content.Context
+import com.example.weatherappmvpexcercise.di.dataModule
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 class App : Application() {
 
     init {
         instance = this
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            printLogger(Level.INFO)
+            modules(dataModule)
+        }
     }
 
     companion object {

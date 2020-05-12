@@ -8,8 +8,7 @@ import java.util.concurrent.TimeUnit
 
 class WeatherRestApi {
 
-    private var sRestApi: WeatherRestApi? = null
-    private var sEndPoint: WeatherEndPoint? = null
+    private val sEndPoint: WeatherEndPoint
 
     init {
         val okHttpClient = buildOkHttpClient()
@@ -21,15 +20,7 @@ class WeatherRestApi {
         sEndPoint = retrofit.create(WeatherEndPoint::class.java)
     }
 
-    @Synchronized
-    fun getInstance(): WeatherRestApi? {
-        if (sRestApi == null) {
-            sRestApi = WeatherRestApi()
-        }
-        return sRestApi
-    }
-
-    fun getEndPoint(): WeatherEndPoint? {
+    fun getEndPoint(): WeatherEndPoint {
         return sEndPoint
     }
 
