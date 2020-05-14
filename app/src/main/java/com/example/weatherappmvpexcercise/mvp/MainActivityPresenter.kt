@@ -135,7 +135,7 @@ class MainActivityPresenter (private val dataService: DataService) : BasePresent
         return result
     }
 
-    private fun getCoordinatesByIP() {
+    fun getCoordinatesByIP() {
         dataService.modelGetCoordinatesByIp()
             .enqueue(object : Callback<CoordinatesResponse?> {
                 override fun onResponse(

@@ -3,6 +3,7 @@ package com.example.weatherappmvpexcercise
 import android.app.Application
 import android.content.Context
 import com.example.weatherappmvpexcercise.di.dataModule
+import com.example.weatherappmvpexcercise.di.imageModule
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
@@ -17,7 +18,8 @@ class App : Application() {
 
         startKoin {
             printLogger(Level.INFO)
-            modules(dataModule)
+            modules(dataModule,
+            imageModule)
         }
     }
 

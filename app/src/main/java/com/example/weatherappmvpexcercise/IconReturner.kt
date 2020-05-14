@@ -2,6 +2,7 @@ package com.example.weatherappmvpexcercise
 
 import android.widget.ImageView
 import androidx.annotation.StringRes
+import org.koin.core.KoinComponent
 
 interface IconReturner {
 
@@ -9,8 +10,7 @@ interface IconReturner {
     fun getResourceName(stringResource: Int): String
 }
 
-object IconReturnerImpl : IconReturner {
-    private val imageLoader: ImageLoader = ImageLoaderImpl()
+class IconReturnerImpl(private val imageLoader: ImageLoader) : IconReturner, KoinComponent {
 
     override fun setIconIntoImageView(string: String, intoView: ImageView) {
         when (string) {

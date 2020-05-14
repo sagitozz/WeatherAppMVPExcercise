@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.weatherappmvpexcercise.FutureForecastSetter.setFutureForecastText
 import com.example.weatherappmvpexcercise.FutureForecastSetter.setFutureIconCode
-import com.example.weatherappmvpexcercise.IconReturnerImpl.setIconIntoImageView
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.Utils.Constants
@@ -26,19 +25,17 @@ import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentDate
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentTimeOfDay
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.reformatAndSetDate
 import com.example.weatherappmvpexcercise.adapters.WeatherRecyclerAdapter
-import com.example.weatherappmvpexcercise.di.dataModule
 import com.example.weatherappmvpexcercise.mvp.MainActivityContract
 import com.example.weatherappmvpexcercise.mvp.MainActivityPresenter
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
-    private val presenter : MainActivityPresenter by inject()
+    private val presenter: MainActivityPresenter by inject()
+    private val iconReturner: IconReturner by inject()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,7 +126,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun setCurrentWeatherIcon(string: String) {
-        setIconIntoImageView(string, mainWeatherIcon)
+        iconReturner.setIconIntoImageView(string, mainWeatherIcon)
     }
 
     override fun onError() {
@@ -149,7 +146,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
-        recyclerView.adapter = WeatherRecyclerAdapter(items)
+        recyclerView.adapter = WeatherRecyclerAdapter(items, iconReturner)
     }
 
     private fun openNewActivity() {
@@ -168,8 +165,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {
         firstTimeOfDay.text = setFutureForecastText(list, timeOfDay)[0]
         secondTimeOfDay.text = setFutureForecastText(list, timeOfDay)[1]
-        setIconIntoImageView(setFutureIconCode(list).first(), firstFutureIcon)
-        setIconIntoImageView(setFutureIconCode(list)[1], secondFutureIcon)
+        iconReturner.setIconIntoImageView(setFutureIconCode(list).first(), firstFutureIcon)
+        iconReturner.setIconIntoImageView(setFutureIconCode(list)[1], secondFutureIcon)
     }
 
     companion object {
