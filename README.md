@@ -1,3 +1,3 @@
 # WeatherAppMVPExcercise
-simple weatherApp, with using Kotlin, MVP design and DI. 
+simple weatherApp, with using Kotlin, MVP design, DI, Location and some more. 
 Frameworks used: Koin, Retrofit, Glide.
