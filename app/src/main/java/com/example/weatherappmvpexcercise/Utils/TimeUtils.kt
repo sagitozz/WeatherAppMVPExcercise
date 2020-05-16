@@ -11,16 +11,25 @@ object TimeUtils {
     val evening = arrayOf("18", "19", "20", "21", "22", "23")
     val night = arrayOf("00", "01", "02", "03", "04", "05")
 
-    fun getCurrentTimeOfDay(): TimeOfDay {
-        lateinit var timeOfDay: TimeOfDay
+//    fun getCurrentTimeOfDay(): TimeOfDay {
+//        lateinit var timeOfDay: TimeOfDay
+//        when (getCurrentDate().substringBefore(':')) {
+//            in morning -> timeOfDay = MORNING
+//            in day -> timeOfDay = DAYTIME
+//            in evening -> timeOfDay = EVENING
+//            in night -> timeOfDay = NIGHT
+//        }
+//        return timeOfDay
+//    }
+
+    fun getCurrentTimeOfDay(): TimeOfDay =
         when (getCurrentDate().substringBefore(':')) {
-            in morning -> timeOfDay = MORNING
-            in day -> timeOfDay = DAYTIME
-            in evening -> timeOfDay = EVENING
-            in night -> timeOfDay = NIGHT
+            in morning -> MORNING
+            in day -> DAYTIME
+            in evening ->  EVENING
+            in night -> NIGHT
+            else -> MORNING
         }
-        return timeOfDay
-    }
 
     fun getCurrentDate(): String {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -36,7 +45,6 @@ object TimeUtils {
         val dateNew: Date = inputDateFormat.parse(publishedDate)
         val outputDateFormat =
             SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
-        val output = outputDateFormat.format(dateNew)
-        return output
+        return outputDateFormat.format(dateNew)
     }
 }

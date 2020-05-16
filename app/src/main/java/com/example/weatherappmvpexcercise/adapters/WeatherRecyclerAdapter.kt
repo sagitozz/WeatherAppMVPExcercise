@@ -4,17 +4,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherappmvpexcercise.IconReturner
+import com.example.weatherappmvpexcercise.IconSetter
 import com.example.weatherappmvpexcercise.R
 import com.example.weatherappmvpexcercise.Utils.Constants
 import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
+import kotlinx.android.synthetic.main.weather_item.view.*
 import org.koin.core.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>, private val iconReturner: IconReturner) :
+class WeatherRecyclerAdapter(
+    private val items: List<WeatherDataItem>,
+    private val iconSetter: IconSetter
+) :
     RecyclerView.Adapter<WeatherRecyclerAdapter.ViewHolder>(), KoinComponent {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -25,19 +28,19 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>, private v
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], iconReturner)
+        holder.bind(items[position], iconSetter)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), KoinComponent {
 
-        private val itemDate = itemView.findViewById<TextView>(R.id.itemDate)
-        private val itemTemp = itemView.findViewById<TextView>(R.id.itemTemp)
-        private val itemPres = itemView.findViewById<TextView>(R.id.itemPres)
-        private val itemWind = itemView.findViewById<TextView>(R.id.itemWind)
-        private val itemHumid = itemView.findViewById<TextView>(R.id.itemHumid)
-        private val itemIcon: ImageView = itemView.findViewById(R.id.mainWeatherIcon)
+        private val itemDate = itemView.itemDate
+        private val itemTemp = itemView.itemTemp
+        private val itemPres = itemView.itemPres
+        private val itemWind = itemView.itemWind
+        private val itemHumid = itemView.itemHumid
+        private val itemIcon: ImageView = itemView.mainWeatherIcon
 
-        fun bind(item: WeatherDataItem, iconReturner: IconReturner) {
+        fun bind(item: WeatherDataItem, iconSetter: IconSetter) {
             itemTemp.text =
                 itemView.context.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
@@ -48,7 +51,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>, private v
             itemWind.text =
                 itemView.context.getString(R.string.wind_view, item.windSpd.toInt().toString())
             itemHumid.text = itemView.context.getString(R.string.humidity_view, item.rh.toString())
-            iconReturner.setIconIntoImageView(item.weather.code.toString(), itemIcon)
+            iconSetter.setIconIntoImageView(item.weather.code.toString(), itemIcon)
         }
 
 
@@ -60,8 +63,7 @@ class WeatherRecyclerAdapter(private val items: List<WeatherDataItem>, private v
             val dateNew: Date = inputDateFormat.parse(publishedDate)
             val outputDateFormat =
                 SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
-            val output = outputDateFormat.format(dateNew)
-            itemDate.text = output
+            itemDate.text = outputDateFormat.format(dateNew)
         }
     }
 }

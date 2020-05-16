@@ -5,57 +5,55 @@ import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 
 object FutureForecastSetter {
 
-    fun setFutureForecastText(list: List<WeatherDataItem>, timeOfDay: TimeOfDay): Array<String> {
+    fun getFutureForecastText(items: List<WeatherDataItem>, timeOfDay: TimeOfDay): Pair<String, String> {
         lateinit var firstFutureText: String
         lateinit var secondFutureText: String
         when (timeOfDay) {
             TimeOfDay.MORNING -> {
                 firstFutureText = App.applicationContext().getString(
                     R.string.daytime_future_temperature_view,
-                    list[2].temp.toInt().toString()
+                    items[2].temp.toInt().toString()
                 )
                 secondFutureText = App.applicationContext().getString(
                     R.string.evening_future_temperature_view,
-                    list[4].temp.toInt().toString()
+                    items[4].temp.toInt().toString()
                 )
             }
             TimeOfDay.DAYTIME -> {
                 firstFutureText = App.applicationContext().getString(
                     R.string.evening_future_temperature_view,
-                    list[2].temp.toInt().toString()
+                    items[2].temp.toInt().toString()
                 )
                 secondFutureText = App.applicationContext().getString(
                     R.string.night_future_temperature_view,
-                    list[4].temp.toInt().toString()
+                    items[4].temp.toInt().toString()
                 )
             }
             TimeOfDay.EVENING -> {
                 firstFutureText = App.applicationContext().getString(
                     R.string.night_future_temperature_view,
-                    list[2].temp.toInt().toString()
+                    items[2].temp.toInt().toString()
                 )
                 secondFutureText = App.applicationContext().getString(
                     R.string.morning_future_temperature_view,
-                    list[4].temp.toInt().toString()
+                    items[4].temp.toInt().toString()
                 )
             }
             TimeOfDay.NIGHT -> {
                 firstFutureText = App.applicationContext().getString(
                     R.string.morning_future_temperature_view,
-                    list[2].temp.toInt().toString()
+                    items[2].temp.toInt().toString()
                 )
                 secondFutureText = App.applicationContext().getString(
                     R.string.daytime_future_temperature_view,
-                    list[4].temp.toInt().toString()
+                    items[4].temp.toInt().toString()
                 )
             }
         }
-        return arrayOf(firstFutureText, secondFutureText)
+        return Pair(firstFutureText, secondFutureText)
     }
 
-    fun setFutureIconCode(list: List<WeatherDataItem>): Array<String> {
-        val firstFutureIconCode = list[2].weather.code.toString()
-        val secondFutureIconCode = list[4].weather.code.toString()
-        return arrayOf(firstFutureIconCode, secondFutureIconCode)
+    fun getFutureIconCode(items: List<WeatherDataItem>): Pair<String, String> {
+        return Pair(items[2].weather.code.toString(), items[4].weather.code.toString())
     }
 }

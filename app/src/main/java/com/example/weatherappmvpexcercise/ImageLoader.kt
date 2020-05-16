@@ -10,7 +10,7 @@ interface ImageLoader {
     fun loadImage(drawableRes: Int, intoView: ImageView)
 }
 
-class ImageLoaderImpl : ImageLoader{
+class ImageLoaderImpl : ImageLoader {
 
     override fun loadImage(@DrawableRes drawableRes: Int, intoView: ImageView) {
         Glide

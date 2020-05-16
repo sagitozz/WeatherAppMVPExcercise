@@ -8,30 +8,8 @@ import java.util.concurrent.TimeUnit
 
 class CoordinatesRestApi {
 
-    private var sRestApi: CoordinatesRestApi? = null
-    private var sEndPoint: CoordinatesEndPoint? = null
-
-    init {
-        val okHttpClient = buildOkHttpClient()
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Constants.COORDINATES_BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        sEndPoint = retrofit.create(CoordinatesEndPoint::class.java)
-    }
-
-    @Synchronized
-    fun getInstance(): CoordinatesRestApi? {
-        if (sRestApi == null) {
-            sRestApi = CoordinatesRestApi()
-        }
-        return sRestApi
-    }
-
-    fun getEndPoint(): CoordinatesEndPoint? {
-        return sEndPoint
-    }
+    private val okHttpClient = buildOkHttpClient()
+    private val retrofit: Retrofit = buildRetrofit()
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -41,9 +19,20 @@ class CoordinatesRestApi {
             .build()
     }
 
+    private fun buildRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(Constants.COORDINATES_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    fun getEndPoint(): CoordinatesEndPoint {
+        return retrofit.create(CoordinatesEndPoint::class.java)
+    }
+
     companion object {
 
         private const val TIMEOUT_IN_SECONDS = 5
     }
-
 }

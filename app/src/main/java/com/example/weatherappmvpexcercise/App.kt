@@ -18,8 +18,10 @@ class App : Application() {
 
         startKoin {
             printLogger(Level.INFO)
-            modules(dataModule,
-            imageModule)
+            modules(
+                dataModule,
+                imageModule
+            )
         }
     }
 

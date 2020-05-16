@@ -4,13 +4,13 @@ import android.widget.ImageView
 import androidx.annotation.StringRes
 import org.koin.core.KoinComponent
 
-interface IconReturner {
+interface IconSetter {
 
     fun setIconIntoImageView(string: String, intoView: ImageView)
     fun getResourceName(stringResource: Int): String
 }
 
-class IconReturnerImpl(private val imageLoader: ImageLoader) : IconReturner, KoinComponent {
+class IconSetterImpl(private val imageLoader: ImageLoader) : IconSetter, KoinComponent {
 
     override fun setIconIntoImageView(string: String, intoView: ImageView) {
         when (string) {

@@ -2,7 +2,6 @@ package com.example.weatherappmvpexcercise
 
 import android.Manifest
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,8 +14,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.weatherappmvpexcercise.FutureForecastSetter.setFutureForecastText
-import com.example.weatherappmvpexcercise.FutureForecastSetter.setFutureIconCode
+import com.example.weatherappmvpexcercise.FutureForecastSetter.getFutureForecastText
+import com.example.weatherappmvpexcercise.FutureForecastSetter.getFutureIconCode
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.Utils.Constants
@@ -35,7 +34,7 @@ import org.koin.android.ext.android.inject
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private val presenter: MainActivityPresenter by inject()
-    private val iconReturner: IconReturner by inject()
+    private val iconSetter: IconSetter by inject()
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +117,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             )
             .setNegativeButton(
                 string.cancel, fun(dialog, _) {
-                    showToastAndClose(dialog)
+                    Toast.makeText(this, "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                 }
             )
         val alert = builder.create()
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     override fun setCurrentWeatherIcon(string: String) {
-        iconReturner.setIconIntoImageView(string, mainWeatherIcon)
+        iconSetter.setIconIntoImageView(string, mainWeatherIcon)
     }
 
     override fun onError() {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
-        recyclerView.adapter = WeatherRecyclerAdapter(items, iconReturner)
+        recyclerView.adapter = WeatherRecyclerAdapter(items, iconSetter)
     }
 
     private fun openNewActivity() {
@@ -157,16 +157,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         )
     }
 
-    private fun showToastAndClose(dialog: DialogInterface) {
-        Toast.makeText(this, "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
-        dialog.dismiss()
-    }
-
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {
-        firstTimeOfDay.text = setFutureForecastText(list, timeOfDay)[0]
-        secondTimeOfDay.text = setFutureForecastText(list, timeOfDay)[1]
-        iconReturner.setIconIntoImageView(setFutureIconCode(list).first(), firstFutureIcon)
-        iconReturner.setIconIntoImageView(setFutureIconCode(list)[1], secondFutureIcon)
+        firstTimeOfDay.text = getFutureForecastText(list, timeOfDay).first
+        secondTimeOfDay.text = getFutureForecastText(list, timeOfDay).second
+        iconSetter.setIconIntoImageView(getFutureIconCode(list).first, firstFutureIcon)
+        iconSetter.setIconIntoImageView(getFutureIconCode(list).second, secondFutureIcon)
     }
 
     companion object {

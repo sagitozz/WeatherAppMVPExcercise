@@ -296,7 +296,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.22" />
 
-        <include layout="@layout/loading_screen" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline13"

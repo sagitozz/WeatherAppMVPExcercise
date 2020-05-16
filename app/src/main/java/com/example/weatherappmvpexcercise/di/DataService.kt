@@ -35,7 +35,7 @@ class DataServiceImpl(
     }
 
     override fun modelGetCoordinatesByIp(): Call<CoordinatesResponse> {
-        return coordinatesRestApi.getEndPoint()!!.getCoordinates()
+        return coordinatesRestApi.getEndPoint().getCoordinates()
     }
 
 }

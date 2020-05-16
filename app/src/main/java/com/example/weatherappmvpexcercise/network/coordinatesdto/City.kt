@@ -1,6 +1,6 @@
 import com.google.gson.annotations.SerializedName
 
-data class City(
+class City(
 
     @SerializedName("id") val id: Int,
     @SerializedName("lat") val lat: Double,
