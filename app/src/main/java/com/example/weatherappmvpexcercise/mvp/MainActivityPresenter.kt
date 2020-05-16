@@ -55,19 +55,20 @@ class MainActivityPresenter(private val dataService: DataService) :
         if (locationManager.isLocationEnabled) {
             initializeLocationRequest()
         } else {
-            showToastAboutIpGeopos()
+            showToastAboutIpGeolocation()
         }
     }
 
     fun getForecastWithoutPermission() {
+        view?.showLoader()
         getCoordinatesByIP()
     }
 
-    private fun showToastAboutIpGeopos() {
+    private fun showToastAboutIpGeolocation() {
         getCoordinatesByIP()
         Toast.makeText(
             App.applicationContext(),
-            "Weather will shown from IP geoposition",
+            "Weather will shown from IP geolocation",
             Toast.LENGTH_SHORT
         ).show()
     }

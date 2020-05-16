@@ -40,9 +40,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-
         presenter.attach(this)
-
         GPSbutton.setOnClickListener {
             gpsButtonClickListener()
         }
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     ) {
         when (requestCode) {
             REQUEST_LOCATION_PERMISSION -> {
-                // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     presenter.initializeLocationClientAndManager()
                 } else {
@@ -168,7 +165,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     @RequiresApi(Build.VERSION_CODES.P)
     private fun getLocationPermissionOrLoadLocation() {
-
         if (ContextCompat.checkSelfPermission(
                 applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED

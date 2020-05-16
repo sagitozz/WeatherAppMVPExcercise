@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 class CoordinatesRestApi {
 
     private val okHttpClient = buildOkHttpClient()
-    private val retrofit: Retrofit = buildRetrofit()
+    private val retrofit = buildRetrofit()
 
     private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()

@@ -8,20 +8,15 @@ import java.util.concurrent.TimeUnit
 
 class WeatherRestApi {
 
-    private val sEndPoint: WeatherEndPoint
+    private val okHttpClient = buildOkHttpClient()
+    private val retrofit = buildRetrofit()
 
-    init {
-        val okHttpClient = buildOkHttpClient()
-        val retrofit: Retrofit = Retrofit.Builder()
+    private fun buildRetrofit(): Retrofit {
+        return Retrofit.Builder()
             .baseUrl(Constants.WEATHER_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        sEndPoint = retrofit.create(WeatherEndPoint::class.java)
-    }
-
-    fun getEndPoint(): WeatherEndPoint {
-        return sEndPoint
     }
 
     private fun buildOkHttpClient(): OkHttpClient {
@@ -30,6 +25,10 @@ class WeatherRestApi {
             .readTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_IN_SECONDS.toLong(), TimeUnit.SECONDS)
             .build()
+    }
+
+    fun getEndPoint(): WeatherEndPoint {
+        return retrofit.create(WeatherEndPoint::class.java)
     }
 
     companion object {
