@@ -11,30 +11,18 @@ object TimeUtils {
     val evening = arrayOf("18", "19", "20", "21", "22", "23")
     val night = arrayOf("00", "01", "02", "03", "04", "05")
 
-//    fun getCurrentTimeOfDay(): TimeOfDay {
-//        lateinit var timeOfDay: TimeOfDay
-//        when (getCurrentDate().substringBefore(':')) {
-//            in morning -> timeOfDay = MORNING
-//            in day -> timeOfDay = DAYTIME
-//            in evening -> timeOfDay = EVENING
-//            in night -> timeOfDay = NIGHT
-//        }
-//        return timeOfDay
-//    }
-
     fun getCurrentTimeOfDay(): TimeOfDay =
         when (getCurrentDate().substringBefore(':')) {
             in morning -> MORNING
             in day -> DAYTIME
             in evening ->  EVENING
             in night -> NIGHT
-            else -> MORNING
+            else -> throw Exception ("current daytime is out of range")
         }
 
     fun getCurrentDate(): String {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val timeText = timeFormat.format(Date())
-        return timeText
+        return timeFormat.format(Date())
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
