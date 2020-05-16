@@ -27,7 +27,8 @@ class MainActivityPresenter(private val dataService: DataService) :
     private var recyclerItems: MutableList<WeatherDataItem> = mutableListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-    private lateinit var locationManager: LocationManager
+    private val locationManager: LocationManager =
+        App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var weatherResponseList: List<WeatherDataItem>
     private lateinit var cityFromIP: String
@@ -37,16 +38,12 @@ class MainActivityPresenter(private val dataService: DataService) :
     fun initializeLocationClientAndManager() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
-        locationManager =
-            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun initializeLocationClientAndManagerWithDialog() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
-        locationManager =
-            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         if (!locationManager.isLocationEnabled) {
             view?.buildGpsAlertDialog()
@@ -54,12 +51,16 @@ class MainActivityPresenter(private val dataService: DataService) :
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    fun getCurrentLocation() {
+    fun getCurrentLocationWithPermission() {
         if (locationManager.isLocationEnabled) {
             initializeLocationRequest()
         } else {
             showToastAboutIpGeopos()
         }
+    }
+
+    fun getForecastWithoutPermission() {
+        getCoordinatesByIP()
     }
 
     private fun showToastAboutIpGeopos() {
@@ -106,9 +107,6 @@ class MainActivityPresenter(private val dataService: DataService) :
     }
 
     private fun initializeLocationRequest() {
-        locationManager =
-            App.applicationContext()
-                .getSystemService(Context.LOCATION_SERVICE) as LocationManager
         view?.showLoader()
         val locationRequest = LocationRequest()
         locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
@@ -120,7 +118,7 @@ class MainActivityPresenter(private val dataService: DataService) :
     }
 
     private fun locationCallBack(): LocationCallback {
-        val result = object : LocationCallback() {
+        return object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
                 LocationServices.getFusedLocationProviderClient(App.applicationContext())
@@ -133,26 +131,25 @@ class MainActivityPresenter(private val dataService: DataService) :
                 }
             }
         }
-        return result
     }
 
-    fun getCoordinatesByIP() {
+    private fun getCoordinatesByIP() {
         dataService.modelGetCoordinatesByIp()
-            .enqueue(object : Callback<CoordinatesResponse?> {
+            .enqueue(object : Callback<CoordinatesResponse> {
                 override fun onResponse(
                     call: Call<CoordinatesResponse?>,
-                    response: Response<CoordinatesResponse?>
+                    response: Response<CoordinatesResponse>
                 ) {
-                    weatherResponseCallback(response)
+                    coordinatesResponseCallback(response)
                 }
 
-                override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
+                override fun onFailure(call: Call<CoordinatesResponse>, t: Throwable) {
                     Log.d(Constants.LOG_TAG, t.toString())
                 }
             })
     }
 
-    private fun weatherResponseCallback(response: Response<CoordinatesResponse?>) {
+    private fun coordinatesResponseCallback(response: Response<CoordinatesResponse>) {
         cityFromIP = response.body()!!.city.nameRu
         latitude = response.body()!!.city.lat
         longitude = response.body()!!.city.lon
@@ -165,16 +162,16 @@ class MainActivityPresenter(private val dataService: DataService) :
 
     private fun getCityByIP() {
         dataService.modelGetCoordinatesByIp()
-            .enqueue(object : Callback<CoordinatesResponse?> {
+            .enqueue(object : Callback<CoordinatesResponse> {
                 override fun onResponse(
-                    call: Call<CoordinatesResponse?>,
-                    response: Response<CoordinatesResponse?>
+                    call: Call<CoordinatesResponse>,
+                    response: Response<CoordinatesResponse>
                 ) {
                     cityFromIP = response.body()!!.city.nameRu
                     Log.d(Constants.LOG_TAG, "сработал getCityByIP")
                 }
 
-                override fun onFailure(call: Call<CoordinatesResponse?>, t: Throwable) {
+                override fun onFailure(call: Call<CoordinatesResponse>, t: Throwable) {
                     Log.d(Constants.LOG_TAG, t.toString())
                 }
             })

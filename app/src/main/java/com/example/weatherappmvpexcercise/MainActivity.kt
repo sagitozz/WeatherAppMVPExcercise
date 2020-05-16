@@ -44,8 +44,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         presenter.attach(this)
 
         GPSbutton.setOnClickListener {
-            presenter.initializeLocationClientAndManagerWithDialog()
-            presenter.getCurrentLocationFromButton()
+            gpsButtonClickListener()
         }
         getLocationPermissionOrLoadLocation()
     }
@@ -53,8 +52,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            presenter.getCurrentLocation()
-        }
+            if (ContextCompat.checkSelfPermission(
+                    applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            )
+                presenter.getCurrentLocationWithPermission()
+        } else presenter.getForecastWithoutPermission()
     }
 
     override fun onDestroy() {
@@ -88,19 +91,21 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         cityText.text = city_text
     }
 
-    private fun getLocationPermissionOrLoadLocation() {
-        if (ContextCompat.checkSelfPermission(
-                applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@MainActivity,
-                Array<String>(1) { Manifest.permission.ACCESS_FINE_LOCATION },
-                REQUEST_LOCATION_PERMISSION
-            )
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                presenter.initializeLocationClientAndManager()
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    presenter.initializeLocationClientAndManager()
+                } else {
+                    Log.d(Constants.LOG_TAG, "onPermissionResult RETURN 1")
+                    presenter.getForecastWithoutPermission()
+                }
+                Log.d(Constants.LOG_TAG, "onPermissionResult RETURN 2")
             }
         }
     }
@@ -159,6 +164,34 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
             )
         )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun getLocationPermissionOrLoadLocation() {
+
+        if (ContextCompat.checkSelfPermission(
+                applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                Array<String>(1) { Manifest.permission.ACCESS_FINE_LOCATION },
+                REQUEST_LOCATION_PERMISSION
+            )
+        }
+    }
+
+    private fun gpsButtonClickListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(
+                    applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                presenter.initializeLocationClientAndManagerWithDialog()
+                presenter.getCurrentLocationFromButton()
+            } else Toast.makeText(this, "You did`t give GPS permission", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {

@@ -3,7 +3,6 @@ package com.example.weatherappmvpexcercise.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherappmvpexcercise.IconSetter
 import com.example.weatherappmvpexcercise.R
@@ -37,7 +36,7 @@ class WeatherRecyclerAdapter(
         private val itemPres = itemView.itemPres
         private val itemWind = itemView.itemWind
         private val itemHumid = itemView.itemHumid
-        private val itemIcon: ImageView = itemView.mainWeatherIcon
+        private val itemIcon = itemView.mainWeatherIcon
 
         fun bind(item: WeatherDataItem, iconSetter: IconSetter) {
             itemTemp.text =
