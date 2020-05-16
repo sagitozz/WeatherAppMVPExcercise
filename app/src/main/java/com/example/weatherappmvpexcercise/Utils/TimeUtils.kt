@@ -15,9 +15,9 @@ object TimeUtils {
         when (getCurrentDate().substringBefore(':')) {
             in morning -> MORNING
             in day -> DAYTIME
-            in evening ->  EVENING
+            in evening -> EVENING
             in night -> NIGHT
-            else -> throw Exception ("current daytime is out of range")
+            else -> throw Exception("current daytime is out of range")
         }
 
     fun getCurrentDate(): String {
@@ -26,7 +26,7 @@ object TimeUtils {
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    fun reformatAndSetDate(list: List<WeatherDataItem>) : String {
+    fun reformatAndSetDate(list: List<WeatherDataItem>): String {
         val inputDateFormat =
             SimpleDateFormat(Constants.INPUT_DATE_FORMAT, Locale.ENGLISH)
         val publishedDate: String = list.first().datetime

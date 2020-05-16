@@ -5,7 +5,10 @@ import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 
 object FutureForecastSetter {
 
-    fun getFutureForecastText(items: List<WeatherDataItem>, timeOfDay: TimeOfDay): Pair<String, String> {
+    fun getFutureForecastText(
+        items: List<WeatherDataItem>,
+        timeOfDay: TimeOfDay
+    ): Pair<String, String> {
         lateinit var firstFutureText: String
         lateinit var secondFutureText: String
         when (timeOfDay) {

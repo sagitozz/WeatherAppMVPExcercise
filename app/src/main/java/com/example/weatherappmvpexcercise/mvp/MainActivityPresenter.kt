@@ -20,7 +20,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivityPresenter (private val dataService: DataService) : BasePresenter<MainActivityContract.View>(),
+class MainActivityPresenter(private val dataService: DataService) :
+    BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
     private var recyclerItems: MutableList<WeatherDataItem> = mutableListOf()

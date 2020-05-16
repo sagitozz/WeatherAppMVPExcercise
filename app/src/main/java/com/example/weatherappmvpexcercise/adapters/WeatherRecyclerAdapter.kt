@@ -17,8 +17,7 @@ import java.util.*
 class WeatherRecyclerAdapter(
     private val items: List<WeatherDataItem>,
     private val iconSetter: IconSetter
-) :
-    RecyclerView.Adapter<WeatherRecyclerAdapter.ViewHolder>(), KoinComponent {
+) : RecyclerView.Adapter<WeatherRecyclerAdapter.ViewHolder>(), KoinComponent {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater.from(parent.context)

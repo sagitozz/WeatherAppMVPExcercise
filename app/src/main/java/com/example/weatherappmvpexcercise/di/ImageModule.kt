@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val imageModule = module {
     factory { ImageLoaderImpl() }
-    factory <IconSetter> { IconSetterImpl(get<ImageLoaderImpl>()) }
+    factory<IconSetter> { IconSetterImpl(get<ImageLoaderImpl>()) }
 }

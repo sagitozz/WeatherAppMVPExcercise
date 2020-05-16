@@ -117,7 +117,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             )
             .setNegativeButton(
                 string.cancel, fun(dialog, _) {
-                    Toast.makeText(this, "Weather will shown from IP geoposition", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Weather will shown from IP geoposition",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     dialog.dismiss()
                 }
             )
