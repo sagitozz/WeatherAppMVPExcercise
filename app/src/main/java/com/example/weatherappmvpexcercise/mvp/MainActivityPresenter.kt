@@ -5,74 +5,94 @@ import android.content.Context
 import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.weatherappmvpexcercise.App
-import com.example.weatherappmvpexcercise.constants.Constants
+import com.example.weatherappmvpexcercise.Utils.Constants
+import com.example.weatherappmvpexcercise.Utils.Logger.log
+import com.example.weatherappmvpexcercise.di.DataService
 import com.example.weatherappmvpexcercise.mvp.base.BasePresenter
-import com.example.weatherappmvpexcercise.mvp.base.Model
-import com.example.weatherappmvpexcercise.network.dto.DataItem
-import com.example.weatherappmvpexcercise.network.dto.WeatherResponse
+import com.example.weatherappmvpexcercise.network.coordinatesdto.CoordinatesResponse
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherResponse
 import com.google.android.gms.location.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
+class MainActivityPresenter(private val dataService: DataService) :
+    BasePresenter<MainActivityContract.View>(),
     MainActivityContract.Presenter {
 
-    private val newsModel = Model()
-    private lateinit var dataItemList: List<DataItem>
-    private var recyclerItems: MutableList<DataItem> = arrayListOf()
+    private var recyclerItems: MutableList<WeatherDataItem> = mutableListOf()
+    private var maxDayTempRecyclerItems: MutableList<Double> = mutableListOf()
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-    private val language: String = "ru"
-    lateinit var loationManager: LocationManager
+    private val locationManager: LocationManager =
+        App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    private lateinit var weatherResponseList: List<WeatherDataItem>
+    private lateinit var cityFromIP: String
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.P)
-    fun checkLocationAndLoad() {
+    fun initializeLocationClientAndManager() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(App.applicationContext())
-        loationManager =
-            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
 
-        if (loationManager.isLocationEnabled) {
-            getCurrentLocation()
-        } else {
-//            var lastLocation =  loationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
-//            latitude = lastLocation.latitude
-//            longitude = lastLocation.longitude
-//            loadData()
-//            Log.d(Constants.LOG_TAG, "Сработал поиск по последнему местоположению через СЕТЬ")
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun initializeLocationClientAndManagerWithDialog() {
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(App.applicationContext())
+
+        if (!locationManager.isLocationEnabled) {
             view?.buildGpsAlertDialog()
         }
     }
 
-    fun getCurrentLocation() {
-        loationManager =
-            App.applicationContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        view?.showLoader()
-        val locationRequest = LocationRequest()
-        locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
-        locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-        LocationServices.getFusedLocationProviderClient(App.applicationContext())
-            .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getCurrentLocationWithPermission() {
+        if (locationManager.isLocationEnabled) {
+            initializeLocationRequest()
+        } else {
+            showToastAboutIpGeolocation()
+        }
     }
 
-    override fun loadData() {
-        newsModel.modelGetWeather(latitude, longitude, language)
-            ?.enqueue(object : Callback<WeatherResponse?> {
+    fun getForecastWithoutPermission() {
+        view?.showLoader()
+        getCoordinatesByIP()
+    }
+
+    private fun showToastAboutIpGeolocation() {
+        getCoordinatesByIP()
+        view?.showToastAboutIpGeolocation()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getCurrentLocationFromButton() {
+        if (locationManager.isLocationEnabled) {
+            initializeLocationRequest()
+        }
+    }
+
+    fun updateUi(weatherResponse: List<WeatherDataItem>) {
+        log("updateUI презентера")
+        view?.updateCity(cityFromIP)
+        prepareItemsForRecycler()
+        view?.updateUi(recyclerItems, weatherResponse)
+    }
+
+    override fun loadWeatherData() {
+        dataService.getWeather(latitude, longitude, language)
+            .enqueue(object : Callback<WeatherResponse?> {
                 override fun onResponse(
                     call: Call<WeatherResponse?>,
                     response: Response<WeatherResponse?>
                 ) {
-                    Log.d(Constants.LOG_TAG, "OnResponse презентера")
-                    updateUi(response)
+                    log("loadWeatherData")
+                    weatherResponseList = response.body()!!.data
+                    updateUi(weatherResponseList)
                     view?.hideLoader()
                 }
 
@@ -82,8 +102,19 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
             })
     }
 
+    private fun initializeLocationRequest() {
+        view?.showLoader()
+        val locationRequest = LocationRequest()
+        locationRequest.interval = Constants.LOCATION_REQUEST_INTERVAL
+        locationRequest.fastestInterval = Constants.LOCATION_REQUEST_FASTEST_INTERVAL
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        log("работаем по GPS")
+        LocationServices.getFusedLocationProviderClient(App.applicationContext())
+            .requestLocationUpdates(locationRequest, locationCallBack(), Looper.getMainLooper())
+    }
+
     private fun locationCallBack(): LocationCallback {
-        val result = object : LocationCallback() {
+        return object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
                 LocationServices.getFusedLocationProviderClient(App.applicationContext())
@@ -91,31 +122,106 @@ class MainActivityPresenter : BasePresenter<MainActivityContract.View>(),
                 if (locationResult != null) {
                     latitude = locationResult.lastLocation.latitude
                     longitude = locationResult.lastLocation.longitude
-                    loadData()
+                    getCityByIP()
+                    loadWeatherData()
                 }
             }
         }
-        return result
     }
 
-    fun updateUi(response: Response<WeatherResponse?>) {
-        Log.d(Constants.LOG_TAG, "updateUI презентера")
-        dataItemList = response.body()?.data!!
-        val city: String = response.body()?.city_name.toString()
-        view?.updateCity(city)
-        prepareItemsForRecycler()
-        view?.updateUi(recyclerItems)
-        view?.updateCoordinates(latitude, longitude)
+    private fun getCoordinatesByIP() {
+        dataService.modelGetCoordinatesByIp()
+            .enqueue(object : Callback<CoordinatesResponse> {
+                override fun onResponse(
+                    call: Call<CoordinatesResponse?>,
+                    response: Response<CoordinatesResponse>
+                ) {
+                    coordinatesResponseCallback(response)
+                }
+
+                override fun onFailure(call: Call<CoordinatesResponse>, t: Throwable) {
+                    log(t.toString())
+                }
+            })
+    }
+
+    private fun coordinatesResponseCallback(response: Response<CoordinatesResponse>) {
+        cityFromIP = response.body()!!.city.nameRu
+        latitude = response.body()!!.city.lat
+        longitude = response.body()!!.city.lon
+        loadWeatherData()
+        log("сработало определение координат по сети GetCoordinatesByIP")
+    }
+
+    private fun getCityByIP() {
+        dataService.modelGetCoordinatesByIp()
+            .enqueue(object : Callback<CoordinatesResponse> {
+                override fun onResponse(
+                    call: Call<CoordinatesResponse>,
+                    response: Response<CoordinatesResponse>
+                ) {
+                    cityFromIP = response.body()!!.city.nameRu
+                    log("сработал getCityByIP")
+                }
+
+                override fun onFailure(call: Call<CoordinatesResponse>, t: Throwable) {
+                    log(t.toString())
+                }
+            })
     }
 
     private fun prepareItemsForRecycler() {
-        for (item in dataItemList) {
-            val elementIndex = dataItemList.indexOf(item)
+        recyclerItems.clear()
+        maxDayTempRecyclerItems.clear()
+        var i = 0
+        var maxTemp1: Double = -60.0
+        var maxTemp2: Double = -60.0
+        var maxTemp3: Double = -60.0
+        var maxTemp4: Double = -60.0
+        var maxTemp5: Double = -60.0
+        val day1 = weatherResponseList.subList(0, 7)
+        val day2 = weatherResponseList.subList(8, 15)
+        val day3 = weatherResponseList.subList(16, 23)
+        val day4 = weatherResponseList.subList(24, 31)
+        val day5 = weatherResponseList.subList(32, 39)
+        for (item in day1) {
+            if (item.appTemp > maxTemp1)
+                maxTemp1 = item.appTemp
+        }
+        for (item in day2) {
+            if (item.appTemp > maxTemp2)
+                maxTemp2 = item.appTemp
+        }
+        for (item in day3) {
+            if (item.appTemp > maxTemp3)
+                maxTemp3 = item.appTemp
+        }
+        for (item in day4) {
+            if (item.appTemp > maxTemp4)
+                maxTemp4 = item.appTemp
+        }
+        for (item in day5) {
+            if (item.appTemp > maxTemp5)
+                maxTemp5 = item.appTemp
+        }
+        maxDayTempRecyclerItems = mutableListOf(maxTemp1, maxTemp2, maxTemp3, maxTemp4, maxTemp5)
+
+        for (item in weatherResponseList) {
+
+            val elementIndex = weatherResponseList.indexOf(item)
             val result = elementIndex % Constants.DIVIDER_FOR_GETTING_NEXT_DAY
             if (result == 0) {
                 recyclerItems.add(item)
             }
         }
+        for (item in recyclerItems) {
+            item.appTemp = maxDayTempRecyclerItems[i]
+            i += 1
+        }
+    }
+
+    companion object {
+        private const val language: String = "ru"
     }
 }
 

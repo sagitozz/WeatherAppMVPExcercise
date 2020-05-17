@@ -1,19 +1,20 @@
 package com.example.weatherappmvpexcercise.mvp
 
 import com.example.weatherappmvpexcercise.mvp.base.IView
-import com.example.weatherappmvpexcercise.network.dto.DataItem
+import com.example.weatherappmvpexcercise.network.weatherdto.WeatherDataItem
 
 interface MainActivityContract {
 
     interface Presenter {
-        fun loadData() {}
+        fun loadWeatherData() {}
     }
 
     interface View : IView {
-        fun updateUi(list: List<DataItem>)
+        fun updateUi(listForRecycler: List<WeatherDataItem>, listForMainView: List<WeatherDataItem>)
         fun onError()
         fun updateCity(city_text: String)
-        fun updateCoordinates(latitude: Double, longitude: Double)
         fun buildGpsAlertDialog()
+        fun setCurrentWeatherIcon(string: String)
+        fun showToastAboutIpGeolocation()
     }
 }

@@ -1,28 +1,91 @@
 <resources>
     <string name="app_name">WeatherAppMVPExcercise</string>
-    <string name="city">City</string>
-    <string name="day_date">Day - Date</string>
-    <string name="temp">TEMP</string>
-    <string name="humidity">Humidity</string>
-    <string name="wind">Wind:</string>
-    <string name="pressure">Pressure</string>
-    <string name="gps_not_enabled">GPS is not enabled</string>
-    <string name="open_location_settings">Would you enable GPS?</string>
+
+    //dialog string resources
     <string name="yes">YES</string>
     <string name="cancel">NO</string>
-    <string name="on_error">ON ERROR</string>
+    <string name="permission_required">Permission required</string>
+    <string name="gps_not_enabled">GPS is not enabled</string>
+    <string name="open_location_settings">Would you enable GPS?</string>
     <string name="get_location">get location</string>
-    <string name="lat">lat</string>
-    <string name="lon">lon</string>
+
+    //recycler string resources
     <string name="gps_button">GPS button</string>
     <string name="item_date">item_date</string>
-    <string name="item_temp">item_temp</string>
-    <string name="permission_required">Permission required</string>
+    <string name="item_temp">%1$s°</string>
+    <string name="item_icon">itemIcon</string>
+    <string name="item_pres">item_pres</string>
+    <string name="item_wind">item_wind</string>
+    <string name="item_humid">item_humid</string>
+
+    //view string resources
+    <string name="weatherappmvpexercise">WeatherAppMVPExercise</string>
+    <string name="introscreenimage">introScreenImage</string>
+    <string name="city">City</string>
+    <string name="day_date">Day - Date</string>
+    <string name="temp">t°</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
+    <string name="pressure">Pressure</string>
+    <string name="lat">lat</string>
+    <string name="lon">lon</string>
+    <string name="on_error">ON ERROR</string>
     <string name="wind_view">%1$s км/ч</string>
     <string name="pressure_view">%1$s мм рт.ст</string>
     <string name="temperature_view">%1$s°</string>
+    <string name="morning_future_temperature_view">Утром: %1$s°</string>
+    <string name="daytime_future_temperature_view">Днем: %1$s°</string>
+    <string name="evening_future_temperature_view">Вечером: %1$s°</string>
+    <string name="night_future_temperature_view">Ночью: %1$s°</string>
     <string name="humidity_view">%1$s %%</string>
     <string name="date_view">%1$s</string>
-    <string name="weatherLogo">weatherLogo</string>
-    <string name="weatherDescription">weatherDescription</string>
+    <string name="weather_logotype">weatherLogo</string>
+    <string name="weather_description">weather_descriprion</string>
+    <string name="first_time_of_day">First time of day</string>
+    <string name="second_time_of_day">Second time of day</string>
+    <string name="current_time">Current Time</string>
+    <string name="first_fut_icon">first_fut_icon</string>
+    <string name="second_fut_icon">second fut icon</string>
+    <string name="gps">GPS</string>
+    <string name="gps_button_image">GPS button image</string>
+
+    //weather icons string resources
+    <string name="thunderstorm_with_light_rain">200</string>
+    <string name="thunderstorm_with_rain">201</string>
+    <string name="thunderstorm_with_heavy_rain">202</string>
+    <string name="thunderstorm_with_light_drizzle">230</string>
+    <string name="thunderstorm_with_drizzle">231</string>
+    <string name="thunderstorm_with_heavy_drizzle">232</string>
+    <string name="thunderstorm_with_hail">233</string>
+    <string name="drizzle">300</string>
+    <string name="light_drizzle">301</string>
+    <string name="heavy_drizzle">302</string>
+    <string name="light_rain">500</string>
+    <string name="moderate_rain">501</string>
+    <string name="heavy_rain">502</string>
+    <string name="freezing_rain">511</string>
+    <string name="light_shower_rain">520</string>
+    <string name="shower_rain">521</string>
+    <string name="heavy_shower_rain">522</string>
+    <string name="light_snow">600</string>
+    <string name="snow">601</string>
+    <string name="heavy_snow">602</string>
+    <string name="mix_snow_rain">610</string>
+    <string name="sleet">611</string>
+    <string name="heavy_sleet">612</string>
+    <string name="snow_shower">621</string>
+    <string name="heavy_snow_shower">622</string>
+    <string name="flurries">623</string>
+    <string name="mist">700</string>
+    <string name="smoke">701</string>
+    <string name="haze">721</string>
+    <string name="sand_dust">731</string>
+    <string name="fog">741</string>
+    <string name="freezing_fog">751</string>
+    <string name="clear_sky">800</string>
+    <string name="few_clouds">801</string>
+    <string name="scattered_clouds">802</string>
+    <string name="broken_cloud">803</string>
+    <string name="overcast_clouds">804</string>
+    <string name="unknown_precipitation">900</string>
 </resources>
