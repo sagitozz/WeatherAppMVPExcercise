@@ -15,5 +15,6 @@ interface MainActivityContract {
         fun updateCity(city_text: String)
         fun buildGpsAlertDialog()
         fun setCurrentWeatherIcon(string: String)
+        fun showToastAboutIpGeolocation()
     }
 }

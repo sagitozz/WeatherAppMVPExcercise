@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blackBackground"
-    android:visibility="visible"
-    tools:context=".MainActivity"
-    tools:visibility="visible">
+    tools:context=".MainActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"

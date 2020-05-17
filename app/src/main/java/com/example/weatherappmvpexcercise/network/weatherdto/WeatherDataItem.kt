@@ -27,7 +27,7 @@ data class WeatherDataItem(
     @SerializedName("temp") val temp: Double,
     @SerializedName("dhi") val dhi: Double,
     @SerializedName("ghi") val ghi: Double,
-    @SerializedName("app_temp") val appTemp: Double,
+    @SerializedName("app_temp") var appTemp: Double,
     @SerializedName("dewpt") val dewpt: Double,
     @SerializedName("wind_dir") val windDir: Int,
     @SerializedName("solar_rad") val solarRad: Double,

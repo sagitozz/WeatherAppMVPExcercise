@@ -8,8 +8,8 @@ import com.example.weatherappmvpexcercise.network.weatherdto.WeatherRestApi
 import org.koin.dsl.module
 
 val dataModule = module {
-    factory { WeatherRestApi() }
-    factory { CoordinatesRestApi() }
-    single<DataService> { DataServiceImpl(get<WeatherRestApi>(), get<CoordinatesRestApi>()) }
-    single { MainActivityPresenter(get<DataService>()) }
+    factory<WeatherRestApi> { WeatherRestApi() }
+    factory<CoordinatesRestApi> { CoordinatesRestApi() }
+    factory<DataService> { DataServiceImpl(get<WeatherRestApi>(), get<CoordinatesRestApi>()) }
+    factory<MainActivityPresenter> { MainActivityPresenter(get<DataService>()) }
 }

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -19,6 +18,7 @@ import com.example.weatherappmvpexcercise.FutureForecastSetter.getFutureIconCode
 import com.example.weatherappmvpexcercise.R.layout
 import com.example.weatherappmvpexcercise.R.string
 import com.example.weatherappmvpexcercise.Utils.Constants
+import com.example.weatherappmvpexcercise.Utils.Logger.log
 import com.example.weatherappmvpexcercise.Utils.TimeOfDay
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentDate
 import com.example.weatherappmvpexcercise.Utils.TimeUtils.getCurrentTimeOfDay
@@ -41,9 +41,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
         presenter.attach(this)
-        GPSbutton.setOnClickListener {
-            gpsButtonClickListener()
-        }
+        GPSbutton.setOnClickListener { gpsButtonClickListener() }
         getLocationPermissionOrLoadLocation()
     }
 
@@ -67,7 +65,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         listForRecycler: List<WeatherDataItem>,
         listForMainView: List<WeatherDataItem>
     ) {
-        Log.d(Constants.LOG_TAG, "updateUI View")
+        log("updateUI View")
         temperatureText.text =
             getString(string.temperature_view, listForMainView.first().temp.toInt().toString())
         pressureText.text = getString(
@@ -99,10 +97,10 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     presenter.initializeLocationClientAndManager()
                 } else {
-                    Log.d(Constants.LOG_TAG, "onPermissionResult RETURN 1")
+                    log("onPermissionResult RETURN 1")
                     presenter.getForecastWithoutPermission()
                 }
-                Log.d(Constants.LOG_TAG, "onPermissionResult RETURN 2")
+                log("onPermissionResult RETURN 2")
             }
         }
     }
@@ -142,13 +140,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
     override fun showLoader() {
         progressBar.visibility = View.VISIBLE
         inline_screen.visibility = View.GONE
-        Log.d(Constants.LOG_TAG, "Show loader")
+        log("Show loader")
     }
 
     override fun hideLoader() {
         progressBar.visibility = View.GONE
         inline_screen.visibility = View.VISIBLE
-        Log.d(Constants.LOG_TAG, "Hide loader")
+        log("Hide loader")
     }
 
     private fun recyclerInit(items: List<WeatherDataItem>) {
@@ -188,6 +186,15 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
             } else Toast.makeText(this, "You did`t give GPS permission", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    override fun showToastAboutIpGeolocation() {
+        Toast.makeText(
+            applicationContext,
+            "Weather will shown from IP geolocation",
+            Toast.LENGTH_SHORT
+        )
+            .show()
     }
 
     private fun settingFutureForecast(list: List<WeatherDataItem>, timeOfDay: TimeOfDay) {

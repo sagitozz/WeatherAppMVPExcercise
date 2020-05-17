@@ -31,27 +31,20 @@ class WeatherRecyclerAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), KoinComponent {
 
-        private val itemDate = itemView.itemDate
-        private val itemTemp = itemView.itemTemp
-        private val itemPres = itemView.itemPres
-        private val itemWind = itemView.itemWind
-        private val itemHumid = itemView.itemHumid
-        private val itemIcon = itemView.mainWeatherIcon
-
         fun bind(item: WeatherDataItem, iconSetter: IconSetter) {
-            itemTemp.text =
+            itemView.itemTemp.text =
                 itemView.context.getString(R.string.item_temp, item.appTemp.toInt().toString())
             reformatAndSetDate(item.datetime)
-            itemPres.text = itemView.context.getString(
+            itemView.itemPres.text = itemView.context.getString(
                 R.string.pressure_view,
                 ((item.pres) / Constants.PRESSURE_DIVIDER).toInt().toString()
             )
-            itemWind.text =
+            itemView.itemWind.text =
                 itemView.context.getString(R.string.wind_view, item.windSpd.toInt().toString())
-            itemHumid.text = itemView.context.getString(R.string.humidity_view, item.rh.toString())
-            iconSetter.setIconIntoImageView(item.weather.code.toString(), itemIcon)
+            itemView.itemHumid.text =
+                itemView.context.getString(R.string.humidity_view, item.rh.toString())
+            iconSetter.setIconIntoImageView(item.weather.code.toString(), itemView.mainWeatherIcon)
         }
-
 
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         private fun reformatAndSetDate(date: String) {
@@ -61,7 +54,7 @@ class WeatherRecyclerAdapter(
             val dateNew: Date = inputDateFormat.parse(publishedDate)
             val outputDateFormat =
                 SimpleDateFormat(Constants.OUTPUT_DATE_FORMAT, Locale.getDefault())
-            itemDate.text = outputDateFormat.format(dateNew)
+            itemView.itemDate.text = outputDateFormat.format(dateNew)
         }
     }
 }
